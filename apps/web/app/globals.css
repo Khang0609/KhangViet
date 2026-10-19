@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap");
+
 @import "tailwindcss";
 
 :root {
@@ -12,11 +14,6 @@
   --accent-orange-logo: #f27d26;
   --border-hairline: rgba(255, 255, 255, 0.08);
   --border-bronze-subtle: rgba(212, 163, 115, 0.32);
-
-  --font-display: "Syne", sans-serif;
-  --font-sans:
-    "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
 }
 
 @theme inline {
@@ -27,6 +24,8 @@
 
 @theme {
   --font-sans: var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif;
+  --font-display: "Black Ops One", system-ui;
+  --font-mono: "JetBrains Mono", monospace;
   --color-brand: #f58633;
 }
 
@@ -50,4 +49,35 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(245, 134, 51, 0.5);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.bg-blueprint-grid {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+}
+
+.amber-frame-glow {
+  box-shadow: 0 0 65px -15px rgba(212, 163, 115, 0.22);
 }

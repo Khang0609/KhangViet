@@ -15,9 +15,9 @@ export default function KhangVietLogo({
 }: KhangVietLogoProps) {
   return (
     <div className={`group inline-flex items-center select-none ${className}`}>
-      <div className="relative flex items-center overflow-hidden rounded-xs border border-white/8 bg-[#0B0C0E] px-2 py-1 transition-colors duration-300 group-hover:border-[#D4A373]/40">
+      <div className="relative flex items-center overflow-hidden rounded-xs bg-transparent px-2 py-1 transition-colors duration-300 group-hover:border-(--accent-bronze)/40">
         <img
-          src="/assets/brand/logo-khang-viet.png"
+          src="/image/Logo-large.png"
           alt="Khang Việt Design — Since 2009"
           className={`${
             compact ? "h-7 sm:h-8" : "h-8 sm:h-10"

@@ -14,6 +14,15 @@ importers:
 
   apps/api:
     dependencies:
+      '@khangviet/data':
+        specifier: workspace:*
+        version: link:../../packages/data
+      '@khangviet/repositories':
+        specifier: workspace:*
+        version: link:../../packages/repositories
+      '@khangviet/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       hono:
         specifier: ^4.13.2
         version: 4.13.2
@@ -73,6 +82,23 @@ importers:
       typescript:
         specifier: ^5
         version: 5.9.3
+
+  packages/data:
+    dependencies:
+      '@khangviet/types':
+        specifier: workspace:*
+        version: link:../types
+
+  packages/repositories:
+    dependencies:
+      '@khangviet/data':
+        specifier: workspace:*
+        version: link:../data
+      '@khangviet/types':
+        specifier: workspace:*
+        version: link:../types
+
+  packages/types: {}
 
 packages:
 

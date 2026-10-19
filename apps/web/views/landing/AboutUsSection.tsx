@@ -11,3 +11,5 @@ export const AboutUsSection = () => {
     </div>
   );
 };
+
+export default AboutUsSection;

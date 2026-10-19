@@ -1,0 +1,288 @@
+{
+  "heroSlides": [
+    {
+      "id": "hero-bigc-led",
+      "image": "/image/projects/bigc/bigc3.jpg",
+      "tag": "PROJECT ARCHIVE // 01 — HIGH-LUMINANCE LED MATRIX FACADE",
+      "title": "Hệ Thống Đại Siêu Thị BigC / GO! Supercenter",
+      "location": "GO! An Lạc (TP.HCM) • Diễn Châu • Hạ Long",
+      "specs": "Pano chữ nổi Khổ lớn • Hệ LED ma trận full-surface • Kết cấu khung thép mạ kẽm chịu gió bão cấp 12",
+      "lightingMode": "NIGHT ILLUMINATION SIMULATION"
+    },
+    {
+      "id": "hero-bidv-facade",
+      "image": "/image/projects/bidv/bidv3.JPG",
+      "tag": "PROJECT ARCHIVE // 02 — CORPORATE BANKING ARCHITECTURAL IDENTITY",
+      "title": "Hệ Thống Nhận Diện Chuỗi Ngân Hàng TMCP BIDV",
+      "location": "CN Hàm Nghi • CN Phú Mỹ Hưng • CN Tây Sài Gòn",
+      "specs": "Mặt dựng Aluminium Composite • Lam nhôm chắn nắng kỹ thuật • Chữ nổi Inox 304 lồng mặt Mica xuyên sáng",
+      "lightingMode": "ARCHITECTURAL FACADE DAY/DUSK"
+    },
+    {
+      "id": "hero-bigc-complex",
+      "image": "/image/projects/bigc/bigc2.jpeg",
+      "tag": "PROJECT ARCHIVE // 03 — HYPERMARKET EXTERIOR SIGNAGE SYSTEM",
+      "title": "Tổ Hợp Mặt Dựng & Biển Hiệu Trung Tâm Thương Mại BigC",
+      "location": "Hệ thống Đại Siêu Thị Toàn Quốc",
+      "specs": "Ốp mặt dựng tôn sóng công nghiệp & Alu • Bộ chữ nổi 3D vượt khổ • Đồng bộ quy chuẩn nhận diện tập đoàn",
+      "lightingMode": "WIDE-SPAN COMMERCIAL COMPLEX"
+    },
+    {
+      "id": "hero-bidv-interior",
+      "image": "/image/projects/bidv/bidv5.JPG",
+      "tag": "PROJECT ARCHIVE // 04 — TRANSACTION HALL & LIGHTBOX SYSTEM",
+      "title": "Không Gian Sảnh Giao Dịch & Hộp Đèn Siêu Mỏng BIDV",
+      "location": "Chi Nhánh TP. Hồ Chí Minh",
+      "specs": "Hộp đèn tranh điện导quang (LGP) • Quầy giao dịch tiêu chuẩn • Biển chức danh Mica đúc nguyên khối",
+      "lightingMode": "INTERIOR LUMINOUS PRECISION"
+    }
+  ],
+  "partnerBrands": [
+    { "name": "BIDV", "subtitle": "Ngân hàng TMCP Đầu tư & Phát triển VN", "category": "Banking" },
+    { "name": "GO! / BigC", "subtitle": "Central Retail Vietnam", "category": "Hypermarket" },
+    { "name": "VINGROUP", "subtitle": "Tập đoàn Vingroup", "category": "Conglomerate" },
+    { "name": "KINGSMEN", "subtitle": "Kingsmen Vietnam", "category": "Global Fit-out" },
+    { "name": "TRUNG NGUYÊN LEGEND", "subtitle": "Tập đoàn Cà phê Trung Nguyên", "category": "F&B Chain" },
+    { "name": "DECATHLON", "subtitle": "Decathlon Vietnam", "category": "Sports Retail" },
+    { "name": "EXIMBANK", "subtitle": "Ngân hàng TMCP Xuất Nhập Khẩu", "category": "Banking" },
+    { "name": "SHINHAN BANK", "subtitle": "Shinhan Financial Group", "category": "Banking" },
+    { "name": "THE NEW GYM", "subtitle": "Hệ thống Phòng tập 24/7", "category": "Fitness Chain" },
+    { "name": "DIOR", "subtitle": "Christian Dior Couture Booths", "category": "Luxury Retail" }
+  ],
+  "coreDisciplines": [
+    {
+      "number": "01",
+      "code": "DISC // EXT-SIGN",
+      "title": "Outdoor Signage & Facade",
+      "vietnameseTitle": "Kiến Trúc Mặt Dựng & Hệ Thống Biển Hiệu Ngoại Thất",
+      "description": "Thiết kế, thẩm tra kết cấu và thi công tổng thể mặt dựng Aluminium, lam nhôm kiến trúc, chữ nổi Inox 304 mạ PVD, Mica hút nổi và Pano hộp đèn LED ma trận khổ lớn cho các tòa nhà ngân hàng, đại siêu thị và trụ sở tập đoàn.",
+      "specs": [
+        "Mặt dựng Alu PVDF / Lam nhôm khí động học",
+        "Chữ nổi Inox 304 / Đồng / Tôn sơn tĩnh điện hấp nhiệt",
+        "Pano tấm lớn, Cổng chào & Hộp đèn bạt 3M Mỹ / Hàn Quốc",
+        "Hệ thống chiếu sáng LED Samsung / Hàn Quốc IP68 chống nước"
+      ],
+      "previewImage": "/image/projects/bigc/bigc2.jpeg",
+      "metricLabel": "Độ bền kết cấu ngoài trời",
+      "metricValue": "8 – 12 Năm"
+    },
+    {
+      "number": "02",
+      "code": "DISC // INT-FITOUT",
+      "title": "Commercial Interior & Retail Fit-out",
+      "vietnameseTitle": "Thi Công Nội Thất Thương Mại & Chuỗi Bán Lẻ",
+      "description": "Giải pháp chìa khóa trao tay (Turnkey Fit-out) cho sảnh giao dịch ngân hàng, chuỗi showroom trang sức vàng bạc, hệ thống phòng tập NewGym, cửa hàng F&B và không gian trưng bày chuẩn guideline quốc tế.",
+      "specs": [
+        "Sảnh giao dịch Ngân hàng & Quầy柜 Counter tiêu chuẩn",
+        "Showroom Vàng bạc Đá quý, Mỹ phẩm & Luxury Boutique",
+        "Hệ thống trần - vách tiêu âm, sàn và chiếu sáng kiến trúc",
+        "Backdrop lễ tân, Hộp đèn siêu mỏng & Biển chỉ dẫn Wayfinding"
+      ],
+      "previewImage": "/image/projects/bidv/bidv4.jpeg",
+      "metricLabel": "Chuẩn hóa chuỗi điểm bán",
+      "metricValue": "100% Guideline"
+    },
+    {
+      "number": "03",
+      "code": "DISC // METAL-FAB",
+      "title": "Bespoke Metalwork & Displays",
+      "vietnameseTitle": "Gia Công Cơ Khí Chính Xác & Quầy Kệ Trưng Bày",
+      "description": "Sản xuất trực tiếp tại xưởng Bình Tân các hệ quầy kệ trưng bày module (POSM/Display Stand), kết cấu khung thép chịu lực trang trí, biển chức danh cao cấp và chi tiết kim loại tấm cắt laser CNC theo bản vẽ kỹ thuật khắt khe.",
+      "specs": [
+        "Quầy kệ trưng bày module cho chuỗi đại siêu thị & thể thao",
+        "Gia công Laser Fiber CNC, chấn gấp Inox gương / xước hairline",
+        "Kết cấu khung giàn không gian thép mạ kẽm nhúng nóng",
+        "Vật phẩm nhận diện để bàn: Biển chức danh Mica đúc - Đồng ăn mòn"
+      ],
+      "previewImage": "/image/projects/bidv/bidv6.png",
+      "metricLabel": "Sai số gia công cơ khí",
+      "metricValue": "± 0.5 mm"
+    }
+  ],
+  "featuredProjects": [
+    {
+      "id": "project-bidv",
+      "code": "PRJ — 01 // BANKING NETWORK",
+      "title": "Hệ Thống Nhận Diện Mặt Tiền & Quầy Giao Dịch Chuỗi Ngân Hàng BIDV",
+      "subtitle": "Triển khai đồng bộ chuẩn nhận diện thương hiệu Ngân hàng TMCP Đầu tư và Phát triển Việt Nam tại TP.HCM",
+      "client": "Ngân hàng TMCP Đầu tư & Phát triển Việt Nam (BIDV)",
+      "locations": [
+        "CN Hàm Nghi (Q.1)",
+        "CN Phú Mỹ Hưng (Q.7)",
+        "CN Tây Sài Gòn — PGD Tân Tạo (Q. Bình Tân)"
+      ],
+      "year": "2016 — 2024",
+      "categoryTag": "ARCHITECTURAL FACADE & BANKING FIT-OUT",
+      "scaleMetric": "25+ Chi nhánh & PGD",
+      "materials": [
+        "Tấm ốp Aluminium Composite Alcorest ngoài trời (PVDF)",
+        "Hệ lam nhôm hộp trang trí sơn tĩnh điện trắng sứ",
+        "Chữ nổi Inox 304 lồng mặt Mica Đài Loan xuyên sáng LED",
+        "Hộp đèn tranh điện导quang (LGP) cụm 3 khung tại quầy giao dịch",
+        "Biển hiệu PGD khung nhôm định hình & Biển chức danh Mica đặc 15mm"
+      ],
+      "engineeringNotes": [
+        "Thi công cuốn chiếu ngoài giờ hành chính, đảm bảo hoạt động giao dịch ngân hàng không bị gián đoạn.",
+        "Hệ khung sắt hộp mạ kẽm gia cường chịu lực tại các vị trí mặt tiền tầng cao và góc giao lộ lớn.",
+        "Kiểm soát chuẩn mã màu Xanh Dương - Đỏ nhận diện BIDV trên cả vật liệu Alu, Mica, Decal 3M và ánh sáng LED."
+      ],
+      "summary": "Khang Việt tự hào là đối tác trực tiếp thực hiện khảo sát, thiết kế bản vẽ thi công (Shop Drawing) và sản xuất - lắp đặt trọn gói hệ thống bảng hiệu mặt tiền, biển vẫy, cụm hộp đèn poster sau quầy giao dịch và bộ vật phẩm nhận diện nội khu cho hàng loạt Chi nhánh và Phòng giao dịch BIDV tại TP.HCM.",
+      "coverImage": "/image/projects/bidv/bidv3.JPG",
+      "gallery": [
+        {
+          "id": "bidv-g1",
+          "src": "/image/projects/bidv/bidv3.JPG",
+          "caption": "Mặt dựng Aluminium & Hệ lam nhôm kiến trúc mặt tiền trụ sở Chi nhánh BIDV",
+          "location": "TP. Hồ Chí Minh",
+          "spec": "Alu PVDF + Lam nhôm sơn tĩnh điện + Chữ nổi 3D",
+          "aspect": "landscape"
+        },
+        {
+          "id": "bidv-g2",
+          "src": "/image/projects/bidv/bidv2.JPG",
+          "caption": "Tổ hợp bảng hiệu mặt tiền chính, biển trên mái (Rooftop Sign) & PGD liên hoàn",
+          "location": "Chi nhánh TP.HCM",
+          "spec": "Kết cấu khung thép cao tầng + Chữ nổi Inox mặt Mica",
+          "aspect": "landscape"
+        },
+        {
+          "id": "bidv-g3",
+          "src": "/image/projects/bidv/bidv1.JPG",
+          "caption": "Biển tên Phòng Giao Dịch Tân Tạo — Chi nhánh Tây Sài Gòn",
+          "location": "Lô 2-4-6 Đường C, KCN Tân Tạo, Q. Bình Tân",
+          "spec": "Mica xuyên sáng, chữ nổi 3D sắc nét, khung hợp kim nhôm",
+          "aspect": "landscape"
+        },
+        {
+          "id": "bidv-g4",
+          "src": "/image/projects/bidv/bidv5.JPG",
+          "caption": "Cụm 3 hộp đèn quảng cáo siêu mỏng lắp đặt phía sau quầy giao dịch viên",
+          "location": "Không gian nội thất PGD BIDV",
+          "spec": "Khung bo góc CNC xanh chuẩn mã màu BIDV + Tấm dẫn sáng LED",
+          "aspect": "landscape"
+        },
+        {
+          "id": "bidv-g5",
+          "src": "/image/projects/bidv/bidv4.jpeg",
+          "caption": "Phối cảnh kỹ thuật 3D không gian sảnh giao dịch và bố cục ánh sáng",
+          "location": "Hồ sơ thiết kế nội thất Khang Việt",
+          "spec": "3D Interior Visualization & Lighting Plan",
+          "aspect": "wide"
+        },
+        {
+          "id": "bidv-g6",
+          "src": "/image/projects/bidv/bidv6.png",
+          "caption": "Bộ biển chức danh để bàn Phó Giám Đốc gia công Mica nguyên khối in UV",
+          "location": "Khối văn phòng Ban Giám Đốc BIDV",
+          "spec": "Mica Đài Loan dày 10-15mm vát cạnh kim cương + Đế xanh in UV",
+          "aspect": "landscape"
+        }
+      ]
+    },
+    {
+      "id": "project-bigc",
+      "code": "PRJ — 02 // MEGA HYPERMARKET",
+      "title": "Hạng Mục Hộp Đèn Chữ Nổi & Cổng Chào Đại Siêu Thị BigC / GO!",
+      "subtitle": "Gia công & lắp đặt hệ thống Pano chữ nổi LED ma trận khổ lớn cho chuỗi Trung tâm Thương mại",
+      "client": "Hệ thống Đại Siêu Thị BigC / GO! (Central Retail)",
+      "locations": [
+        "GO! An Lạc (Q. Bình Tân, TP.HCM)",
+        "BigC / GO! Diễn Châu (Nghệ An)",
+        "Tổ hợp TTTM Hạ Long"
+      ],
+      "year": "2014 — 2024",
+      "categoryTag": "MEGA-SCALE LED SIGNAGE & PYLON",
+      "scaleMetric": "Khổ Pano > 120m²",
+      "materials": [
+        "Hệ khung giàn thép hình chịu lực mạ kẽm chống rỉ sét",
+        "Mặt dựng Aluminium kết hợp hệ thống hàng ngàn bóng LED đúc F8/F12 full-matrix",
+        "Chữ nổi 3D BigC Supercenter kích thước đại tương phản cao",
+        "Hệ thống đèn pha cao áp Metal Halide / LED Floodlight chiếu rọi mặt tiền",
+        "Cổng chào mặt tiền (Entrance Portal) ốp Alu đỏ - xanh lá chuẩn nhận diện"
+      ],
+      "engineeringNotes": [
+        "Thi công cẩu lắp và đu dây an toàn trên độ cao 18m – 25m với quy trình giám sát HSE nghiêm ngặt.",
+        "Tủ điện điều khiển trung tâm chia tải thông minh, chống chập cháy và ổn định cường độ sáng 24/7.",
+        "Kết cấu chịu được áp lực gió lớn tại các khu vực ven biển và đại lộ mở."
+      ],
+      "summary": "Đối với các đại siêu thị BigC / GO!, bài toán thách thức nhất là kích thước khổng lồ của các tấm Pano mặt tiền và yêu cầu độ sáng rực rỡ đồng đều từ khoảng cách quan sát hơn 500m. Khang Việt trực tiếp sản xuất toàn bộ kết cấu chữ nổi, đan ma trận LED mật độ cao tại xưởng và huy động đội ngũ cơ khí công trình lắp đặt an toàn tuyệt đối.",
+      "coverImage": "/image/projects/bigc/bigc2.jpeg",
+      "gallery": [
+        {
+          "id": "bigc-g1",
+          "src": "/image/projects/bigc/bigc2.jpeg",
+          "caption": "Tổng thể mặt tiền Trung tâm Thương mại với cặp Pano BigC Supercenter khổ lớn hai hướng",
+          "location": "Tổ hợp Đại Siêu Thị BigC",
+          "spec": "Pano đôi góc tòa nhà + Hệ chữ nổi trên đỉnh mái tôn sóng",
+          "aspect": "wide"
+        },
+        {
+          "id": "bigc-g2",
+          "src": "/image/projects/bigc/bigc3.jpg",
+          "caption": "Đội ngũ kỹ thuật Khang Việt trực tiếp lắp đặt & đấu nối Pano chữ nổi full-LED ma trận",
+          "location": "Công trường thi công trên cao",
+          "spec": "Hàng chục ngàn điểm LED đúc chống nước IP68 sáng rực toàn bề mặt",
+          "aspect": "portrait"
+        },
+        {
+          "id": "bigc-g3",
+          "src": "/image/projects/bigc/bigc4.jpg",
+          "caption": "Cổng chào chính (Main Entrance Archway) ốp Aluminium & bộ chữ nổi 3D BigC Supercenter",
+          "location": "Sảnh đón chính Đại Siêu Thị",
+          "spec": "Ốp mặt dựng Alu phức hợp + Hệ tay đèn rọi công suất lớn",
+          "aspect": "portrait"
+        }
+      ]
+    }
+  ],
+  "productionDivisions": [
+    {
+      "code": "UNIT // 01",
+      "name": "Tổ Cơ Khí & Kết Cấu",
+      "headcount": "10",
+      "unitLabel": "Thợ Cơ Khí Lành Nghề",
+      "role": "Gia công khung thép chịu lực, hàn kết cấu Pano tấm lớn, cắt chấn CNC kim loại tấm, sơn tĩnh điện & lắp dựng công trình trên cao.",
+      "equipment": "Máy cắt Laser CNC, Máy hàn MIG/TIG, Máy chấn thủy lực"
+    },
+    {
+      "code": "UNIT // 02",
+      "name": "Tổ Quảng Cáo & Điện Chiếu Sáng",
+      "headcount": "08",
+      "unitLabel": "Thợ Quảng Cáo Chuyên Nghiệp",
+      "role": "Ốp mặt dựng Aluminium, uốn chữ nổi Inox 304 / Mica hút nổi, đấu nối ma trận LED, lắp đặt hộp đèn导quang & hoàn thiện nội thất.",
+      "equipment": "Máy uốn chân chữ tự động, Máy hút nổi Mica, Thiết bị đo kiểm dòng LED"
+    },
+    {
+      "code": "UNIT // 03",
+      "name": "Tổ Vẽ Mỹ Thuật & Tạo Hình",
+      "headcount": "04",
+      "unitLabel": "Nghệ Nhân & Thợ Mỹ Thuật",
+      "role": "Xử lý bề mặt hoàn thiện đặc biệt, sơn hiệu ứng mỹ thuật, điêu khắc mô hình trang trí sự kiện, showroom & kiểm duyệt thẩm mỹ cuối cùng.",
+      "equipment": "Phòng phun sơn tiêu chuẩn, Hệ thống pha màu vi tính chuẩn Pantone"
+    },
+    {
+      "code": "UNIT // 04",
+      "name": "Tổ In Ấn Kỹ Thuật Số",
+      "headcount": "02",
+      "unitLabel": "Kỹ Thuật Viên In Ấn",
+      "role": "Vận hành hệ thống in UV phẳng/cuộn độ phân giải cao trên Mica, Kính, Inox, Bạt 3M xuyên sáng và Decal 3M chính hãng.",
+      "equipment": "Máy in UV khổ lớn, Máy in Decal PP/3M, Máy cán màng tự động"
+    }
+  ],
+  "companyLegalInfo": {
+    "fullName": "CÔNG TY TNHH THIẾT KẾ QUẢNG CÁO TRANG TRÍ NỘI THẤT KHANG VIỆT",
+    "shortName": "KHANG VIET DESIGN CO., LTD",
+    "establishedYear": 2009,
+    "taxId": "0306794247",
+    "licenseIssuer": "Sở Kế hoạch và Đầu tư TP. Hồ Chí Minh",
+    "licenseDate": "22/01/2009",
+    "director": "Trần Xuân Đông",
+    "directorTitle": "Giám Đốc Điều Hành",
+    "factoryAddress": "687/24/34 Kinh Dương Vương, Phường An Lạc, Quận Bình Tân, TP. Hồ Chí Minh",
+    "hotline": "0903 680 449",
+    "hotlineFormatted": "0903 680 449",
+    "email": "khangvietdesign@gmail.com",
+    "commitment": "Tiến độ - Chất lượng - Trách nhiệm & Trực tiếp sản xuất không qua trung gian."
+  }
+}
+

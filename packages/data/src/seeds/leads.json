@@ -1,0 +1,15 @@
+[
+  {
+    "id": "lead-sample-1",
+    "fullName": "Nguyễn Văn Hùng",
+    "phone": "0912345678",
+    "email": "hung.nguyen@example.com",
+    "serviceCategory": "Outdoor Signage & Facade",
+    "projectScale": "> 100m2",
+    "message": "Cần tư vấn thiết kế thi công bảng hiệu tòa nhà tại Q.1 TP.HCM",
+    "status": "NEW",
+    "createdAt": "2026-10-18T10:00:00.000Z",
+    "updatedAt": "2026-10-18T10:00:00.000Z"
+  }
+]
+

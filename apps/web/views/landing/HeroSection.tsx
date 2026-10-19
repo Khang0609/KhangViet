@@ -53,3 +53,5 @@ const ImageSection: React.FC<SectionProps> = ({ ...props }) => {
     </div>
   );
 };
+
+export default HeroSection;

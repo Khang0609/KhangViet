@@ -11,3 +11,5 @@ export const ServiceSection = () => {
     </div>
   );
 };
+
+export default ServiceSection;
