@@ -73,12 +73,6 @@ export class JsonCmsRepository implements ICmsRepository {
     return mockStore.landing.companyLegalInfo;
   }
 
-  isMidnightWindow(): boolean {
-    const now = new Date();
-    // Giờ VN (GMT+7)
-    const vnHour = (now.getUTCHours() + 7) % 24;
-    return vnHour >= 0 && vnHour < 2;
-  }
 
   async getPendingChanges(): Promise<PendingChange[]> {
     return mockStore.pendingChanges.filter((c) => c.status === "PENDING");

@@ -22,6 +22,10 @@ adminCmsRouter.get("/pending", async (c) => {
 adminCmsRouter.post("/apply-pending", async (c) => {
   const repos = getRepositories();
   const result = await repos.cms.applyPendingChanges();
+  if (result.appliedCount > 0) {
+    const { triggerWebRevalidation } = await import("../services/revalidateNotifier");
+    await triggerWebRevalidation({ tag: "cms-landing" });
+  }
   return c.json({
     success: true,
     data: result,

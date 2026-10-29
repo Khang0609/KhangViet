@@ -1,6 +1,7 @@
 import { Context } from "hono";
 import { getRepositories } from "@khangviet/repositories";
 import type { ChangeActionType } from "@khangviet/types";
+import { triggerWebRevalidation } from "../services/revalidateNotifier";
 
 export interface ChangeHandleResult {
   isPending: boolean;
@@ -14,34 +15,28 @@ export async function handleCmsChange(
   targetId?: string
 ): Promise<ChangeHandleResult> {
   const repos = getRepositories();
-  const force = c.req.query("force") === "true";
-  const isMidnight = repos.cms.isMidnightWindow();
+  let result: unknown;
 
-  // Áp dụng trực tiếp nếu đang trong khung giờ 00:00 - 02:00 hoặc có cờ force
-  if (isMidnight || force) {
-    let result: unknown;
-    switch (action) {
-      case "CREATE_PROJECT":
-        result = await repos.cms.createProject(payload as any);
-        break;
-      case "UPDATE_PROJECT":
-        result = await repos.cms.updateProject(targetId!, payload as any);
-        break;
-      case "DELETE_PROJECT":
-        result = await repos.cms.deleteProject(targetId!);
-        break;
-      case "UPDATE_HERO":
-        result = await repos.cms.updateHeroSlides(payload as any);
-        break;
-      case "UPDATE_LEGAL":
-        result = await repos.cms.updateLegalInfo(payload as any);
-        break;
-    }
-    return { isPending: false, result };
+  switch (action) {
+    case "CREATE_PROJECT":
+      result = await repos.cms.createProject(payload as any);
+      break;
+    case "UPDATE_PROJECT":
+      result = await repos.cms.updateProject(targetId!, payload as any);
+      break;
+    case "DELETE_PROJECT":
+      result = await repos.cms.deleteProject(targetId!);
+      break;
+    case "UPDATE_HERO":
+      result = await repos.cms.updateHeroSlides(payload as any);
+      break;
+    case "UPDATE_LEGAL":
+      result = await repos.cms.updateLegalInfo(payload as any);
+      break;
   }
 
-  // Ngoài khung giờ: đưa vào hàng đợi Pending
-  const pending = await repos.cms.enqueueChange(action, payload, targetId);
-  return { isPending: true, result: pending };
-}
+  // Tự động kích hoạt On-demand ISR revalidation sang Web app
+  await triggerWebRevalidation({ tag: "cms-landing" });
 
+  return { isPending: false, result };
+}

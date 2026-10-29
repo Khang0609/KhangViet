@@ -33,5 +33,4 @@ export interface ICmsRepository {
   applyPendingChanges(): Promise<{ appliedCount: number; success: boolean }>;
   discardPendingChange(id: string): Promise<boolean>;
   getSyncStatus(): Promise<SyncStatus>;
-  isMidnightWindow(): boolean;
 }
