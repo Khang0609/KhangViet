@@ -6,10 +6,16 @@ import { ProjectShowcaseGallery } from "./ProjectShowcaseGallery";
 import { ProjectShowcaseDetails } from "./ProjectShowcaseDetails";
 
 export interface ProjectShowcaseProps {
+  projects?: FeaturedProject[];
   onSelectProject?: (project: FeaturedProject, imageIndex?: number) => void;
 }
 
-export const ProjectShowcase: React.FC<ProjectShowcaseProps> = () => {
+export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
+  projects = FEATURED_PROJECTS,
+}) => {
+  const activeProjects =
+    projects && projects.length > 0 ? projects : FEATURED_PROJECTS;
+
   return (
     <section
       id="du-an"
@@ -24,7 +30,7 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = () => {
         />
 
         <div className="mt-14 space-y-20 md:space-y-28">
-          {FEATURED_PROJECTS.map((project, projectIndex) => (
+          {activeProjects.map((project, projectIndex) => (
             <article
               key={project.id}
               className="grid gap-8 lg:grid-cols-12 lg:gap-10"

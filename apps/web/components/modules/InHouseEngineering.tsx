@@ -1,24 +1,24 @@
 import React from "react";
-import {
-  DraftingCompass,
-  Factory,
-  Hammer,
-  Layers3,
-  MapPin,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { DraftingCompass, MapPin, ShieldCheck } from "lucide-react";
+import type { CompanyLegalInfo, ProductionDivision } from "@khangviet/types";
 import { COMPANY_LEGAL_INFO, PRODUCTION_DIVISIONS } from "@/data/khangVietData";
 import { SectionHeading } from "../ui/SectionHeading";
+import { ProductionDivisionCard } from "./ProductionDivisionCard";
 
-const DIVISION_ICONS = [Hammer, Sparkles, Layers3, Factory];
+export interface InHouseEngineeringProps {
+  divisions?: ProductionDivision[];
+  legalInfo?: CompanyLegalInfo;
+}
 
-export const InHouseEngineering: React.FC = () => {
+export const InHouseEngineering: React.FC<InHouseEngineeringProps> = ({
+  divisions = PRODUCTION_DIVISIONS,
+  legalInfo = COMPANY_LEGAL_INFO,
+}) => {
+  const activeDivisions = divisions && divisions.length > 0 ? divisions : PRODUCTION_DIVISIONS;
+  const activeLegal = legalInfo || COMPANY_LEGAL_INFO;
+
   return (
-    <section
-      id="nang-luc"
-      className="bg-blueprint-grid scroll-mt-20 py-24 md:py-32"
-    >
+    <section id="nang-luc" className="bg-blueprint-grid scroll-mt-20 py-24 md:py-32">
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
@@ -35,7 +35,7 @@ export const InHouseEngineering: React.FC = () => {
                 Tổ hợp xưởng sản xuất
               </p>
               <p className="mt-2 text-sm leading-6 font-semibold">
-                {COMPANY_LEGAL_INFO.factoryAddress}
+                {activeLegal.factoryAddress}
               </p>
             </div>
           </div>
@@ -62,41 +62,13 @@ export const InHouseEngineering: React.FC = () => {
               <div className="mx-auto h-8 w-px bg-(--accent-bronze)/50" />
 
               <div className="grid gap-3 sm:grid-cols-2">
-                {PRODUCTION_DIVISIONS.map((division, index) => {
-                  const DivisionIcon = DIVISION_ICONS[index] || Factory;
-                  return (
-                    <article
-                      key={division.code}
-                      className="group border border-white/8 bg-[#15171a] p-5 transition-colors hover:border-(--border-bronze-subtle)"
-                    >
-                      <div className="flex items-start justify-between gap-5">
-                        <div>
-                          <div className="font-mono-tech text-[9px] tracking-widest text-(--accent-bronze)">
-                            {division.code}
-                          </div>
-                          <h3 className="font-syne mt-2 text-base font-bold">
-                            {division.name}
-                          </h3>
-                        </div>
-                        <DivisionIcon className="h-5 w-5 text-(--text-secondary) transition-colors group-hover:text-(--accent-bronze)" />
-                      </div>
-                      <div className="my-5 flex items-end gap-2">
-                        <span className="font-syne text-5xl font-bold text-(--accent-bronze)">
-                          {division.headcount}
-                        </span>
-                        <span className="pb-1 text-[10px] leading-4 text-(--text-secondary) uppercase">
-                          {division.unitLabel}
-                        </span>
-                      </div>
-                      <p className="text-[11px] leading-5 text-(--text-secondary)">
-                        {division.role}
-                      </p>
-                      <p className="font-mono-tech mt-4 border-t border-white/6 pt-3 text-[9px] leading-4 text-white/50">
-                        EQUIPMENT // {division.equipment}
-                      </p>
-                    </article>
-                  );
-                })}
+                {activeDivisions.map((division, index) => (
+                  <ProductionDivisionCard
+                    key={division.code}
+                    division={division}
+                    index={index}
+                  />
+                ))}
               </div>
             </div>
 
@@ -106,7 +78,7 @@ export const InHouseEngineering: React.FC = () => {
                   Cam kết vận hành
                 </div>
                 <blockquote className="font-syne mt-2 text-lg font-bold">
-                  “{COMPANY_LEGAL_INFO.commitment}”
+                  “{activeLegal.commitment}”
                 </blockquote>
               </div>
               <div className="flex shrink-0 items-center gap-3">

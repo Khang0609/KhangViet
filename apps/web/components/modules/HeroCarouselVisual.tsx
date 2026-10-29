@@ -2,30 +2,36 @@
 
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { HeroSlide } from "@khangviet/types";
 import { HERO_SLIDES } from "@/data/khangVietData";
 import { useCarousel } from "@/hooks/useCarousel";
 
-export const HeroCarouselVisual: React.FC = () => {
+export interface HeroCarouselVisualProps {
+  slides?: HeroSlide[];
+}
+
+export const HeroCarouselVisual: React.FC<HeroCarouselVisualProps> = ({
+  slides = HERO_SLIDES,
+}) => {
+  const activeSlides = slides && slides.length > 0 ? slides : HERO_SLIDES;
   const {
     currentIndex: heroSlide,
     next,
     prev,
     goTo,
-  } = useCarousel(HERO_SLIDES.length, 6500);
-  const currentSlide = HERO_SLIDES[heroSlide];
+  } = useCarousel(activeSlides.length, 6500);
+  const currentSlide = activeSlides[heroSlide] || activeSlides[0];
 
   return (
     <div className="lg:col-span-7 lg:pl-4">
       <div className="amber-frame-glow group relative aspect-4/3 overflow-hidden bg-(--bg-surface) transition-shadow duration-700 md:aspect-video">
-        {HERO_SLIDES.map((slide, index) => (
+        {activeSlides.map((slide, index) => (
           <img
             key={slide.id}
             src={slide.image}
             alt={slide.title}
             className={`absolute inset-0 h-full w-full object-cover transition-all duration-1000 ${
-              index === heroSlide
-                ? "scale-100 opacity-100"
-                : "scale-105 opacity-0"
+              index === heroSlide ? "scale-100 opacity-100" : "scale-105 opacity-0"
             }`}
           />
         ))}
@@ -69,7 +75,7 @@ export const HeroCarouselVisual: React.FC = () => {
         </div>
       </div>
       <div className="mt-4 flex gap-2">
-        {HERO_SLIDES.map((slide, index) => (
+        {activeSlides.map((slide, index) => (
           <button
             type="button"
             key={slide.id}

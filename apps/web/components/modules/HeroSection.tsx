@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
+import type { HeroSlide } from "@khangviet/types";
 import TechBadge from "../ui/TechBadge";
 import { HeroCarouselVisual } from "./HeroCarouselVisual";
 
@@ -9,7 +10,11 @@ export const STATS = [
   { value: "100%", label: "Tự chủ sản xuất", note: "Cơ khí & In ấn" },
 ];
 
-export const HeroSection: React.FC = () => {
+export interface HeroSectionProps {
+  slides?: HeroSlide[];
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
   return (
     <section className="bg-blueprint-grid relative overflow-hidden border-b border-white/8 pt-20">
       <div className="pointer-events-none absolute top-32 -left-40 h-96 w-96 rounded-full bg-(--accent-bronze)/5 blur-[120px]" />
@@ -53,7 +58,7 @@ export const HeroSection: React.FC = () => {
             </div>
           </div>
 
-          <HeroCarouselVisual />
+          <HeroCarouselVisual slides={slides} />
         </div>
 
         <div className="mt-16 grid border-y border-white/8 sm:grid-cols-3 lg:mt-20 lg:ml-[42%]">

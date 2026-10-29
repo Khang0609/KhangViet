@@ -1,9 +1,19 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
+import type { CoreDiscipline } from "@khangviet/types";
 import { CORE_DISCIPLINES } from "@/data/khangVietData";
 import { SectionHeading } from "../ui/SectionHeading";
 
-export const DisciplinesSection: React.FC = () => {
+export interface DisciplinesSectionProps {
+  disciplines?: CoreDiscipline[];
+}
+
+export const DisciplinesSection: React.FC<DisciplinesSectionProps> = ({
+  disciplines = CORE_DISCIPLINES,
+}) => {
+  const activeDisciplines =
+    disciplines && disciplines.length > 0 ? disciplines : CORE_DISCIPLINES;
+
   return (
     <section id="linh-vuc" className="scroll-mt-20 py-24 md:py-32">
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
@@ -14,7 +24,7 @@ export const DisciplinesSection: React.FC = () => {
           description="Từ kiến trúc mặt dựng quy mô lớn đến từng chi tiết trưng bày — mọi hạng mục được kiểm soát xuyên suốt bởi cùng một đội ngũ."
         />
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {CORE_DISCIPLINES.map((discipline) => (
+          {activeDisciplines.map((discipline) => (
             <article
               key={discipline.number}
               className="group flex flex-col border border-white/8 bg-(--bg-surface) transition-all duration-500 hover:-translate-y-1 hover:border-(--accent-bronze)/60"
@@ -77,4 +87,3 @@ export const DisciplinesSection: React.FC = () => {
 };
 
 export default DisciplinesSection;
-

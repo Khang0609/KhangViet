@@ -1,7 +1,14 @@
 import React from 'react';
+import type { PartnerBrand } from '@khangviet/types';
 import { PARTNER_BRANDS } from '@/data/khangVietData';
 
-export const TrustMarquee: React.FC = () => {
+export interface TrustMarqueeProps {
+  brands?: PartnerBrand[];
+}
+
+export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands = PARTNER_BRANDS }) => {
+  const activeBrands = brands && brands.length > 0 ? brands : PARTNER_BRANDS;
+
   return (
     <section className="overflow-hidden border-b border-white/8 bg-[#14161a] py-8" aria-label="Đối tác tiêu biểu">
       <div className="mb-6 flex items-center justify-center gap-3 px-5">
@@ -12,7 +19,7 @@ export const TrustMarquee: React.FC = () => {
         <span className="h-px w-8 bg-white/15" />
       </div>
       <div className="animate-marquee">
-        {[...PARTNER_BRANDS, ...PARTNER_BRANDS].map((partner, index) => (
+        {[...activeBrands, ...activeBrands].map((partner, index) => (
           <div
             key={`${partner.name}-${index}`}
             className="group mx-2 flex min-w-56 items-center gap-4 border border-white/6 px-5 py-4 transition-colors hover:border-(--border-bronze-subtle)"
@@ -31,4 +38,3 @@ export const TrustMarquee: React.FC = () => {
 };
 
 export default TrustMarquee;
-

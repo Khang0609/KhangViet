@@ -2,16 +2,22 @@
 
 import React from 'react';
 import { Layers3 } from 'lucide-react';
+import type { CompanyLegalInfo } from '@khangviet/types';
 import { COMPANY_LEGAL_INFO } from '@/data/khangVietData';
 import KhangVietLogo from '@/ui/KhangVietLogo';
 import { useModalContext } from '../modals/modalContext';
 
 export interface FooterProps {
+  legalInfo?: CompanyLegalInfo;
   onOpenSpecWireframe?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenSpecWireframe }) => {
+export const Footer: React.FC<FooterProps> = ({
+  legalInfo = COMPANY_LEGAL_INFO,
+  onOpenSpecWireframe,
+}) => {
   const { openProfileModal } = useModalContext();
+  const activeLegal = legalInfo || COMPANY_LEGAL_INFO;
 
   const handleOpenSpec = () => {
     if (onOpenSpecWireframe) onOpenSpecWireframe();
@@ -25,7 +31,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSpecWireframe }) => {
           <div className="md:col-span-5">
             <KhangVietLogo className="h-12" />
             <p className="mt-5 max-w-lg text-xs uppercase leading-6 tracking-wide text-(--text-secondary)">
-              {COMPANY_LEGAL_INFO.fullName}
+              {activeLegal.fullName}
             </p>
             <p className="mt-2 font-mono-tech text-[10px] text-(--accent-bronze)">
               KHANG VIET DESIGN CO., LTD — SINCE 2009
@@ -37,11 +43,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSpecWireframe }) => {
             </div>
             <dl className="mt-4 space-y-2 text-xs text-(--text-secondary)">
               <div>
-                MST: <span className="text-(--text-primary)">{COMPANY_LEGAL_INFO.taxId}</span>
+                MST: <span className="text-(--text-primary)">{activeLegal.taxId}</span>
               </div>
-              <div>Cấp ngày {COMPANY_LEGAL_INFO.licenseDate}</div>
-              <div>{COMPANY_LEGAL_INFO.licenseIssuer}</div>
-              <div>Đại diện: Ông {COMPANY_LEGAL_INFO.director}</div>
+              <div>Cấp ngày {activeLegal.licenseDate}</div>
+              <div>{activeLegal.licenseIssuer}</div>
+              <div>Đại diện: Ông {activeLegal.director}</div>
             </dl>
           </div>
           <div className="md:col-span-4">
@@ -50,16 +56,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSpecWireframe }) => {
             </div>
             <div className="mt-4 space-y-2">
               <a
-                href={`tel:${COMPANY_LEGAL_INFO.hotline.replace(/\s+/g, '')}`}
+                href={`tel:${activeLegal.hotline.replace(/\s+/g, '')}`}
                 className="block text-sm transition-colors hover:text-(--accent-bronze)"
               >
-                Hotline: {COMPANY_LEGAL_INFO.hotline}
+                Hotline: {activeLegal.hotline}
               </a>
               <a
-                href={`mailto:${COMPANY_LEGAL_INFO.email}`}
+                href={`mailto:${activeLegal.email}`}
                 className="block text-sm transition-colors hover:text-(--accent-bronze)"
               >
-                {COMPANY_LEGAL_INFO.email}
+                {activeLegal.email}
               </a>
               <button
                 type="button"
