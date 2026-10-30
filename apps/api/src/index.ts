@@ -1,5 +1,6 @@
-import { Hono } from "hono";
+import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
+import { apiReference } from "@scalar/hono-api-reference";
 import { errorHandler } from "./middlewares/errorHandler";
 import { adminAuthMiddleware } from "./middlewares/adminAuth";
 import { publicContentRouter } from "./routes/publicContent";
@@ -7,7 +8,7 @@ import { publicLeadsRouter } from "./routes/publicLeads";
 import { adminCmsRouter } from "./routes/adminCms";
 import { adminLeadsRouter } from "./routes/adminLeads";
 
-const app = new Hono();
+const app = new OpenAPIHono();
 
 // Global Middlewares
 app.use(
@@ -27,7 +28,8 @@ app.get("/", (c) => {
     name: "Khang Viet Design API",
     version: "1.0.0",
     status: "healthy",
-    docs: "/api/v1",
+    docs: "/reference",
+    openapi: "/doc",
   });
 });
 
@@ -39,5 +41,25 @@ app.route("/api/v1/leads", publicLeadsRouter);
 app.use("/api/v1/admin/*", adminAuthMiddleware);
 app.route("/api/v1/admin/cms", adminCmsRouter);
 app.route("/api/v1/admin/leads", adminLeadsRouter);
+
+// OpenAPI Spec & Documentation UI
+app.doc("/doc", {
+  openapi: "3.0.0",
+  info: {
+    title: "Khang Viet Design API",
+    version: "1.0.0",
+    description: "API hệ thống Khang Việt Architecture & Construction",
+  },
+});
+
+app.get(
+  "/reference",
+  apiReference({
+    theme: "purple",
+    spec: {
+      url: "/doc",
+    },
+  })
+);
 
 export default app;

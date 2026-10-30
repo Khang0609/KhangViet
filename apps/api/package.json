@@ -4,12 +4,15 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "test:fuzz": "schemathesis run http://127.0.0.1:8787/doc --checks all"
   },
   "dependencies": {
+    "@hono/zod-openapi": "^1.6.3",
     "@khangviet/data": "workspace:*",
     "@khangviet/repositories": "workspace:*",
     "@khangviet/types": "workspace:*",
+    "@scalar/hono-api-reference": "^0.12.16",
     "hono": "^4.13.2"
   },
   "devDependencies": {

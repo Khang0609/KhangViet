@@ -1,80 +1,79 @@
-import { Hono } from "hono";
+import { OpenAPIHono } from "@hono/zod-openapi";
 import { getRepositories } from "@khangviet/repositories";
 import { handleCmsChange } from "./adminCmsHelper";
+import {
+  getSyncStatusRoute,
+  getPendingChangesRoute,
+  applyPendingChangesRoute,
+  discardPendingChangeRoute,
+} from "./adminCmsSyncContracts";
+import {
+  createProjectRoute,
+  updateProjectRoute,
+  deleteProjectRoute,
+} from "./adminCmsProjectContracts";
+import { updateHeroRoute, updateLegalRoute } from "./adminCmsMetaContracts";
 
-export const adminCmsRouter = new Hono();
+export const adminCmsRouter = new OpenAPIHono();
 
-// Status: Kiểm tra giờ và các thay đổi đang pending
-adminCmsRouter.get("/sync-status", async (c) => {
-  const repos = getRepositories();
-  const status = await repos.cms.getSyncStatus();
-  return c.json({ success: true, data: status });
+adminCmsRouter.openapi(getSyncStatusRoute, async (c) => {
+  const status = await getRepositories().cms.getSyncStatus();
+  return c.json({ success: true as const, data: status }, 200);
 });
 
-// Danh sách các thay đổi đang pending
-adminCmsRouter.get("/pending", async (c) => {
-  const repos = getRepositories();
-  const list = await repos.cms.getPendingChanges();
-  return c.json({ success: true, data: list });
+adminCmsRouter.openapi(getPendingChangesRoute, async (c) => {
+  const list = await getRepositories().cms.getPendingChanges();
+  return c.json({ success: true as const, data: list }, 200);
 });
 
-// Thực thi áp dụng các pending changes (chỉ chạy khi có thay đổi)
-adminCmsRouter.post("/apply-pending", async (c) => {
-  const repos = getRepositories();
-  const result = await repos.cms.applyPendingChanges();
+adminCmsRouter.openapi(applyPendingChangesRoute, async (c) => {
+  const result = await getRepositories().cms.applyPendingChanges();
   if (result.appliedCount > 0) {
-    const { triggerWebRevalidation } = await import("../services/revalidateNotifier");
+    const { triggerWebRevalidation } = await import(
+      "../services/revalidateNotifier"
+    );
     await triggerWebRevalidation({ tag: "cms-landing" });
   }
-  return c.json({
-    success: true,
-    data: result,
-    message: result.appliedCount > 0 
-      ? `Đã phát hành thành công ${result.appliedCount} thay đổi!` 
-      : "Không có thay đổi nào đang chờ (No pending changes).",
-  });
+  const message =
+    result.appliedCount > 0
+      ? `Đã phát hành thành công ${result.appliedCount} thay đổi!`
+      : "Không có thay đổi nào đang chờ (No pending changes).";
+  return c.json({ success: true as const, data: result, message }, 200);
 });
 
-// Hủy một pending change
-adminCmsRouter.delete("/pending/:id", async (c) => {
-  const repos = getRepositories();
-  const id = c.req.param("id");
-  const success = await repos.cms.discardPendingChange(id);
-  return c.json({ success });
+adminCmsRouter.openapi(discardPendingChangeRoute, async (c) => {
+  const { id } = c.req.valid("param");
+  const success = await getRepositories().cms.discardPendingChange(id);
+  return c.json({ success }, 200);
 });
 
-// Thêm dự án
-adminCmsRouter.post("/projects", async (c) => {
-  const body = await c.req.json();
+adminCmsRouter.openapi(createProjectRoute, async (c) => {
+  const body = c.req.valid("json");
   const res = await handleCmsChange(c, "CREATE_PROJECT", body);
-  return c.json({ success: true, pending: res.isPending, data: res.result });
+  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
 });
 
-// Sửa dự án
-adminCmsRouter.put("/projects/:id", async (c) => {
-  const id = c.req.param("id");
-  const body = await c.req.json();
+adminCmsRouter.openapi(updateProjectRoute, async (c) => {
+  const { id } = c.req.valid("param");
+  const body = c.req.valid("json");
   const res = await handleCmsChange(c, "UPDATE_PROJECT", body, id);
-  return c.json({ success: true, pending: res.isPending, data: res.result });
+  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
 });
 
-// Xóa dự án
-adminCmsRouter.delete("/projects/:id", async (c) => {
-  const id = c.req.param("id");
+adminCmsRouter.openapi(deleteProjectRoute, async (c) => {
+  const { id } = c.req.valid("param");
   const res = await handleCmsChange(c, "DELETE_PROJECT", {}, id);
-  return c.json({ success: true, pending: res.isPending, data: res.result });
+  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
 });
 
-// Sửa hero slides
-adminCmsRouter.put("/hero", async (c) => {
-  const body = await c.req.json();
+adminCmsRouter.openapi(updateHeroRoute, async (c) => {
+  const body = c.req.valid("json");
   const res = await handleCmsChange(c, "UPDATE_HERO", body.slides);
-  return c.json({ success: true, pending: res.isPending, data: res.result });
+  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
 });
 
-// Sửa legal
-adminCmsRouter.put("/legal", async (c) => {
-  const body = await c.req.json();
+adminCmsRouter.openapi(updateLegalRoute, async (c) => {
+  const body = c.req.valid("json");
   const res = await handleCmsChange(c, "UPDATE_LEGAL", body);
-  return c.json({ success: true, pending: res.isPending, data: res.result });
+  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
 });
