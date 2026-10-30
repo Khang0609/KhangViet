@@ -1,36 +1,42 @@
-export type LeadStatus =
-  | "NEW"
-  | "CONTACTED"
-  | "SURVEY_SCHEDULED"
-  | "QUOTED"
-  | "WON"
-  | "LOST";
+import { z } from "zod";
 
-export interface ContactLead {
-  id: string;
-  fullName: string;
-  phone: string;
-  email?: string;
-  serviceCategory?: string;
-  projectScale?: string;
-  message?: string;
-  status: LeadStatus;
-  createdAt: string;
-  updatedAt: string;
-  notes?: string;
-}
+export const LeadStatusSchema = z.enum([
+  "NEW",
+  "CONTACTED",
+  "SURVEY_SCHEDULED",
+  "QUOTED",
+  "WON",
+  "LOST",
+]);
+export type LeadStatus = z.infer<typeof LeadStatusSchema>;
 
-export interface CreateLeadDto {
-  fullName: string;
-  phone: string;
-  email?: string;
-  serviceCategory?: string;
-  projectScale?: string;
-  message?: string;
-}
+export const ContactLeadSchema = z.object({
+  id: z.string(),
+  fullName: z.string(),
+  phone: z.string(),
+  email: z.string().optional(),
+  serviceCategory: z.string().optional(),
+  projectScale: z.string().optional(),
+  message: z.string().optional(),
+  status: LeadStatusSchema,
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  notes: z.string().optional(),
+});
+export type ContactLead = z.infer<typeof ContactLeadSchema>;
 
-export interface LeadFilter {
-  status?: LeadStatus;
-  search?: string;
-}
+export const CreateLeadDtoSchema = z.object({
+  fullName: z.string().min(1, "Họ tên không được để trống"),
+  phone: z.string().min(1, "Số điện thoại không được để trống"),
+  email: z.string().optional(),
+  serviceCategory: z.string().optional(),
+  projectScale: z.string().optional(),
+  message: z.string().optional(),
+});
+export type CreateLeadDto = z.infer<typeof CreateLeadDtoSchema>;
 
+export const LeadFilterSchema = z.object({
+  status: LeadStatusSchema.optional(),
+  search: z.string().optional(),
+});
+export type LeadFilter = z.infer<typeof LeadFilterSchema>;

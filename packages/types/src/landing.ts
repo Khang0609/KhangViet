@@ -1,18 +1,19 @@
+import { z } from "zod";
 import {
-  HeroSlide,
-  PartnerBrand,
-  CoreDiscipline,
-  ProductionDivision,
-  CompanyLegalInfo,
+  HeroSlideSchema,
+  PartnerBrandSchema,
+  CoreDisciplineSchema,
+  ProductionDivisionSchema,
+  CompanyLegalInfoSchema,
 } from "./cms";
-import { FeaturedProject } from "./project";
+import { FeaturedProjectSchema } from "./project";
 
-export interface LandingContent {
-  heroSlides: HeroSlide[];
-  partnerBrands: PartnerBrand[];
-  coreDisciplines: CoreDiscipline[];
-  featuredProjects: FeaturedProject[];
-  productionDivisions: ProductionDivision[];
-  companyLegalInfo: CompanyLegalInfo;
-}
-
+export const LandingContentSchema = z.object({
+  heroSlides: z.array(HeroSlideSchema),
+  partnerBrands: z.array(PartnerBrandSchema),
+  coreDisciplines: z.array(CoreDisciplineSchema),
+  featuredProjects: z.array(FeaturedProjectSchema),
+  productionDivisions: z.array(ProductionDivisionSchema),
+  companyLegalInfo: CompanyLegalInfoSchema,
+});
+export type LandingContent = z.infer<typeof LandingContentSchema>;
