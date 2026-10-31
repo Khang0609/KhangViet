@@ -1,5 +1,6 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { getRepositories } from "@khangviet/repositories";
+import { defaultValidationHook } from "../middlewares/validationHook";
 import { handleCmsChange } from "./adminCmsHelper";
 import {
   getSyncStatusRoute,
@@ -14,7 +15,9 @@ import {
 } from "./adminCmsProjectContracts";
 import { updateHeroRoute, updateLegalRoute } from "./adminCmsMetaContracts";
 
-export const adminCmsRouter = new OpenAPIHono();
+export const adminCmsRouter = new OpenAPIHono({
+  defaultHook: defaultValidationHook,
+});
 
 adminCmsRouter.openapi(getSyncStatusRoute, async (c) => {
   const status = await getRepositories().cms.getSyncStatus();
@@ -57,6 +60,9 @@ adminCmsRouter.openapi(updateProjectRoute, async (c) => {
   const { id } = c.req.valid("param");
   const body = c.req.valid("json");
   const res = await handleCmsChange(c, "UPDATE_PROJECT", body, id);
+  if (!res) {
+    return c.json({ success: false as const, error: "Project not found" }, 404);
+  }
   return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
 });
 

@@ -39,12 +39,12 @@ export class JsonCmsRepository implements ICmsRepository {
   async updateProject(
     id: string,
     data: Partial<FeaturedProject>
-  ): Promise<FeaturedProject> {
+  ): Promise<FeaturedProject | null> {
     const index = mockStore.landing.featuredProjects.findIndex(
       (p) => p.id === id
     );
     if (index === -1) {
-      throw new Error(`Project with id ${id} not found`);
+      return null;
     }
     const updated = { ...mockStore.landing.featuredProjects[index], ...data };
     mockStore.landing.featuredProjects[index] = updated;

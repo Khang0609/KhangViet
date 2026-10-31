@@ -18,7 +18,7 @@ export interface ICmsRepository {
   updateProject(
     id: string,
     project: Partial<FeaturedProject>
-  ): Promise<FeaturedProject>;
+  ): Promise<FeaturedProject | null>;
   deleteProject(id: string): Promise<boolean>;
   updateHeroSlides(slides: HeroSlide[]): Promise<HeroSlide[]>;
   updateLegalInfo(info: Partial<CompanyLegalInfo>): Promise<CompanyLegalInfo>;

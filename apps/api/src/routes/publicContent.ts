@@ -2,8 +2,11 @@ import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { getRepositories } from "@khangviet/repositories";
 import { LandingContentSchema, FeaturedProjectSchema } from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
+import { defaultValidationHook } from "../middlewares/validationHook";
 
-export const publicContentRouter = new OpenAPIHono();
+export const publicContentRouter = new OpenAPIHono({
+  defaultHook: defaultValidationHook,
+});
 
 const getLandingRoute = createRoute({
   method: "get",
@@ -63,6 +66,14 @@ const getProjectByIdRoute = createRoute({
         },
       },
       description: "Chi tiết dự án tìm thấy",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+      description: "Tham số không hợp lệ",
     },
     404: {
       content: {

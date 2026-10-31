@@ -2,13 +2,16 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
 import { apiReference } from "@scalar/hono-api-reference";
 import { errorHandler } from "./middlewares/errorHandler";
+import { defaultValidationHook } from "./middlewares/validationHook";
 import { adminAuthMiddleware } from "./middlewares/adminAuth";
 import { publicContentRouter } from "./routes/publicContent";
 import { publicLeadsRouter } from "./routes/publicLeads";
 import { adminCmsRouter } from "./routes/adminCms";
 import { adminLeadsRouter } from "./routes/adminLeads";
 
-const app = new OpenAPIHono();
+const app = new OpenAPIHono({
+  defaultHook: defaultValidationHook,
+});
 
 // Global Middlewares
 app.use(
@@ -21,6 +24,17 @@ app.use(
 );
 
 app.onError(errorHandler);
+
+// Custom 404 Handler
+app.notFound((c) => {
+  return c.json(
+    {
+      success: false,
+      error: "Đường dẫn không tồn tại (Not Found)",
+    },
+    404
+  );
+});
 
 // Health check & Info
 app.get("/", (c) => {

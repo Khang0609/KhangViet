@@ -1,13 +1,18 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { getRepositories } from "@khangviet/repositories";
+import { defaultValidationHook } from "../middlewares/validationHook";
 import {
   getAdminLeadsRoute,
   getAdminLeadByIdRoute,
+} from "./adminLeadsContracts";
+import {
   updateAdminLeadStatusRoute,
   deleteAdminLeadRoute,
-} from "./adminLeadsContracts";
+} from "./adminLeadsStatusContracts";
 
-export const adminLeadsRouter = new OpenAPIHono();
+export const adminLeadsRouter = new OpenAPIHono({
+  defaultHook: defaultValidationHook,
+});
 
 adminLeadsRouter.openapi(getAdminLeadsRoute, async (c) => {
   const { status, search } = c.req.valid("query");
@@ -28,7 +33,15 @@ adminLeadsRouter.openapi(getAdminLeadByIdRoute, async (c) => {
 
 adminLeadsRouter.openapi(updateAdminLeadStatusRoute, async (c) => {
   const { id } = c.req.valid("param");
-  const { status, notes } = c.req.valid("json");
+  const body = c.req.valid("json");
+  if (!body || !body.status) {
+    return c.json(
+      { success: false as const, error: "Trường 'status' là bắt buộc" },
+      400
+    );
+  }
+
+  const { status, notes } = body;
   const repos = getRepositories();
   const updated = await repos.lead.updateLeadStatus(id, status, notes);
   if (!updated) {

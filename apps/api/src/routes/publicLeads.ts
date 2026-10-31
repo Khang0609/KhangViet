@@ -2,8 +2,11 @@ import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { getRepositories } from "@khangviet/repositories";
 import { CreateLeadDtoSchema, ContactLeadSchema } from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
+import { defaultValidationHook } from "../middlewares/validationHook";
 
-export const publicLeadsRouter = new OpenAPIHono();
+export const publicLeadsRouter = new OpenAPIHono({
+  defaultHook: defaultValidationHook,
+});
 
 const createLeadRoute = createRoute({
   method: "post",
@@ -44,22 +47,28 @@ const createLeadRoute = createRoute({
 
 publicLeadsRouter.openapi(createLeadRoute, async (c) => {
   const body = c.req.valid("json");
-  const repos = getRepositories();
+  if (!body || !body.fullName || !body.phone) {
+    return c.json(
+      { success: false as const, error: "Họ tên và số điện thoại là bắt buộc" },
+      400
+    );
+  }
 
+  const repos = getRepositories();
   const newLead = await repos.lead.createLead({
     fullName: body.fullName.trim(),
     phone: body.phone.trim(),
-    email: body.email?.trim(),
-    serviceCategory: body.serviceCategory,
-    projectScale: body.projectScale,
-    message: body.message?.trim(),
+    email: body.email?.trim() || undefined,
+    serviceCategory: body.serviceCategory?.trim() || undefined,
+    projectScale: body.projectScale?.trim() || undefined,
+    message: body.message?.trim() || undefined,
   });
 
   return c.json(
     {
       success: true as const,
       data: newLead,
-      message: "Cảm ơn bạn đã liên hệ! Khang Việt sẽ phản hồi sớm nhất.",
+      message: "Cảm ơn bạn! Thông tin liên hệ đã được ghi nhận.",
     },
     201
   );

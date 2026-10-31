@@ -13,7 +13,7 @@ export interface ILeadRepository {
     id: string,
     status: LeadStatus,
     notes?: string
-  ): Promise<ContactLead>;
+  ): Promise<ContactLead | null>;
   deleteLead(id: string): Promise<boolean>;
 }
 

@@ -47,10 +47,10 @@ export class JsonLeadRepository implements ILeadRepository {
     id: string,
     status: LeadStatus,
     notes?: string
-  ): Promise<ContactLead> {
+  ): Promise<ContactLead | null> {
     const lead = mockStore.leads.find((l) => l.id === id);
     if (!lead) {
-      throw new Error(`Lead with id ${id} not found`);
+      return null;
     }
     lead.status = status;
     lead.updatedAt = new Date().toISOString();

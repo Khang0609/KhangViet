@@ -10,10 +10,22 @@ export interface ChangeHandleResult {
 
 export async function handleCmsChange(
   c: Context,
+  action: "UPDATE_PROJECT",
+  payload: unknown,
+  targetId?: string
+): Promise<ChangeHandleResult | null>;
+export async function handleCmsChange(
+  c: Context,
+  action: Exclude<ChangeActionType, "UPDATE_PROJECT">,
+  payload: unknown,
+  targetId?: string
+): Promise<ChangeHandleResult>;
+export async function handleCmsChange(
+  c: Context,
   action: ChangeActionType,
   payload: unknown,
   targetId?: string
-): Promise<ChangeHandleResult> {
+): Promise<ChangeHandleResult | null> {
   const repos = getRepositories();
   let result: unknown;
 
@@ -23,6 +35,7 @@ export async function handleCmsChange(
       break;
     case "UPDATE_PROJECT":
       result = await repos.cms.updateProject(targetId!, payload as any);
+      if (!result) return null;
       break;
     case "DELETE_PROJECT":
       result = await repos.cms.deleteProject(targetId!);

@@ -1,5 +1,6 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { HeroSlideSchema, CompanyLegalInfoSchema } from "@khangviet/types";
+import { ErrorResponseSchema } from "../schemas/apiResponse";
 
 const MetaMutationResponse = z.object({
   success: z.literal(true),
@@ -25,6 +26,10 @@ export const updateHeroRoute = createRoute({
       content: { "application/json": { schema: MetaMutationResponse } },
       description: "Cập nhật hero slides thành công",
     },
+    400: {
+      content: { "application/json": { schema: ErrorResponseSchema } },
+      description: "Dữ liệu payload không hợp lệ",
+    },
   },
 });
 
@@ -42,6 +47,9 @@ export const updateLegalRoute = createRoute({
       content: { "application/json": { schema: MetaMutationResponse } },
       description: "Cập nhật legal info thành công",
     },
+    400: {
+      content: { "application/json": { schema: ErrorResponseSchema } },
+      description: "Dữ liệu payload không hợp lệ",
+    },
   },
 });
-
