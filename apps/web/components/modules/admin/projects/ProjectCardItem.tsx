@@ -8,17 +8,21 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-export const ProjectCardItem: React.FC<Props> = ({ project, onEdit, onDelete }) => {
+export const ProjectCardItem: React.FC<Props> = ({
+  project,
+  onEdit,
+  onDelete,
+}) => {
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-lg border border-white/8 bg-white/2 transition-colors hover:border-(--accent-bronze)">
-      <div className="relative aspect-16/9 w-full overflow-hidden bg-black/40">
+      <div className="relative aspect-video w-full overflow-hidden bg-black/40">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={project.coverImage || "/image/image-placeholder.png"}
           alt={project.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute top-2 left-2 rounded bg-black/70 px-2 py-0.5 font-mono-tech text-[10px] text-(--accent-bronze)">
+        <div className="font-mono-tech absolute top-2 left-2 rounded bg-black/70 px-2 py-0.5 text-[10px] text-(--accent-bronze)">
           {project.code}
         </div>
       </div>
@@ -27,12 +31,14 @@ export const ProjectCardItem: React.FC<Props> = ({ project, onEdit, onDelete }) 
         <div>
           <div className="mb-1 flex items-center justify-between text-[11px] text-white/40">
             <span className="font-mono-tech">{project.categoryTag}</span>
-            <span className="flex items-center gap-1 font-mono-tech">
+            <span className="font-mono-tech flex items-center gap-1">
               <Calendar className="h-3 w-3" />
               {project.year}
             </span>
           </div>
-          <h4 className="font-syne text-sm font-bold text-(--text-primary)">{project.title}</h4>
+          <h4 className="font-syne text-sm font-bold text-(--text-primary)">
+            {project.title}
+          </h4>
           <p className="mt-1 line-clamp-1 font-sans text-xs text-(--text-secondary)">
             Khách hàng: {project.client}
           </p>
@@ -45,14 +51,14 @@ export const ProjectCardItem: React.FC<Props> = ({ project, onEdit, onDelete }) 
           <div className="flex items-center gap-2">
             <button
               onClick={() => onEdit(project)}
-              className="flex items-center gap-1 rounded border border-white/10 px-2.5 py-1 font-mono-tech text-xs text-white/80 hover:border-(--accent-bronze) hover:text-white"
+              className="font-mono-tech flex items-center gap-1 rounded border border-white/10 px-2.5 py-1 text-xs text-white/80 hover:border-(--accent-bronze) hover:text-white"
             >
               <Edit2 className="h-3 w-3" />
               <span>Sửa</span>
             </button>
             <button
               onClick={() => onDelete(project.id)}
-              className="flex items-center gap-1 rounded border border-red-500/20 px-2.5 py-1 font-mono-tech text-xs text-red-400 hover:bg-red-500/10"
+              className="font-mono-tech flex items-center gap-1 rounded border border-red-500/20 px-2.5 py-1 text-xs text-red-400 hover:bg-red-500/10"
             >
               <Trash2 className="h-3 w-3" />
             </button>
@@ -64,4 +70,3 @@ export const ProjectCardItem: React.FC<Props> = ({ project, onEdit, onDelete }) 
 };
 
 export default ProjectCardItem;
-
