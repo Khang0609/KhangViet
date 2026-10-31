@@ -26,6 +26,7 @@ Dự án sử dụng **Tailwind CSS v4**. Tuyệt đối **TUÂN THỦ cú pháp
 | `text-opacity-*`, `bg-opacity-*`                                 | Cú pháp slash (vd: `text-white/80`, `bg-black/40`)                                 | Cú pháp opacity dạng modifier                                                                      |
 | `border` (không khai báo màu)                                    | `border border-white/10`                                                           | Trong v4 `border` mặc định là `currentColor`, không phải `gray-200`                                |
 | Cấu hình `tailwind.config.js`                                    | Dùng `@theme` trực tiếp trong `globals.css`                                        | V4 là CSS-first configuration                                                                      |
+| Rút gọn cú pháp `bg-(--color-brand)`                             | Bây giờ có thể ghi ngắn gọn là `bg-brand`                                          |                                                                                                    |
 
 ## 2. Màu sắc thương hiệu & Tokens
 
