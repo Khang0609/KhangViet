@@ -7,13 +7,16 @@ import {
   getPendingChangesRoute,
   applyPendingChangesRoute,
   discardPendingChangeRoute,
-} from "./adminCmsSyncContracts";
+} from "../contracts/adminCmsSyncContracts";
 import {
   createProjectRoute,
   updateProjectRoute,
   deleteProjectRoute,
-} from "./adminCmsProjectContracts";
-import { updateHeroRoute, updateLegalRoute } from "./adminCmsMetaContracts";
+} from "../contracts/adminCmsProjectContracts";
+import {
+  updateHeroRoute,
+  updateLegalRoute,
+} from "../contracts/adminCmsMetaContracts";
 
 export const adminCmsRouter = new OpenAPIHono({
   defaultHook: defaultValidationHook,
@@ -32,9 +35,8 @@ adminCmsRouter.openapi(getPendingChangesRoute, async (c) => {
 adminCmsRouter.openapi(applyPendingChangesRoute, async (c) => {
   const result = await getRepositories().cms.applyPendingChanges();
   if (result.appliedCount > 0) {
-    const { triggerWebRevalidation } = await import(
-      "../services/revalidateNotifier"
-    );
+    const { triggerWebRevalidation } =
+      await import("../services/revalidateNotifier");
     await triggerWebRevalidation({ tag: "cms-landing" });
   }
   const message =
@@ -53,7 +55,10 @@ adminCmsRouter.openapi(discardPendingChangeRoute, async (c) => {
 adminCmsRouter.openapi(createProjectRoute, async (c) => {
   const body = c.req.valid("json");
   const res = await handleCmsChange(c, "CREATE_PROJECT", body);
-  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
+  return c.json(
+    { success: true as const, pending: res.isPending, data: res.result },
+    200,
+  );
 });
 
 adminCmsRouter.openapi(updateProjectRoute, async (c) => {
@@ -63,23 +68,35 @@ adminCmsRouter.openapi(updateProjectRoute, async (c) => {
   if (!res) {
     return c.json({ success: false as const, error: "Project not found" }, 404);
   }
-  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
+  return c.json(
+    { success: true as const, pending: res.isPending, data: res.result },
+    200,
+  );
 });
 
 adminCmsRouter.openapi(deleteProjectRoute, async (c) => {
   const { id } = c.req.valid("param");
   const res = await handleCmsChange(c, "DELETE_PROJECT", {}, id);
-  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
+  return c.json(
+    { success: true as const, pending: res.isPending, data: res.result },
+    200,
+  );
 });
 
 adminCmsRouter.openapi(updateHeroRoute, async (c) => {
   const body = c.req.valid("json");
   const res = await handleCmsChange(c, "UPDATE_HERO", body.slides);
-  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
+  return c.json(
+    { success: true as const, pending: res.isPending, data: res.result },
+    200,
+  );
 });
 
 adminCmsRouter.openapi(updateLegalRoute, async (c) => {
   const body = c.req.valid("json");
   const res = await handleCmsChange(c, "UPDATE_LEGAL", body);
-  return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
+  return c.json(
+    { success: true as const, pending: res.isPending, data: res.result },
+    200,
+  );
 });

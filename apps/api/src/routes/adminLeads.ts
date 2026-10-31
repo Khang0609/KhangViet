@@ -4,11 +4,11 @@ import { defaultValidationHook } from "../middlewares/validationHook";
 import {
   getAdminLeadsRoute,
   getAdminLeadByIdRoute,
-} from "./adminLeadsContracts";
+} from "../contracts/adminLeadsContracts";
 import {
   updateAdminLeadStatusRoute,
   deleteAdminLeadRoute,
-} from "./adminLeadsStatusContracts";
+} from "../contracts/adminLeadsStatusContracts";
 
 export const adminLeadsRouter = new OpenAPIHono({
   defaultHook: defaultValidationHook,
@@ -37,7 +37,7 @@ adminLeadsRouter.openapi(updateAdminLeadStatusRoute, async (c) => {
   if (!body || !body.status) {
     return c.json(
       { success: false as const, error: "Trường 'status' là bắt buộc" },
-      400
+      400,
     );
   }
 
