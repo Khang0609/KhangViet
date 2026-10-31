@@ -39,7 +39,7 @@ export const ProjectGalleryRow: React.FC<Props> = ({ item, index, onUpdate, onRe
         <select
           value={item.aspect}
           onChange={(e) => onUpdate(index, "aspect", e.target.value)}
-          className="rounded border border-white/10 bg-[#1a1c20] px-2 py-1 text-xs text-white"
+          className="rounded border border-white/10 bg-(--bg-surface) px-2 py-1 text-xs text-white"
         >
           <option value="landscape">Khung Ngang (Landscape)</option>
           <option value="portrait">Khung Dọc (Portrait)</option>

@@ -31,7 +31,7 @@ export const LeadRowItem: React.FC<Props> = ({ lead, onUpdateStatus, onDelete })
             value={lead.status}
             onChange={(e) => handleStatusChange(e.target.value as LeadStatus)}
             disabled={isUpdating}
-            className="rounded border border-white/10 bg-[#1a1c20] px-2.5 py-1 font-mono-tech text-xs text-white"
+            className="rounded border border-white/10 bg-(--bg-surface) px-2.5 py-1 font-mono-tech text-xs text-white"
           >
             <option value="NEW">MỚI (NEW)</option>
             <option value="CONTACTED">ĐÃ LIÊN HỆ</option>

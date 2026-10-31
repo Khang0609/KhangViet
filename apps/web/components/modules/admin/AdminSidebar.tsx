@@ -33,7 +33,7 @@ export const AdminSidebar: React.FC<Props> = ({ activeTab, onSelectTab }) => {
                 onClick={() => onSelectTab(item.id)}
                 className={`flex w-full items-center gap-3 rounded-md px-3.5 py-2.5 font-mono-tech text-xs transition-colors ${
                   isActive
-                    ? "bg-(--color-brand) font-bold text-black shadow-sm"
+                    ? "bg-brand font-bold text-black shadow-sm"
                     : "text-white/70 hover:bg-white/4 hover:text-white"
                 }`}
               >

@@ -51,7 +51,7 @@ export const ContactLegalView: React.FC = () => {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 rounded bg-(--color-brand) px-4 py-2 font-mono-tech text-xs font-semibold text-black transition-all hover:brightness-110 disabled:opacity-50"
+          className="flex items-center gap-2 rounded bg-brand px-4 py-2 font-mono-tech text-xs font-semibold text-black transition-all hover:brightness-110 disabled:opacity-50"
         >
           <Save className="h-4 w-4" />
           <span>{saving ? "Đang lưu..." : "Lưu Thay Đổi"}</span>

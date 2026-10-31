@@ -66,7 +66,7 @@ export const ProjectFormModal: React.FC<Props> = ({
             <button
               type="submit"
               disabled={submitting}
-              className="rounded bg-(--color-brand) px-5 py-2 font-mono-tech text-xs font-semibold text-black hover:brightness-110 disabled:opacity-50"
+              className="rounded bg-brand px-5 py-2 font-mono-tech text-xs font-semibold text-black hover:brightness-110 disabled:opacity-50"
             >
               {submitting ? "Đang lưu..." : "Lưu Dự Án"}
             </button>

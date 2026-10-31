@@ -53,7 +53,7 @@ export const ProjectListView: React.FC = () => {
       action={
         <button
           onClick={() => setSelectedProject({ ...defaultEmptyProject, id: "" })}
-          className="flex items-center gap-2 rounded bg-(--color-brand) px-4 py-2 font-mono-tech text-xs font-semibold text-black hover:brightness-110"
+          className="flex items-center gap-2 rounded bg-brand px-4 py-2 font-mono-tech text-xs font-semibold text-black hover:brightness-110"
         >
           <Plus className="h-4 w-4" />
           <span>Thêm Dự Án Mới</span>

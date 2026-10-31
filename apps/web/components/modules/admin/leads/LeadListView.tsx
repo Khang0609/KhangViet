@@ -51,7 +51,7 @@ export const LeadListView: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setCurrentTab(tab.id)}
-              className={`rounded px-3 py-1.5 font-mono-tech text-xs transition-colors ${currentTab === tab.id ? "bg-(--color-brand) font-bold text-black" : "border border-white/10 bg-white/4 text-white/70 hover:text-white"}`}
+              className={`rounded px-3 py-1.5 font-mono-tech text-xs transition-colors ${currentTab === tab.id ? "bg-brand font-bold text-black" : "border border-white/10 bg-white/4 text-white/70 hover:text-white"}`}
             >
               {tab.label}
             </button>
