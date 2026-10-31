@@ -1,6 +1,6 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
-import { apiReference } from "@scalar/hono-api-reference";
+import { Scalar } from "@scalar/hono-api-reference";
 import { errorHandler } from "./middlewares/errorHandler";
 import { defaultValidationHook } from "./middlewares/validationHook";
 import { adminAuthMiddleware } from "./middlewares/adminAuth";
@@ -68,11 +68,9 @@ app.doc("/doc", {
 
 app.get(
   "/reference",
-  apiReference({
+  Scalar({
     theme: "purple",
-    spec: {
-      url: "/doc",
-    },
+    url: "/doc",
   })
 );
 
