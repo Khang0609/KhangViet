@@ -33,7 +33,11 @@ export const SyncStatusBar: React.FC = () => {
     setMessage(null);
     const res = await applyPendingChanges();
     if (res.success) {
-      setMessage(`Đã xuất bản thành công (${res.data.appliedCount} thay đổi)!`);
+      const msg =
+        res.data.appliedCount > 0
+          ? `Đã xuất bản ${res.data.appliedCount} thay đổi chờ duyệt!`
+          : "Đã làm mới cache (Mọi thay đổi đã lưu trực tiếp)!";
+      setMessage(msg);
       const refresh = await getSyncStatus();
       if (refresh.success) setStatus(refresh.data);
     } else {
@@ -68,7 +72,7 @@ export const SyncStatusBar: React.FC = () => {
       <button
         onClick={handlePublish}
         disabled={isPublishing}
-        className="font-mono-tech flex items-center gap-2 rounded border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-(--text-primary) transition-all hover:border-(--accent-bronze) hover:bg-white/8 disabled:opacity-50"
+        className="flex items-center gap-2 rounded border border-white/10 bg-white/4 px-3 py-1.5 font-mono-tech text-xs text-(--text-primary) transition-all hover:border-(--accent-bronze) hover:bg-white/8 disabled:opacity-50"
       >
         <RefreshCw
           className={`h-3.5 w-3.5 ${isPublishing ? "animate-spin" : ""}`}
