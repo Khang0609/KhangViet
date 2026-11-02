@@ -1,5 +1,9 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { SyncStatusSchema, PendingChangeSchema } from "@khangviet/types";
+import {
+  SyncStatusSchema,
+  PendingChangeSchema,
+  ApplyPendingResultSchema,
+} from "@khangviet/types";
 
 export const getSyncStatusRoute = createRoute({
   method: "get",
@@ -49,10 +53,7 @@ export const applyPendingChangesRoute = createRoute({
         "application/json": {
           schema: z.object({
             success: z.literal(true),
-            data: z.object({
-              appliedCount: z.number(),
-              success: z.boolean(),
-            }),
+            data: ApplyPendingResultSchema,
             message: z.string(),
           }),
         },

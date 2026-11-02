@@ -35,3 +35,9 @@ export const SyncStatusSchema = z.object({
   currentHourVN: z.number(),
 });
 export type SyncStatus = z.infer<typeof SyncStatusSchema>;
+
+export const ApplyPendingResultSchema = z.object({
+  appliedCount: z.number(),
+  success: z.boolean(),
+});
+export type ApplyPendingResult = z.infer<typeof ApplyPendingResultSchema>;
