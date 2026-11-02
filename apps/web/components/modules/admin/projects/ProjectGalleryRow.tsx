@@ -8,9 +8,16 @@ interface Props {
   index: number;
   onUpdate: (index: number, field: keyof ProjectGalleryItem, val: string) => void;
   onRemove: (index: number) => void;
+  allowFilePath?: boolean;
 }
 
-export const ProjectGalleryRow: React.FC<Props> = ({ item, index, onUpdate, onRemove }) => {
+export const ProjectGalleryRow: React.FC<Props> = ({
+  item,
+  index,
+  onUpdate,
+  onRemove,
+  allowFilePath = true,
+}) => {
   return (
     <div className="rounded border border-white/8 bg-white/2 p-3 space-y-2">
       <div className="flex items-center justify-between">
@@ -24,9 +31,10 @@ export const ProjectGalleryRow: React.FC<Props> = ({ item, index, onUpdate, onRe
         </button>
       </div>
       <ImageUrlInput
-        label="URL Ảnh"
+        label="Đường dẫn ảnh"
         value={item.src}
         onChange={(url) => onUpdate(index, "src", url)}
+        allowFilePath={allowFilePath}
       />
       <div className="grid grid-cols-2 gap-2">
         <input
@@ -51,4 +59,3 @@ export const ProjectGalleryRow: React.FC<Props> = ({ item, index, onUpdate, onRe
 };
 
 export default ProjectGalleryRow;
-

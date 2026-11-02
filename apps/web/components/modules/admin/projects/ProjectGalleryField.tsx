@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Plus } from "lucide-react";
 import type { ProjectGalleryItem } from "@khangviet/types";
 import { ProjectGalleryRow } from "./ProjectGalleryRow";
@@ -9,6 +11,8 @@ interface Props {
 }
 
 export const ProjectGalleryField: React.FC<Props> = ({ items, onChange }) => {
+  const [bypassUrl, setBypassUrl] = useState(true);
+
   const handleAddItem = () => {
     const newItem: ProjectGalleryItem = {
       id: `img-${Date.now()}`,
@@ -27,16 +31,26 @@ export const ProjectGalleryField: React.FC<Props> = ({ items, onChange }) => {
     onChange(updated);
   };
 
-  const handleRemove = (index: number) => {
-    onChange(items.filter((_, i) => i !== index));
-  };
-
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <label className="font-mono-tech text-xs tracking-wider text-(--text-secondary) uppercase">
-          Thư viện ảnh chi tiết ({items.length})
-        </label>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <label className="font-mono-tech text-xs tracking-wider text-(--text-secondary) uppercase">
+            Thư viện ảnh chi tiết ({items.length})
+          </label>
+          <button
+            type="button"
+            onClick={() => setBypassUrl((prev) => !prev)}
+            className={`rounded border px-2 py-0.5 font-mono-tech text-[10px] transition-colors ${
+              bypassUrl
+                ? "border-(--accent-bronze) bg-(--accent-bronze)/10 text-(--accent-bronze)"
+                : "border-white/10 text-white/40 hover:text-white/60"
+            }`}
+            title="Cho phép nhập đường dẫn tệp nội bộ thay vì URL web"
+          >
+            Bypass URL: {bypassUrl ? "BẬT (File Path)" : "TẮT (Strict URL)"}
+          </button>
+        </div>
         <button
           type="button"
           onClick={handleAddItem}
@@ -54,7 +68,8 @@ export const ProjectGalleryField: React.FC<Props> = ({ items, onChange }) => {
             item={item}
             index={idx}
             onUpdate={handleUpdate}
-            onRemove={handleRemove}
+            onRemove={(i) => onChange(items.filter((_, index) => index !== i))}
+            allowFilePath={bypassUrl}
           />
         ))}
       </div>
