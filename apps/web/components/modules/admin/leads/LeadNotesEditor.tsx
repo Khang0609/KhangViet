@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Check } from "lucide-react";
 
@@ -37,4 +39,3 @@ export const LeadNotesEditor: React.FC<Props> = ({ initialNotes, onSave }) => {
 };
 
 export default LeadNotesEditor;
-
