@@ -5,4 +5,5 @@ export * from "./projects";
 export * from "./hero";
 export * from "./leads";
 export * from "./AdminSidebar";
+export * from "./AdminDashboardContainer";
 
