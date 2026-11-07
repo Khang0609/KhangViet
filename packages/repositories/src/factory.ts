@@ -1,10 +1,16 @@
-import { ICmsRepository, ILeadRepository } from "./interfaces";
+import {
+  ICmsRepository,
+  ILeadRepository,
+  IUserRepository,
+} from "./interfaces";
 import { JsonCmsRepository } from "./json/JsonCmsRepository";
 import { JsonLeadRepository } from "./json/JsonLeadRepository";
+import { JsonUserRepository } from "./json/JsonUserRepository";
 
 export interface Repositories {
   cms: ICmsRepository;
   lead: ILeadRepository;
+  user: IUserRepository;
 }
 
 export type StorageDriver = "json" | "d1" | "sqlite";
@@ -16,12 +22,11 @@ export function getRepositories(driver: StorageDriver = "json"): Repositories {
     return cachedRepositories;
   }
 
-  // Future extension: if driver === 'd1' return new D1Repositories(env)
   cachedRepositories = {
     cms: new JsonCmsRepository(),
     lead: new JsonLeadRepository(),
+    user: new JsonUserRepository(),
   };
 
   return cachedRepositories;
 }
-

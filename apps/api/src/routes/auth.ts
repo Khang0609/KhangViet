@@ -1,0 +1,74 @@
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { setCookie, getCookie } from "hono/cookie";
+import { loginRoute, refreshRoute } from "../contracts/authContracts";
+import { AuthService } from "../services/authService";
+import { getJwtSecret, AppEnv } from "../middlewares/authMiddleware";
+
+export const authRouter = new OpenAPIHono<AppEnv>();
+
+authRouter.openapi(loginRoute, async (c) => {
+  const credentials = c.req.valid("json");
+  const secret = getJwtSecret(c);
+  const result = await AuthService.login(credentials, secret);
+
+  if (!result.success) {
+    return c.json({ success: false as const, error: result.error }, 401);
+  }
+
+  setCookie(c, "refreshToken", result.data.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Lax",
+    path: "/api/auth",
+    maxAge: 7 * 24 * 60 * 60,
+  });
+
+  return c.json(
+    {
+      success: true as const,
+      data: {
+        accessToken: result.data.accessToken,
+        user: result.data.user,
+      },
+    },
+    200
+  );
+});
+
+authRouter.openapi(refreshRoute, async (c) => {
+  const refreshToken = getCookie(c, "refreshToken");
+  if (!refreshToken) {
+    return c.json(
+      {
+        success: false as const,
+        error: "Missing refresh token in cookie",
+      },
+      401
+    );
+  }
+
+  const secret = getJwtSecret(c);
+  const result = await AuthService.refresh(refreshToken, secret);
+
+  if (!result.success) {
+    return c.json({ success: false as const, error: result.error }, 401);
+  }
+
+  setCookie(c, "refreshToken", result.data.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Lax",
+    path: "/api/auth",
+    maxAge: 7 * 24 * 60 * 60,
+  });
+
+  return c.json(
+    {
+      success: true as const,
+      data: {
+        accessToken: result.data.accessToken,
+      },
+    },
+    200
+  );
+});

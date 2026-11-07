@@ -8,8 +8,11 @@ import { publicContentRouter } from "./routes/publicContent";
 import { publicLeadsRouter } from "./routes/publicLeads";
 import { adminCmsRouter } from "./routes/adminCms";
 import { adminLeadsRouter } from "./routes/adminLeads";
+import { authRouter } from "./routes/auth";
+import { protectedRouter } from "./routes/protected";
+import { AppEnv } from "./middlewares/authMiddleware";
 
-const app = new OpenAPIHono({
+const app = new OpenAPIHono<AppEnv>({
   defaultHook: defaultValidationHook,
 });
 
@@ -17,7 +20,8 @@ const app = new OpenAPIHono({
 app.use(
   "*",
   cors({
-    origin: "*",
+    origin: (origin) => origin || "*",
+    credentials: true,
     allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
   })
@@ -29,7 +33,7 @@ app.onError(errorHandler);
 app.notFound((c) => {
   return c.json(
     {
-      success: false,
+      success: false as const,
       error: "Đường dẫn không tồn tại (Not Found)",
     },
     404
@@ -47,11 +51,15 @@ app.get("/", (c) => {
   });
 });
 
+// Mount Auth & Protected APIs
+app.route("/api/auth", authRouter);
+app.route("/api", protectedRouter);
+
 // Mount Public API
 app.route("/api/v1/content", publicContentRouter);
 app.route("/api/v1/leads", publicLeadsRouter);
 
-// Mount Admin API (Protected with Bearer Token)
+// Mount Admin API (Protected with Bearer Token + Role ADMIN)
 app.use("/api/v1/admin/*", adminAuthMiddleware);
 app.route("/api/v1/admin/cms", adminCmsRouter);
 app.route("/api/v1/admin/leads", adminLeadsRouter);

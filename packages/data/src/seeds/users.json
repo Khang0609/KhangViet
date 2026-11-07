@@ -1,0 +1,27 @@
+[
+  {
+    "id": "a0000000-0000-4000-8000-000000000001",
+    "email": "admin@khangviet.vn",
+    "role": "ADMIN",
+    "password": "kv_salt_admin:953583c33ee92ed6c08ab556a414ebb0c236a5756d9384cb16887873abcae532",
+    "info": {
+      "name": "Khang Việt Admin",
+      "phone": "0901234567"
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "c0000000-0000-4000-8000-000000000002",
+    "email": "customer@khangviet.vn",
+    "role": "CUSTOMER",
+    "password": "kv_salt_customer:a08edbc75dcafa1ca7f32b8955508ccd395fb09f4448e92a70a535bc4d4afe2a",
+    "info": {
+      "name": "Nguyễn Văn Khách",
+      "phone": "0987654321"
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]
+
