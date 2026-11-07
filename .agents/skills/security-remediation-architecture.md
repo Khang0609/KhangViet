@@ -16,7 +16,13 @@ Là một Senior Backend Architect, nhiệm vụ khi tiếp nhận một báo c�
 
 ---
 
-## 2. Khi Nào Kích Hoạt Kỹ Năng Này
+## 2. Khi Nào Kích Hoạt Kỹ Năng Này & Yêu Cầu Cấu Hình Model
+
+> [!IMPORTANT]
+> **Khuyến nghị tài nguyên Model (AI Reasoning Tier):**
+> Tác vụ rà soát và vá lỗ hổng kiến trúc đòi hỏi khả năng truy vết liên kết sâu rộng (cross-package dependency analysis), suy luận logic đa bước và đánh giá chính xác bán kính ảnh hưởng (blast radius).
+> - **BẮT BUỘC / KHUYẾN NGHỊ:** Sử dụng tối thiểu từ **Gemini Flash (High reasoning)** đến các dòng Flagship (**Argon / Pro**).
+> - **CẢNH BÁO:** Không khuyến khích dùng mức Low hoặc Medium (dễ bỏ sót mối quan hệ giữa các module, suy luận nông và gây lỗi hồi quy / regression).
 
 - Khi nhận được báo cáo kiểm toán mã nguồn (SAST/DAST/Pentest report) như [security-audit-report.md](file:///e:/lap_trinh/Project/website/KhangVietDesign/source/.agents/docs/security-audit-report.md).
 - Khi có sự cố an ninh cần lập tức lên kế hoạch Hotfix hoặc Hardening Release.
