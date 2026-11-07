@@ -3,8 +3,18 @@ import { setCookie, getCookie } from "hono/cookie";
 import { loginRoute, refreshRoute } from "../contracts/authContracts";
 import { AuthService } from "../services/authService";
 import { getJwtSecret, AppEnv } from "../middlewares/authMiddleware";
+import { createRateLimiter } from "../middlewares/rateLimiter";
 
 export const authRouter = new OpenAPIHono<AppEnv>();
+
+authRouter.use(
+  "/login",
+  createRateLimiter({
+    max: 20,
+    windowMs: 15 * 60 * 1000,
+    message: "Quá nhiều lần thử đăng nhập. Vui lòng thử lại sau 15 phút.",
+  })
+);
 
 authRouter.openapi(loginRoute, async (c) => {
   const credentials = c.req.valid("json");

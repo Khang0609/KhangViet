@@ -3,10 +3,20 @@ import { getRepositories } from "@khangviet/repositories";
 import { CreateLeadDtoSchema, ContactLeadSchema } from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 import { defaultValidationHook } from "../middlewares/validationHook";
+import { createRateLimiter } from "../middlewares/rateLimiter";
 
 export const publicLeadsRouter = new OpenAPIHono({
   defaultHook: defaultValidationHook,
 });
+
+publicLeadsRouter.use(
+  "*",
+  createRateLimiter({
+    max: 20,
+    windowMs: 60 * 1000,
+    message: "Quá nhiều yêu cầu đăng ký tư vấn. Vui lòng thử lại sau.",
+  })
+);
 
 const createLeadRoute = createRoute({
   method: "post",

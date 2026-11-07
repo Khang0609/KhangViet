@@ -10,13 +10,27 @@ export type AppEnv = {
   Variables: AuthVariables;
   Bindings?: {
     JWT_SECRET?: string;
+    ENVIRONMENT?: string;
+    NODE_ENV?: string;
+    WEB_APP_URL?: string;
   };
 };
 
 const DEFAULT_SECRET = "khangviet-dev-jwt-secret-2026";
 
 export const getJwtSecret = (c: Context<AppEnv>): string => {
-  return c.env?.JWT_SECRET || DEFAULT_SECRET;
+  const secret = c.env?.JWT_SECRET;
+  if (!secret) {
+    const isProduction =
+      c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
+    if (isProduction) {
+      throw new Error(
+        "FATAL: JWT_SECRET environment variable is missing in production!"
+      );
+    }
+    return DEFAULT_SECRET;
+  }
+  return secret;
 };
 
 export const authMiddleware = async (c: Context<AppEnv>, next: Next) => {

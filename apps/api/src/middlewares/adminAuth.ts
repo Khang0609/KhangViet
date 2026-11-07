@@ -6,7 +6,7 @@ import { authMiddleware, requireAdmin, AppEnv } from "./authMiddleware";
  * Yêu cầu Bearer AccessToken hợp lệ VÀ Role tài khoản phải là ADMIN.
  */
 export const adminAuthMiddleware = async (c: Context<AppEnv>, next: Next) => {
-  return await authMiddleware(c, async () => {
-    return await requireAdmin(c, next);
-  });
+  const authRes = await authMiddleware(c, async () => {});
+  if (authRes) return authRes;
+  return await requireAdmin(c, next);
 };

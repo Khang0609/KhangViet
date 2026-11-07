@@ -1,25 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag, revalidatePath } from "next/cache";
 
+const isDev = process.env.NODE_ENV !== "production";
 const EXPECTED_SECRET =
-  process.env.REVALIDATE_SECRET || "kv-revalidate-secret-2026";
+  process.env.REVALIDATE_SECRET || (isDev ? "kv-revalidate-secret-2026" : undefined);
 
-function handleRevalidate(
-  secret: string | null,
-  tag: string | null,
-  path: string | null
-) {
-  const isDev = process.env.NODE_ENV !== "production";
-  if (!isDev && secret && secret !== EXPECTED_SECRET) {
+export async function POST(request: NextRequest) {
+  if (!EXPECTED_SECRET) {
     return NextResponse.json(
-      { success: false, message: "Invalid revalidation secret token" },
+      { success: false, message: "REVALIDATE_SECRET is not configured on server" },
+      { status: 500 }
+    );
+  }
+
+  const secret =
+    request.nextUrl.searchParams.get("secret") ||
+    request.headers.get("x-revalidate-secret");
+
+  if (!secret || secret !== EXPECTED_SECRET) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized: Invalid or missing revalidation secret token" },
       { status: 401 }
     );
   }
 
-  const targetTag = tag || "cms-landing";
+  const tag = request.nextUrl.searchParams.get("tag") || "cms-landing";
+  const path = request.nextUrl.searchParams.get("path");
+
   try {
-    revalidateTag(targetTag, "max");
+    revalidateTag(tag, "max");
     if (path) {
       revalidatePath(path);
     } else {
@@ -28,7 +37,7 @@ function handleRevalidate(
 
     return NextResponse.json({
       revalidated: true,
-      tag: targetTag,
+      tag,
       path: path || "/",
       now: Date.now(),
     });
@@ -40,23 +49,9 @@ function handleRevalidate(
   }
 }
 
-export async function POST(request: NextRequest) {
-  const secret =
-    request.nextUrl.searchParams.get("secret") ||
-    request.headers.get("x-revalidate-secret");
-  const tag = request.nextUrl.searchParams.get("tag");
-  const path = request.nextUrl.searchParams.get("path");
-
-  return handleRevalidate(secret, tag, path);
+export async function GET() {
+  return NextResponse.json(
+    { success: false, message: "Method Not Allowed. Use POST for revalidation" },
+    { status: 405 }
+  );
 }
-
-export async function GET(request: NextRequest) {
-  const secret =
-    request.nextUrl.searchParams.get("secret") ||
-    request.headers.get("x-revalidate-secret");
-  const tag = request.nextUrl.searchParams.get("tag");
-  const path = request.nextUrl.searchParams.get("path");
-
-  return handleRevalidate(secret, tag, path);
-}
-

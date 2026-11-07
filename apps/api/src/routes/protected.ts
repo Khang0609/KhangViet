@@ -5,7 +5,7 @@ import { authMiddleware, AppEnv } from "../middlewares/authMiddleware";
 
 export const protectedRouter = new OpenAPIHono<AppEnv>();
 
-protectedRouter.use("*", authMiddleware);
+protectedRouter.use("/protected", authMiddleware);
 
 protectedRouter.openapi(protectedRoute, async (c) => {
   const authPayload = c.get("authUser");

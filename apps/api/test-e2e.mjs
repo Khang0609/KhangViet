@@ -1,4 +1,4 @@
-import worker from "./dist/index.js";
+import worker, { PasswordService } from "./dist/index.js";
 
 const app = worker;
 
@@ -97,6 +97,62 @@ async function runTests() {
   });
   console.log("8. Token mới xác thực thành công -> Status:", verifyNew.status);
   if (verifyNew.status !== 200) throw new Error("Test 8 Failed");
+
+  // 9. Kiểm tra Security Headers (SEC-08)
+  const healthRes = await app.request("/");
+  const nosniff = healthRes.headers.get("x-content-type-options");
+  console.log("9. Security Headers nosniff -> Header:", nosniff);
+  if (nosniff !== "nosniff") throw new Error("Test 9 Failed: Missing X-Content-Type-Options");
+
+  // 10. CORS Whitelist & Chặn Wildcard Reflection (SEC-01)
+  const evilCorsRes = await app.request("/api/v1/content/landing", {
+    headers: { Origin: "https://evil-attacker.com" },
+  });
+  const evilAllowOrigin = evilCorsRes.headers.get("access-control-allow-origin");
+  console.log("10a. CORS Evil Origin bị từ chối -> Allow-Origin:", evilAllowOrigin);
+  if (evilAllowOrigin !== null) throw new Error("Test 10a Failed: CORS reflected evil origin");
+
+  const validCorsRes = await app.request("/api/v1/content/landing", {
+    headers: { Origin: "http://localhost:3000" },
+  });
+  const validAllowOrigin = validCorsRes.headers.get("access-control-allow-origin");
+  console.log("10b. CORS Valid Origin được cấp phép -> Allow-Origin:", validAllowOrigin);
+  if (validAllowOrigin !== "http://localhost:3000") throw new Error("Test 10b Failed: Valid origin denied");
+
+  // 11. Rate Limiting trên Public Leads Endpoint (SEC-05)
+  console.log("11. Bắt đầu gửi requests kiểm tra Rate Limiting...");
+  let rateLimited = false;
+  for (let i = 0; i < 22; i++) {
+    const leadRes = await app.request("/api/v1/leads", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "cf-connecting-ip": "203.0.113.195",
+      },
+      body: JSON.stringify({ fullName: "Spam Bot", phone: "0999999999" }),
+    });
+    if (leadRes.status === 429) {
+      rateLimited = true;
+      console.log(`   - Request #${i + 1} bị chặn chuẩn xác với HTTP 429 Too Many Requests`);
+      break;
+    }
+  }
+  if (!rateLimited) throw new Error("Test 11 Failed: Rate limiter did not trigger 429");
+
+  // 12. Kiểm tra PBKDF2 Password Hashing & Constant-Time Verification (SEC-03)
+  const plainPassword = "TestSecurityPass@2026";
+  const newHash = await PasswordService.hashPassword(plainPassword);
+  console.log("12a. Hash PBKDF2 mới tạo:", newHash);
+  if (!newHash.startsWith("pbkdf2:100000:")) {
+    throw new Error("Test 12a Failed: Password hash is not using PBKDF2 100k rounds");
+  }
+  const isMatchValid = await PasswordService.verifyPassword(plainPassword, newHash);
+  const isMatchWrong = await PasswordService.verifyPassword("WrongPassword@123", newHash);
+  console.log("12b. Verify PBKDF2 đúng pass:", isMatchValid);
+  console.log("12c. Verify PBKDF2 sai pass:", !isMatchWrong);
+  if (!isMatchValid || isMatchWrong) {
+    throw new Error("Test 12b/c Failed: PBKDF2 verification logic error");
+  }
 
   console.log("\n=======================================================");
   console.log(">>> TẤT CẢ TEST CASES ĐÃ PASS 100% HOÀN HẢO! <<<");
