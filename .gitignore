@@ -1,4 +1,6 @@
 .agents/docs/
+.agents/*.private.md
+.agents/**/*.private.md
 
 .turbo/
 node_modules
