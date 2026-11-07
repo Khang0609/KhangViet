@@ -4,7 +4,7 @@ import TrustMarquee from "@/components/modules/TrustMarquee";
 import DisciplinesSection from "@/components/modules/DisciplinesSection";
 import ProjectShowcase from "@/components/modules/project-showcase/ProjectShowcase";
 import InHouseEngineering from "@/components/modules/InHouseEngineering";
-import ContactDualGates from "@/components/modules/contact-gate/ContactDualGates";
+import { ContactDualGates } from "@/components/modules/contact-gate";
 import Footer from "@/components/modules/Footer";
 import { ModalProvider } from "@/components/modals/modalContext";
 import LazyModalContainer from "@/components/modals/LazyModalContainer";
