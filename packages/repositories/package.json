@@ -4,12 +4,18 @@
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
   "exports": {
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@khangviet/data": "workspace:*",
     "@khangviet/types": "workspace:*",
-    "@khangviet/data": "workspace:*"
+    "drizzle-orm": "^0.45.4"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.11"
   }
 }
-
