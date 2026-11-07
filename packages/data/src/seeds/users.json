@@ -1,12 +1,24 @@
 [
   {
     "id": "a0000000-0000-4000-8000-000000000001",
+    "email": "khangvietdesign@gmail.com",
+    "role": "ADMIN",
+    "password": "pbkdf2:100000:c31b8c99a04e742bc98410efeb39f777:cc49a7b376ed9f496afc567fd5b593e3c4b8ec394b5a0576eebd0942de50b688",
+    "info": {
+      "name": "Khang Việt Admin",
+      "phone": "0903680449"
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "a0000000-0000-4000-8000-000000000002",
     "email": "admin@khangviet.vn",
     "role": "ADMIN",
     "password": "kv_salt_admin:953583c33ee92ed6c08ab556a414ebb0c236a5756d9384cb16887873abcae532",
     "info": {
-      "name": "Khang Việt Admin",
-      "phone": "0901234567"
+      "name": "Trần Xuân Đông",
+      "phone": "0903680449"
     },
     "createdAt": "2026-01-01T00:00:00.000Z",
     "updatedAt": "2026-01-01T00:00:00.000Z"
