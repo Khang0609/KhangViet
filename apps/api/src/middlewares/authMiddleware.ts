@@ -1,5 +1,6 @@
 import { Context, Next } from "hono";
 import { AccessTokenPayload } from "@khangviet/types";
+import { D1DatabaseBinding } from "@khangviet/repositories";
 import { TokenService } from "../services/tokenService";
 
 export type AuthVariables = {
@@ -9,6 +10,7 @@ export type AuthVariables = {
 export type AppEnv = {
   Variables: AuthVariables;
   Bindings?: {
+    DB?: D1DatabaseBinding;
     JWT_SECRET?: string;
     ENVIRONMENT?: string;
     NODE_ENV?: string;

@@ -1,3 +1,10 @@
+# .env & dev secret files
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
 .agents/docs/
 .agents/*.private.md
 .agents/**/*.private.md

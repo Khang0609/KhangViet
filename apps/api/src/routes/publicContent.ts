@@ -1,10 +1,11 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { getRepositories } from "@khangviet/repositories";
 import { LandingContentSchema, FeaturedProjectSchema } from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 import { defaultValidationHook } from "../middlewares/validationHook";
+import { AppEnv } from "../middlewares/authMiddleware";
+import { getContextRepos } from "../helpers/repoResolver";
 
-export const publicContentRouter = new OpenAPIHono({
+export const publicContentRouter = new OpenAPIHono<AppEnv>({
   defaultHook: defaultValidationHook,
 });
 
@@ -87,19 +88,19 @@ const getProjectByIdRoute = createRoute({
 });
 
 publicContentRouter.openapi(getLandingRoute, async (c) => {
-  const repos = getRepositories();
+  const repos = getContextRepos(c);
   const data = await repos.cms.getLandingData();
   return c.json({ success: true as const, data }, 200);
 });
 
 publicContentRouter.openapi(getProjectsRoute, async (c) => {
-  const repos = getRepositories();
+  const repos = getContextRepos(c);
   const projects = await repos.cms.getProjects();
   return c.json({ success: true as const, data: projects }, 200);
 });
 
 publicContentRouter.openapi(getProjectByIdRoute, async (c) => {
-  const repos = getRepositories();
+  const repos = getContextRepos(c);
   const { id } = c.req.valid("param");
   const project = await repos.cms.getProjectById(id);
 

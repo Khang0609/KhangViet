@@ -1,11 +1,12 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { getRepositories } from "@khangviet/repositories";
 import { CreateLeadDtoSchema, ContactLeadSchema } from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 import { defaultValidationHook } from "../middlewares/validationHook";
 import { createRateLimiter } from "../middlewares/rateLimiter";
+import { AppEnv } from "../middlewares/authMiddleware";
+import { getContextRepos } from "../helpers/repoResolver";
 
-export const publicLeadsRouter = new OpenAPIHono({
+export const publicLeadsRouter = new OpenAPIHono<AppEnv>({
   defaultHook: defaultValidationHook,
 });
 
@@ -64,7 +65,7 @@ publicLeadsRouter.openapi(createLeadRoute, async (c) => {
     );
   }
 
-  const repos = getRepositories();
+  const repos = getContextRepos(c);
   const newLead = await repos.lead.createLead({
     fullName: body.fullName.trim(),
     phone: body.phone.trim(),

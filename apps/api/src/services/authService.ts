@@ -1,5 +1,5 @@
 import { Result, ok, err, LoginCredentials, SafeUser } from "@khangviet/types";
-import { getRepositories } from "@khangviet/repositories";
+import { getRepositories, IUserRepository } from "@khangviet/repositories";
 import { PasswordService } from "./passwordService";
 import { TokenService } from "./tokenService";
 
@@ -10,13 +10,15 @@ export interface AuthSession {
 }
 
 export class AuthService {
-  private static userRepo = getRepositories().user;
+  private static defaultUserRepo = getRepositories().user;
 
   static async login(
     creds: LoginCredentials,
-    secret: string
+    secret: string,
+    userRepo?: IUserRepository
   ): Promise<Result<AuthSession, string>> {
-    const user = await this.userRepo.findByEmail(creds.email);
+    const repo = userRepo ?? this.defaultUserRepo;
+    const user = await repo.findByEmail(creds.email);
     if (!user) {
       return err("Sai email hoặc mật khẩu");
     }
@@ -38,7 +40,8 @@ export class AuthService {
 
   static async refresh(
     refreshToken: string,
-    secret: string
+    secret: string,
+    userRepo?: IUserRepository
   ): Promise<Result<{ accessToken: string; refreshToken: string }, string>> {
     const tokenResult = await TokenService.verifyRefreshToken(
       refreshToken,
@@ -48,7 +51,8 @@ export class AuthService {
       return err("Refresh token không hợp lệ hoặc đã hết hạn");
     }
 
-    const safeUser = await this.userRepo.findSafeById(tokenResult.data.sub);
+    const repo = userRepo ?? this.defaultUserRepo;
+    const safeUser = await repo.findSafeById(tokenResult.data.sub);
     if (!safeUser) {
       return err("Tài khoản người dùng không tồn tại");
     }

@@ -7,11 +7,11 @@
     {
       "binding": "DB",
       "database_name": "khangviet-db",
-      "database_id": "69947093-530c-4236-89d4-26f0c5135b24"
-    }
+      "database_id": "69947093-530c-4236-89d4-26f0c5135b24",
+    },
   ],
   "vars": {
     "NODE_ENV": "production",
-    "WEB_APP_URL": "https://khangviet.vn"
-  }
+    "WEB_APP_URL": "https://khang-viet-ju5sb2vw0-khangs-projects-1a7e2aab.vercel.app",
+  },
 }

@@ -1,7 +1,8 @@
 import { Context } from "hono";
-import { getRepositories } from "@khangviet/repositories";
 import type { ChangeActionType } from "@khangviet/types";
 import { triggerWebRevalidation } from "../services/revalidateNotifier";
+import { getContextRepos } from "../helpers/repoResolver";
+import { AppEnv } from "../middlewares/authMiddleware";
 
 export interface ChangeHandleResult {
   isPending: boolean;
@@ -9,24 +10,24 @@ export interface ChangeHandleResult {
 }
 
 export async function handleCmsChange(
-  c: Context,
+  c: Context<AppEnv>,
   action: "UPDATE_PROJECT",
   payload: unknown,
   targetId?: string
 ): Promise<ChangeHandleResult | null>;
 export async function handleCmsChange(
-  c: Context,
+  c: Context<AppEnv>,
   action: Exclude<ChangeActionType, "UPDATE_PROJECT">,
   payload: unknown,
   targetId?: string
 ): Promise<ChangeHandleResult>;
 export async function handleCmsChange(
-  c: Context,
+  c: Context<AppEnv>,
   action: ChangeActionType,
   payload: unknown,
   targetId?: string
 ): Promise<ChangeHandleResult | null> {
-  const repos = getRepositories();
+  const repos = getContextRepos(c);
   let result: unknown;
 
   switch (action) {

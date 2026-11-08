@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import type { User, SafeUser } from "@khangviet/types";
 import { IUserRepository } from "../../interfaces/IUserRepository";
 import { type D1Client } from "../client";
@@ -31,10 +31,11 @@ export class D1UserRepository implements IUserRepository {
   constructor(private readonly client: D1Client) {}
 
   async findByEmail(email: string): Promise<User | null> {
+    const normalized = email.trim().toLowerCase();
     const records = await this.client
       .select()
       .from(usersTable)
-      .where(eq(usersTable.email, email))
+      .where(sql`lower(${usersTable.email}) = ${normalized}`)
       .limit(1);
 
     return records[0] ? mapToUser(records[0]) : null;
@@ -65,3 +66,4 @@ export class D1UserRepository implements IUserRepository {
     return records.map(mapToSafeUser);
   }
 }
+

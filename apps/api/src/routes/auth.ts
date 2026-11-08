@@ -4,6 +4,7 @@ import { loginRoute, refreshRoute } from "../contracts/authContracts";
 import { AuthService } from "../services/authService";
 import { getJwtSecret, AppEnv } from "../middlewares/authMiddleware";
 import { createRateLimiter } from "../middlewares/rateLimiter";
+import { getContextRepos } from "../helpers/repoResolver";
 
 export const authRouter = new OpenAPIHono<AppEnv>();
 
@@ -19,7 +20,8 @@ authRouter.use(
 authRouter.openapi(loginRoute, async (c) => {
   const credentials = c.req.valid("json");
   const secret = getJwtSecret(c);
-  const result = await AuthService.login(credentials, secret);
+  const userRepo = getContextRepos(c).user;
+  const result = await AuthService.login(credentials, secret, userRepo);
 
   if (!result.success) {
     return c.json({ success: false as const, error: result.error }, 401);
@@ -58,7 +60,8 @@ authRouter.openapi(refreshRoute, async (c) => {
   }
 
   const secret = getJwtSecret(c);
-  const result = await AuthService.refresh(refreshToken, secret);
+  const userRepo = getContextRepos(c).user;
+  const result = await AuthService.refresh(refreshToken, secret, userRepo);
 
   if (!result.success) {
     return c.json({ success: false as const, error: result.error }, 401);
