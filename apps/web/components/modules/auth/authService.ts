@@ -9,18 +9,34 @@ import type { LoginCredentials, LoginResponseData } from "@khangviet/types";
 export async function authenticateUser(
   credentials: LoginCredentials
 ): Promise<ApiResult<LoginResponseData>> {
-  const result = await apiClient<LoginResponseData>("/api/auth/login", {
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify(credentials),
-  });
+  try {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
 
-  if (result.success) {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("kv_access_token", result.data.accessToken);
-      localStorage.setItem("kv_user", JSON.stringify(result.data.user));
+    const json = await res.json().catch(() => null);
+
+    if (!res.ok || !json?.success) {
+      const errMsg =
+        json?.error || json?.message || "Email hoặc mật khẩu không chính xác.";
+      return { success: false, error: errMsg };
     }
-  }
 
-  return result;
+    const data = json.data as LoginResponseData;
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("kv_access_token", data.accessToken);
+      localStorage.setItem("kv_user", JSON.stringify(data.user));
+    }
+
+    return { success: true, data };
+  } catch (err) {
+    const msg =
+      err instanceof Error ? err.message : "Không thể kết nối đến máy chủ";
+    return { success: false, error: msg };
+  }
 }
