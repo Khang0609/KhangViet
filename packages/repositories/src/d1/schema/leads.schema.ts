@@ -1,30 +1,31 @@
-import { sqliteTable, text, index } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, index, check } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
 import type { LeadStatus } from "@khangviet/types";
+import { identitiesTable } from "./identities.schema";
 
 /**
- * Bảng Leads lưu trữ thông tin khách hàng tiềm năng gửi form liên hệ.
- * Tối ưu hóa: Đánh index cho status để lọc CRM, created_at để sắp xếp,
- * và phone để tra cứu chống spam hoặc trùng lặp liên hệ.
+ * Bảng leads: Lưu thông tin yêu cầu tư vấn của khách hàng tiềm năng.
+ * Tách biệt thông tin định danh bằng khóa ngoại identity_id (RESTRICT).
  */
 export const leadsTable = sqliteTable(
   "leads",
   {
     id: text("id").primaryKey(),
-    fullName: text("full_name").notNull(),
-    phone: text("phone").notNull(),
-    email: text("email"),
+    identityId: text("identity_id")
+      .notNull()
+      .references(() => identitiesTable.id, { onDelete: "restrict" }),
     serviceCategory: text("service_category"),
     projectScale: text("project_scale"),
-    message: text("message"),
+    initialMessage: text("initial_message"),
     status: text("status").$type<LeadStatus>().notNull().default("NEW"),
-    notes: text("notes"),
     createdAt: text("created_at").notNull(),
     updatedAt: text("updated_at").notNull(),
   },
   (table) => [
+    index("idx_leads_identity_id").on(table.identityId),
     index("idx_leads_status").on(table.status),
     index("idx_leads_created_at").on(table.createdAt),
-    index("idx_leads_phone").on(table.phone),
+    check("check_leads_status", sql`${table.status} IN ('NEW', 'CONTACTED', 'SURVEY_SCHEDULED', 'QUOTED', 'WON', 'LOST')`),
   ]
 );
 

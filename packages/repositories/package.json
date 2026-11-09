@@ -5,7 +5,10 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
+    "build": "tsc --noEmit",
     "test": "node --test test/*.test.mjs",
+    "test:adversarial": "node --test test/adversarial-*.test.mjs",
+    "test:unit": "node --test test/party-media-schema.test.mjs test/uuid-v7.test.mjs",
     "db:generate": "drizzle-kit generate"
   },
   "exports": {

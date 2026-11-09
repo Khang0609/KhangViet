@@ -1,10 +1,11 @@
-import { sqliteTable, text, index } from "drizzle-orm/sqlite-core";
-import type { ProjectGalleryItem } from "@khangviet/types";
+import { sqliteTable, text, integer, index, check } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
+import type { ProjectStatus } from "@khangviet/types";
+import { identitiesTable } from "./identities.schema";
 
 /**
- * Bảng Projects lưu trữ các công trình kiến trúc / dự án tiêu biểu.
- * Cột mảng phức tạp (materials, engineeringNotes, gallery) được lưu dạng JSON text
- * với chế độ mode: 'json' để Drizzle tự động parse/stringify an toàn.
+ * Bảng projects: Lưu trữ thông tin dự án/công trình kiến trúc tiêu biểu.
+ * Chuẩn hóa 3NF: Loại bỏ gallery JSON, year chuyển sang integer có check constraint.
  */
 export const projectsTable = sqliteTable(
   "projects",
@@ -14,8 +15,10 @@ export const projectsTable = sqliteTable(
     title: text("title").notNull(),
     subtitle: text("subtitle").notNull(),
     client: text("client").notNull(),
+    clientIdentityId: text("client_identity_id")
+      .references(() => identitiesTable.id, { onDelete: "set null" }),
     locations: text("locations", { mode: "json" }).$type<string[]>().notNull(),
-    year: text("year").notNull(),
+    year: integer("year").notNull(),
     categoryTag: text("category_tag").notNull(),
     scaleMetric: text("scale_metric").notNull(),
     materials: text("materials", { mode: "json" }).$type<string[]>().notNull(),
@@ -24,13 +27,16 @@ export const projectsTable = sqliteTable(
       .notNull(),
     summary: text("summary").notNull(),
     coverImage: text("cover_image").notNull(),
-    gallery: text("gallery", { mode: "json" })
-      .$type<ProjectGalleryItem[]>()
-      .notNull(),
+    status: text("status").$type<ProjectStatus>().notNull().default("PUBLISHED"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: text("created_at").notNull(),
+    updatedAt: text("updated_at").notNull(),
   },
   (table) => [
-    index("idx_projects_code").on(table.code),
     index("idx_projects_category").on(table.categoryTag),
+    index("idx_projects_status").on(table.status),
+    check("projects_year_range", sql`${table.year} >= 1990 AND ${table.year} <= 2100`),
+    check("check_projects_status", sql`${table.status} IN ('DRAFT', 'PUBLISHED', 'ARCHIVED')`),
   ]
 );
 
