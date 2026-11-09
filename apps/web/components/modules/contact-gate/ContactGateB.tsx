@@ -1,9 +1,11 @@
 import React from "react";
 import { DraftingCompass, Mail, Upload } from "lucide-react";
-import { COMPANY_LEGAL_INFO } from "@/data/khangVietData";
+import { useLegalInfo } from "@/components/contexts/LandingContext";
 import PhoneCallButton from "../../ui/PhoneCallButton";
 
 export const ContactGateB: React.FC = () => {
+  const legal = useLegalInfo();
+
   return (
     <div className="border-t border-white/8 bg-(--bg-surface) p-6 md:p-10 lg:border-t-0">
       <div className="flex items-center justify-between gap-4">
@@ -32,21 +34,21 @@ export const ContactGateB: React.FC = () => {
           Cổng upload trực tiếp đang hoàn thiện. Vui lòng gửi email hồ sơ:
         </p>
         <a
-          href={`mailto:${COMPANY_LEGAL_INFO.email}`}
+          href={`mailto:${legal.email}`}
           className="mt-3 inline-flex cursor-pointer items-center gap-2 border border-(--border-bronze-subtle) px-4 py-2.5 text-xs font-semibold tracking-wider text-(--accent-bronze) uppercase transition-colors hover:bg-(--accent-bronze) hover:text-black"
         >
           <Mail className="h-4 w-4" />
-          Gửi email: {COMPANY_LEGAL_INFO.email}
+          Gửi email: {legal.email}
         </a>
       </div>
 
       <div className="mt-5 flex items-center justify-between gap-4 border-t border-white/8 pt-5">
         <div>
           <p className="text-[10px] tracking-wider text-(--text-secondary) uppercase">Liên hệ điều hành trực tiếp</p>
-          <p className="font-syne mt-1 text-lg font-bold">Ông Trần Xuân Đông</p>
+          <p className="font-syne mt-1 text-lg font-bold">Ông {legal.director}</p>
           <p className="text-xs text-(--accent-bronze)">Giám Đốc Điều Hành</p>
         </div>
-        <PhoneCallButton variant="icon-only" />
+        <PhoneCallButton variant="icon-only" phoneNumber={legal.hotline} />
       </div>
     </div>
   );

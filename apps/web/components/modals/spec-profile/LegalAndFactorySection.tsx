@@ -1,8 +1,11 @@
 import React from 'react';
 import { Building2, ShieldCheck } from 'lucide-react';
-import { COMPANY_LEGAL_INFO, PRODUCTION_DIVISIONS } from '@/data/khangVietData';
+import { PRODUCTION_DIVISIONS } from '@/data/khangVietData';
+import { useLegalInfo } from '@/components/contexts/LandingContext';
 
 export const LegalAndFactorySection: React.FC = () => {
+  const legal = useLegalInfo();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="p-6 bg-(--bg-obsidian) border border-white/8 space-y-4">
@@ -12,23 +15,23 @@ export const LegalAndFactorySection: React.FC = () => {
         <dl className="space-y-3 text-sm">
           <div className="flex justify-between py-2 border-b border-white/5">
             <dt className="text-(--text-secondary)">Tên viết tắt:</dt>
-            <dd className="text-(--text-primary) font-medium">{COMPANY_LEGAL_INFO.shortName}</dd>
+            <dd className="text-(--text-primary) font-medium">{legal.shortName}</dd>
           </div>
           <div className="flex justify-between py-2 border-b border-white/5">
             <dt className="text-(--text-secondary)">Mã số thuế / GPKD:</dt>
-            <dd className="font-mono-tech text-(--accent-bronze) font-semibold">{COMPANY_LEGAL_INFO.taxId}</dd>
+            <dd className="font-mono-tech text-(--accent-bronze) font-semibold">{legal.taxId}</dd>
           </div>
           <div className="flex justify-between py-2 border-b border-white/5">
             <dt className="text-(--text-secondary)">Ngày cấp phép:</dt>
-            <dd className="text-(--text-primary)">{COMPANY_LEGAL_INFO.licenseDate} (Sở KH&ĐT TP.HCM)</dd>
+            <dd className="text-(--text-primary)">{legal.licenseDate} ({legal.licenseIssuer || "Sở KH&ĐT TP.HCM"})</dd>
           </div>
           <div className="flex justify-between py-2 border-b border-white/5">
             <dt className="text-(--text-secondary)">Đại diện pháp luật:</dt>
-            <dd className="text-(--text-primary) font-semibold">Ông {COMPANY_LEGAL_INFO.director} — Giám Đốc</dd>
+            <dd className="text-(--text-primary) font-semibold">Ông {legal.director} — Giám Đốc</dd>
           </div>
           <div className="flex justify-between py-2">
             <dt className="text-(--text-secondary)">Hotline điều hành:</dt>
-            <dd className="font-mono-tech text-(--accent-bronze)">{COMPANY_LEGAL_INFO.hotline}</dd>
+            <dd className="font-mono-tech text-(--accent-bronze)">{legal.hotline}</dd>
           </div>
         </dl>
       </div>
@@ -38,7 +41,7 @@ export const LegalAndFactorySection: React.FC = () => {
           <ShieldCheck className="w-4 h-4" /> 02. Tổ Hợp Xưởng Sản Xuất Trực Tiếp
         </div>
         <p className="text-sm text-(--text-primary) leading-relaxed">
-          Địa chỉ nhà xưởng: <span className="text-(--accent-bronze) font-medium">{COMPANY_LEGAL_INFO.factoryAddress}</span>
+          Địa chỉ nhà xưởng: <span className="text-(--accent-bronze) font-medium">{legal.factoryAddress}</span>
         </p>
         <div className="grid grid-cols-2 gap-3 pt-2">
           {PRODUCTION_DIVISIONS.map((div) => (
