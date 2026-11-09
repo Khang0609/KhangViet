@@ -7,6 +7,12 @@ description: "Bắt buộc tuân thủ khi tạo mới, tái cấu trúc hoặc 
 
 Tài liệu này là ranh giới bắt buộc (Hard Constraints) cho AI khi sinh mã nguồn. Không được vi phạm bất kỳ điều khoản nào dưới đây trừ khi có chỉ định rõ ràng từ Senior Dev.
 
+> [!IMPORTANT] Phạm Vi Áp Dụng (Scope of Impact - Zero Unsolicited Changes)
+> - Quy chuẩn này **CHỈ ÁP DỤNG** cho:
+>   1. Mã nguồn được **TẠO MỚI**.
+>   2. Module/File mà người dùng **TRỰC TIẾP YÊU CẦU REFACTOR**.
+> - **CẤM TUYỆT ĐỐI:** Tự ý rà soát, tái cấu trúc hoặc tách nhỏ các file/module cũ đang hoạt động ổn định nếu task hiện tại không yêu cầu sửa đổi chúng. Luôn giữ phạm vi thay đổi (blast radius) ở mức tối thiểu.
+
 ---
 
 ## 1. Screaming Architecture & Package by Feature
@@ -44,12 +50,26 @@ Mỗi module phải kiểm soát chặt chẽ điểm truy cập ngoại vi đ�
 
 ---
 
-## 4. Giới Hạn Kích Thước Code (Hard Limits)
+## 4. Giới Hạn Kích Thước Code Thực Tế (Pragmatic Boundaries & High Cohesion)
 
-- **Độ dài File:** Tối đa **100 dòng**. Nếu file chạm mốc 90 dòng:
-  - Tách sub-components ra file riêng (cùng cấp thư mục).
-  - Tách hooks/helpers ra file riêng (cùng cấp thư mục).
-- **Độ dài Hàm / Method:** Tối đa **35 dòng**. Một hàm chỉ làm đúng một việc duy nhất. Nếu hàm có nhiều hơn 2 cấp thụt lề (`nested ifs/loops`), phải tách hàm phụ.
+Tránh bẫy "Tách file mù quáng" (Blind Decoupling / Shotgun Surgery). Mục tiêu cao nhất là **tính mạch lạc của nghiệp vụ** và **sự gắn kết chặt chẽ (High Cohesion)**.
+
+### 4.1. Độ Dài File
+- **Mức lý tưởng:** **100 - 200 dòng**.
+- **Mức trần chấp nhận được (Hard Ceiling):** **250 dòng**.
+- **Nguyên tắc Colocation (Đặt cùng chỗ):** 
+  - Các Schema (Drizzle/Zod), Type/DTO, Mappers, hoặc sub-views/helpers nhỏ liên quan mật thiết đến cùng một nghiệp vụ ĐƯỢC PHÉP nằm chung trong một file để giữ luồng tư duy liền mạch, đọc từ trên xuống dưới hiểu ngay.
+  - **Chỉ tách file khi:**
+    1. File chạm ngưỡng cảnh báo **200 - 250 dòng**.
+    2. Thành phần con thực sự có nhu cầu tái sử dụng ở module khác.
+    3. File gánh vác quá nhiều trách nhiệm hỗn tạp (vi phạm Single Responsibility: vừa fetch mạng, vừa quản lý state lớn, vừa render layout phức tạp).
+
+### 4.2. Độ Dài Hàm / Method
+- **Mức lý tưởng:** **<= 45 dòng**.
+- **Mức trần chấp nhận được:** **70 dòng** đối với các hàm luồng tuần tự phẳng (Sequential Pipeline, DB Transactions, hoặc React Component render blocks).
+- **Trọng tâm là Cyclomatic Complexity (Độ phức tạp phân nhánh):**
+  - Không máy móc ngắt hàm khi luồng logic chạy thẳng (linear / declarative / early returns).
+  - Bắt buộc tách hàm khi có **hơn 2 cấp thụt lề lồng nhau** (`nested ifs/loops`) hoặc khi một logic tính toán phức tạp có thể cô lập thành hàm thuần khiết (pure function) để viết test riêng.
 
 ---
 
