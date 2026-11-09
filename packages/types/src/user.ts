@@ -3,9 +3,10 @@ import { z } from "zod";
 /**
  * Phân quyền tài khoản trong hệ thống Khang Việt Design.
  * - ADMIN: Quản trị viên quản lý CMS, leads và cấu hình.
+ * - STAFF: Nhân viên tư vấn, xử lý CRM và quản lý media.
  * - CUSTOMER: Khách hàng sử dụng dịch vụ và theo dõi tiến độ.
  */
-export const UserRoleSchema = z.enum(["ADMIN", "CUSTOMER"]);
+export const UserRoleSchema = z.enum(["ADMIN", "STAFF", "CUSTOMER"]);
 export type UserRole = z.infer<typeof UserRoleSchema>;
 
 /**

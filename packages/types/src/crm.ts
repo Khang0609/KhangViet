@@ -40,3 +40,22 @@ export const LeadFilterSchema = z.object({
   search: z.string().optional(),
 });
 export type LeadFilter = z.infer<typeof LeadFilterSchema>;
+
+export const LeadActivityActionTypeSchema = z.enum([
+  "NOTE",
+  "CALL",
+  "EMAIL",
+  "SURVEY",
+  "STATUS_CHANGE",
+]);
+export type LeadActivityActionType = z.infer<typeof LeadActivityActionTypeSchema>;
+
+export const LeadActivitySchema = z.object({
+  id: z.string(),
+  leadId: z.string(),
+  staffIdentityId: z.string().optional().nullable(),
+  actionType: z.string(),
+  content: z.string(),
+  createdAt: z.string(),
+});
+export type LeadActivity = z.infer<typeof LeadActivitySchema>;
