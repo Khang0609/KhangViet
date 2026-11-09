@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "media-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA_BUCKET",
+      "bucket_name": "khangviet-media"
+    }
+  ],
+  "vars": {
+    "NODE_ENV": "production",
+    "PUBLIC_R2_URL": "https://media.khangviet.vn",
+    "MAX_FILE_SIZE_BYTES": "10485760",
+    "WEB_APP_URL": "https://khangviet.vn"
+  }
+}
