@@ -12,6 +12,6 @@
   ],
   "vars": {
     "NODE_ENV": "production",
-    "WEB_APP_URL": "https://khang-viet-ju5sb2vw0-khangs-projects-1a7e2aab.vercel.app",
+    "WEB_APP_URL": "https://khang-viet-nwgiyco2m-khangs-projects-1a7e2aab.vercel.app",
   },
 }
