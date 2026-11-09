@@ -12,7 +12,7 @@ export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(null);
     setIsLoading(true);
@@ -39,35 +39,35 @@ export function LoginForm() {
       )}
 
       <div className="space-y-1.5">
-        <label className="block text-xs font-medium text-(--text-secondary) uppercase tracking-wider">
+        <label className="block text-xs font-medium tracking-wider text-(--text-secondary) uppercase">
           Email
         </label>
         <div className="relative">
-          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-(--text-secondary)" />
+          <Mail className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-(--text-secondary)" />
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="admin@khangviet.vn"
-            className="w-full rounded-lg border border-white/10 bg-(--bg-obsidian) py-2.5 pl-10 pr-3 text-sm text-(--text-primary) placeholder:text-white/20 focus:border-[#f58633] focus:ring-1 focus:ring-[#f58633] outline-hidden transition-colors"
+            className="w-full rounded-lg border border-white/10 bg-(--bg-obsidian) py-2.5 pr-3 pl-10 text-sm text-(--text-primary) outline-hidden transition-colors placeholder:text-white/20 focus:border-(--accent) focus:outline-1 focus:outline-(--accent)"
           />
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-xs font-medium text-(--text-secondary) uppercase tracking-wider">
+        <label className="block text-xs font-medium tracking-wider text-(--text-secondary) uppercase">
           Mật khẩu
         </label>
         <div className="relative">
-          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-(--text-secondary)" />
+          <Lock className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-(--text-secondary)" />
           <input
             type="password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="w-full rounded-lg border border-white/10 bg-(--bg-obsidian) py-2.5 pl-10 pr-3 text-sm text-(--text-primary) placeholder:text-white/20 focus:border-[#f58633] focus:ring-1 focus:ring-[#f58633] outline-hidden transition-colors"
+            className="w-full rounded-lg border border-white/10 bg-(--bg-obsidian) py-2.5 pr-3 pl-10 text-sm text-(--text-primary) outline-hidden transition-colors placeholder:text-white/20 focus:border-(--accent) focus:outline-1 focus:outline-(--accent)"
           />
         </div>
       </div>
@@ -75,7 +75,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#f58633] px-4 py-3 text-sm font-medium text-white shadow-lg shadow-[#f58633]/20 hover:bg-[#ff9547] active:bg-[#e07525] focus-visible:outline-hidden disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+        className="bg-brand shadow-brand/20 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg transition-all hover:bg-[#ff9547] focus-visible:outline-hidden active:bg-[#e07525] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isLoading ? (
           <>

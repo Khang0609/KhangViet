@@ -26,7 +26,7 @@ export const ProjectFormModal: React.FC<Props> = ({
     setFormData((prev) => ({ ...prev, [field]: val }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
     await onSave(formData);

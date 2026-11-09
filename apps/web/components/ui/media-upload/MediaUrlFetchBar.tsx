@@ -50,7 +50,7 @@ export const MediaUrlFetchBar: React.FC<MediaUrlFetchBarProps> = ({
 }) => {
   const [inputUrl, setInputUrl] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmed = inputUrl.trim();
     if (!trimmed) return;

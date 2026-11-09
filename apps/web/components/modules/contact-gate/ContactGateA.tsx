@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { SubmitEvent, useState } from "react";
 import { Building2, Loader2, Send } from "lucide-react";
 import PhoneCallButton from "../../ui/PhoneCallButton";
 import { ContactSuccessView } from "./ContactSuccessView";
@@ -11,7 +11,7 @@ export const ContactGateA: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const submitContact = async (event: FormEvent<HTMLFormElement>) => {
+  const submitContact = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
     setErrorMessage(null);
