@@ -3,7 +3,7 @@
 import React from 'react';
 import { Layers3 } from 'lucide-react';
 import type { CompanyLegalInfo } from '@khangviet/types';
-import { COMPANY_LEGAL_INFO } from '@/data/khangVietData';
+import { useLegalInfo } from '@/components/contexts/LandingContext';
 import KhangVietLogo from '@/ui/KhangVietLogo';
 import { useModalContext } from '../modals/modalContext';
 
@@ -13,11 +13,12 @@ export interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({
-  legalInfo = COMPANY_LEGAL_INFO,
+  legalInfo,
   onOpenSpecWireframe,
 }) => {
   const { openProfileModal } = useModalContext();
-  const activeLegal = legalInfo || COMPANY_LEGAL_INFO;
+  const contextLegal = useLegalInfo();
+  const activeLegal = legalInfo || contextLegal;
 
   const handleOpenSpec = () => {
     if (onOpenSpecWireframe) onOpenSpecWireframe();

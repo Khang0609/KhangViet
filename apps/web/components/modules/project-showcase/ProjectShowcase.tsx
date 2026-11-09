@@ -1,6 +1,6 @@
 import React from "react";
-import { FEATURED_PROJECTS } from "@/data/khangVietData";
-import { type FeaturedProject } from "./type";
+import type { FeaturedProject } from "@khangviet/types";
+import { useFeaturedProjects } from "@/components/contexts/LandingContext";
 import { SectionHeading } from "../../ui/SectionHeading";
 import { ProjectShowcaseGallery } from "./ProjectShowcaseGallery";
 import { ProjectShowcaseDetails } from "./ProjectShowcaseDetails";
@@ -11,10 +11,11 @@ export interface ProjectShowcaseProps {
 }
 
 export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
-  projects = FEATURED_PROJECTS,
+  projects,
 }) => {
+  const contextProjects = useFeaturedProjects();
   const activeProjects =
-    projects && projects.length > 0 ? projects : FEATURED_PROJECTS;
+    projects && projects.length > 0 ? projects : contextProjects;
 
   return (
     <section

@@ -28,7 +28,7 @@ adminCmsRouter.openapi(applyPendingChangesRoute, async (c) => {
   const result = await getContextRepos(c).cms.applyPendingChanges();
   if (result.appliedCount > 0) {
     const { triggerWebRevalidation } = await import("../services/revalidateNotifier");
-    await triggerWebRevalidation({ tag: "cms-landing" });
+    await triggerWebRevalidation({ tag: "cms-landing" }, c.env);
   }
   const message = result.appliedCount > 0
     ? `Đã phát hành thành công ${result.appliedCount} thay đổi!`

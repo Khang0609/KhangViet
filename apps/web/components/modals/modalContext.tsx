@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { type FeaturedProject } from '@/data/khangVietData';
+import type { FeaturedProject } from '@khangviet/types';
 
 export type ProfileModalType = 'profile' | 'wireframe' | null;
 

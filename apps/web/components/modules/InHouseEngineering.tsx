@@ -1,7 +1,7 @@
 import React from "react";
 import { DraftingCompass, MapPin, ShieldCheck } from "lucide-react";
 import type { CompanyLegalInfo, ProductionDivision } from "@khangviet/types";
-import { COMPANY_LEGAL_INFO, PRODUCTION_DIVISIONS } from "@/data/khangVietData";
+import { useLegalInfo, useProductionDivisions } from "@/components/contexts/LandingContext";
 import { SectionHeading } from "../ui/SectionHeading";
 import { ProductionDivisionCard } from "./ProductionDivisionCard";
 
@@ -11,11 +11,20 @@ export interface InHouseEngineeringProps {
 }
 
 export const InHouseEngineering: React.FC<InHouseEngineeringProps> = ({
-  divisions = PRODUCTION_DIVISIONS,
-  legalInfo = COMPANY_LEGAL_INFO,
+  divisions,
+  legalInfo,
 }) => {
-  const activeDivisions = divisions && divisions.length > 0 ? divisions : PRODUCTION_DIVISIONS;
-  const activeLegal = legalInfo || COMPANY_LEGAL_INFO;
+  const contextDivisions = useProductionDivisions();
+  const contextLegal = useLegalInfo();
+
+  const activeDivisions =
+    divisions && divisions.length > 0 ? divisions : contextDivisions;
+  const activeLegal = legalInfo || contextLegal;
+
+  const totalHeadcount = activeDivisions.reduce((sum, div) => {
+    const num = parseInt(div.headcount || "0", 10);
+    return sum + (Number.isNaN(num) ? 0 : num);
+  }, 0) || 24;
 
   return (
     <section id="nang-luc" className="bg-blueprint-grid scroll-mt-20 py-24 md:py-32">
@@ -84,7 +93,7 @@ export const InHouseEngineering: React.FC<InHouseEngineeringProps> = ({
               <div className="flex shrink-0 items-center gap-3">
                 <ShieldCheck className="h-6 w-6 text-(--accent-bronze)" />
                 <span className="font-mono-tech text-[10px] tracking-wider text-(--text-secondary) uppercase">
-                  24 nhân sự
+                  {totalHeadcount} nhân sự
                   <br />
                   trực tiếp biên chế
                 </span>

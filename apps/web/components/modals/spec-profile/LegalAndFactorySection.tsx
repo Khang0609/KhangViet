@@ -1,10 +1,10 @@
 import React from 'react';
 import { Building2, ShieldCheck } from 'lucide-react';
-import { PRODUCTION_DIVISIONS } from '@/data/khangVietData';
-import { useLegalInfo } from '@/components/contexts/LandingContext';
+import { useLegalInfo, useProductionDivisions } from '@/components/contexts/LandingContext';
 
 export const LegalAndFactorySection: React.FC = () => {
   const legal = useLegalInfo();
+  const divisions = useProductionDivisions();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -44,7 +44,7 @@ export const LegalAndFactorySection: React.FC = () => {
           Địa chỉ nhà xưởng: <span className="text-(--accent-bronze) font-medium">{legal.factoryAddress}</span>
         </p>
         <div className="grid grid-cols-2 gap-3 pt-2">
-          {PRODUCTION_DIVISIONS.map((div) => (
+          {divisions.map((div) => (
             <div key={div.code} className="p-3 bg-(--bg-surface) border border-white/6">
               <div className="font-syne text-xl font-bold text-(--accent-bronze)">
                 {div.headcount} <span className="text-xs font-sans font-normal text-(--text-secondary)">nhân sự</span>

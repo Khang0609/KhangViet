@@ -3,7 +3,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { HeroSlide } from "@khangviet/types";
-import { HERO_SLIDES } from "@/data/khangVietData";
+import { useHeroSlides } from "@/components/contexts/LandingContext";
 import { useCarousel } from "@/hooks/useCarousel";
 
 export interface HeroCarouselVisualProps {
@@ -11,9 +11,11 @@ export interface HeroCarouselVisualProps {
 }
 
 export const HeroCarouselVisual: React.FC<HeroCarouselVisualProps> = ({
-  slides = HERO_SLIDES,
+  slides,
 }) => {
-  const activeSlides = slides && slides.length > 0 ? slides : HERO_SLIDES;
+  const contextSlides = useHeroSlides();
+  const activeSlides =
+    slides && slides.length > 0 ? slides : contextSlides;
   const {
     currentIndex: heroSlide,
     next,

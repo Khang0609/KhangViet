@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { CoreDiscipline } from "@khangviet/types";
-import { CORE_DISCIPLINES } from "@/data/khangVietData";
+import { useCoreDisciplines } from "@/components/contexts/LandingContext";
 import { SectionHeading } from "../ui/SectionHeading";
 
 export interface DisciplinesSectionProps {
@@ -9,10 +9,11 @@ export interface DisciplinesSectionProps {
 }
 
 export const DisciplinesSection: React.FC<DisciplinesSectionProps> = ({
-  disciplines = CORE_DISCIPLINES,
+  disciplines,
 }) => {
+  const contextDisciplines = useCoreDisciplines();
   const activeDisciplines =
-    disciplines && disciplines.length > 0 ? disciplines : CORE_DISCIPLINES;
+    disciplines && disciplines.length > 0 ? disciplines : contextDisciplines;
 
   return (
     <section id="linh-vuc" className="scroll-mt-20 py-24 md:py-32">

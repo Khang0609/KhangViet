@@ -28,10 +28,11 @@ export async function POST(request: NextRequest) {
   const path = request.nextUrl.searchParams.get("path");
 
   try {
-    revalidateTag(tag, "max");
+    revalidateTag(tag, { expire: 0 });
     if (path) {
       revalidatePath(path);
     } else {
+      revalidatePath("/", "layout");
       revalidatePath("/", "page");
     }
 

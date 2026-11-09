@@ -1,13 +1,14 @@
 import React from 'react';
 import type { PartnerBrand } from '@khangviet/types';
-import { PARTNER_BRANDS } from '@/data/khangVietData';
+import { usePartnerBrands } from '@/components/contexts/LandingContext';
 
 export interface TrustMarqueeProps {
   brands?: PartnerBrand[];
 }
 
-export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands = PARTNER_BRANDS }) => {
-  const activeBrands = brands && brands.length > 0 ? brands : PARTNER_BRANDS;
+export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands }) => {
+  const contextBrands = usePartnerBrands();
+  const activeBrands = brands && brands.length > 0 ? brands : contextBrands;
 
   return (
     <section className="overflow-hidden border-b border-white/8 bg-[#14161a] py-8" aria-label="Đối tác tiêu biểu">
