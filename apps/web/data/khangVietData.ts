@@ -15,7 +15,7 @@ export const HERO_SLIDES = [
   },
   {
     id: "hero-bidv-facade",
-    image: "/image/projects/bidv/bidv3.JPG",
+    image: "/image/projects/bidv/bidv3.jpg",
     tag: "PROJECT ARCHIVE // 02 — CORPORATE BANKING ARCHITECTURAL IDENTITY",
     title: "Hệ Thống Nhận Diện Chuỗi Ngân Hàng TMCP BIDV",
     location: "CN Hàm Nghi • CN Phú Mỹ Hưng • CN Tây Sài Gòn",
@@ -35,7 +35,7 @@ export const HERO_SLIDES = [
   },
   {
     id: "hero-bidv-interior",
-    image: "/image/projects/bidv/bidv5.JPG",
+    image: "/image/projects/bidv/bidv5.jpg",
     tag: "PROJECT ARCHIVE // 04 — TRANSACTION HALL & LIGHTBOX SYSTEM",
     title: "Không Gian Sảnh Giao Dịch & Hộp Đèn Siêu Mỏng BIDV",
     location: "Chi Nhánh TP. Hồ Chí Minh",
@@ -178,11 +178,11 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     ],
     summary:
       "Khang Việt tự hào là đối tác trực tiếp thực hiện khảo sát, thiết kế bản vẽ thi công (Shop Drawing) và sản xuất - lắp đặt trọn gói hệ thống bảng hiệu mặt tiền, biển vẫy, cụm hộp đèn poster sau quầy giao dịch và bộ vật phẩm nhận diện nội khu cho hàng loạt Chi nhánh và Phòng giao dịch BIDV tại TP.HCM.",
-    coverImage: "/image/projects/bidv/bidv3.JPG",
+    coverImage: "/image/projects/bidv/bidv3.jpg",
     gallery: [
       {
         id: "bidv-g1",
-        src: "/image/projects/bidv/bidv3.JPG",
+        src: "/image/projects/bidv/bidv3.jpg",
         caption:
           "Mặt dựng Aluminium & Hệ lam nhôm kiến trúc mặt tiền trụ sở Chi nhánh BIDV",
         location: "TP. Hồ Chí Minh",
@@ -191,7 +191,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
       },
       {
         id: "bidv-g2",
-        src: "/image/projects/bidv/bidv2.JPG",
+        src: "/image/projects/bidv/bidv2.jpg",
         caption:
           "Tổ hợp bảng hiệu mặt tiền chính, biển trên mái (Rooftop Sign) & PGD liên hoàn",
         location: "Chi nhánh TP.HCM",
@@ -200,7 +200,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
       },
       {
         id: "bidv-g3",
-        src: "/image/projects/bidv/bidv1.JPG",
+        src: "/image/projects/bidv/bidv1.jpg",
         caption: "Biển tên Phòng Giao Dịch Tân Tạo — Chi nhánh Tây Sài Gòn",
         location: "Lô 2-4-6 Đường C, KCN Tân Tạo, Q. Bình Tân",
         spec: "Mica xuyên sáng, chữ nổi 3D sắc nét, khung hợp kim nhôm",
@@ -208,7 +208,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
       },
       {
         id: "bidv-g4",
-        src: "/image/projects/bidv/bidv5.JPG",
+        src: "/image/projects/bidv/bidv5.jpg",
         caption:
           "Cụm 3 hộp đèn quảng cáo siêu mỏng lắp đặt phía sau quầy giao dịch viên",
         location: "Không gian nội thất PGD BIDV",
