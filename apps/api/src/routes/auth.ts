@@ -27,11 +27,14 @@ authRouter.openapi(loginRoute, async (c) => {
     return c.json({ success: false as const, error: result.error }, 401);
   }
 
+  const isProduction =
+    c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
+
   setCookie(c, "refreshToken", result.data.refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: isProduction,
     sameSite: "Lax",
-    path: "/api/auth",
+    path: "/",
     maxAge: 7 * 24 * 60 * 60,
   });
 
@@ -67,11 +70,14 @@ authRouter.openapi(refreshRoute, async (c) => {
     return c.json({ success: false as const, error: result.error }, 401);
   }
 
+  const isProduction =
+    c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
+
   setCookie(c, "refreshToken", result.data.refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: isProduction,
     sameSite: "Lax",
-    path: "/api/auth",
+    path: "/",
     maxAge: 7 * 24 * 60 * 60,
   });
 
