@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { DraftingCompass, Mail, Upload } from "lucide-react";
 import { useLegalInfo } from "@/components/contexts/LandingContext";
