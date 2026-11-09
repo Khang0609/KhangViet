@@ -1,6 +1,8 @@
-import React from 'react';
-import type { PartnerBrand } from '@khangviet/types';
-import { usePartnerBrands } from '@/components/contexts/LandingContext';
+"use client";
+
+import React from "react";
+import type { PartnerBrand } from "@khangviet/types";
+import { usePartnerBrands } from "@/components/contexts/LandingContext";
 
 export interface TrustMarqueeProps {
   brands?: PartnerBrand[];
@@ -11,10 +13,13 @@ export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands }) => {
   const activeBrands = brands && brands.length > 0 ? brands : contextBrands;
 
   return (
-    <section className="overflow-hidden border-b border-white/8 bg-[#14161a] py-8" aria-label="Đối tác tiêu biểu">
+    <section
+      className="overflow-hidden border-b border-white/8 bg-[#14161a] py-8"
+      aria-label="Đối tác tiêu biểu"
+    >
       <div className="mb-6 flex items-center justify-center gap-3 px-5">
         <span className="h-px w-8 bg-white/15" />
-        <span className="font-mono-tech text-[9px] uppercase tracking-[0.25em] text-(--text-secondary)">
+        <span className="font-mono-tech text-[9px] tracking-[0.25em] text-(--text-secondary) uppercase">
           Trusted by leading corporations
         </span>
         <span className="h-px w-8 bg-white/15" />
@@ -28,7 +33,7 @@ export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands }) => {
             <span className="font-syne text-sm font-bold text-(--text-secondary) transition-colors group-hover:text-(--text-primary)">
               {partner.name}
             </span>
-            <span className="font-mono-tech text-[8px] uppercase tracking-wider text-white/30">
+            <span className="font-mono-tech text-[8px] tracking-wider text-white/30 uppercase">
               {partner.category}
             </span>
           </div>

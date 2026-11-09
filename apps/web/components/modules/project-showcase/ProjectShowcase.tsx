@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import type { FeaturedProject } from "@khangviet/types";
 import { useFeaturedProjects } from "@/components/contexts/LandingContext";

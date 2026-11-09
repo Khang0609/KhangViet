@@ -1,7 +1,12 @@
+"use client";
+
 import React from "react";
 import { DraftingCompass, MapPin, ShieldCheck } from "lucide-react";
 import type { CompanyLegalInfo, ProductionDivision } from "@khangviet/types";
-import { useLegalInfo, useProductionDivisions } from "@/components/contexts/LandingContext";
+import {
+  useLegalInfo,
+  useProductionDivisions,
+} from "@/components/contexts/LandingContext";
 import { SectionHeading } from "../ui/SectionHeading";
 import { ProductionDivisionCard } from "./ProductionDivisionCard";
 
@@ -21,13 +26,17 @@ export const InHouseEngineering: React.FC<InHouseEngineeringProps> = ({
     divisions && divisions.length > 0 ? divisions : contextDivisions;
   const activeLegal = legalInfo || contextLegal;
 
-  const totalHeadcount = activeDivisions.reduce((sum, div) => {
-    const num = parseInt(div.headcount || "0", 10);
-    return sum + (Number.isNaN(num) ? 0 : num);
-  }, 0) || 24;
+  const totalHeadcount =
+    activeDivisions.reduce((sum, div) => {
+      const num = parseInt(div.headcount || "0", 10);
+      return sum + (Number.isNaN(num) ? 0 : num);
+    }, 0) || 24;
 
   return (
-    <section id="nang-luc" className="bg-blueprint-grid scroll-mt-20 py-24 md:py-32">
+    <section
+      id="nang-luc"
+      className="bg-blueprint-grid scroll-mt-20 py-24 md:py-32"
+    >
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">

@@ -1,60 +1,88 @@
-import React from 'react';
-import { Building2, ShieldCheck } from 'lucide-react';
-import { useLegalInfo, useProductionDivisions } from '@/components/contexts/LandingContext';
+"use client";
+
+import React from "react";
+import { Building2, ShieldCheck } from "lucide-react";
+import {
+  useLegalInfo,
+  useProductionDivisions,
+} from "@/components/contexts/LandingContext";
 
 export const LegalAndFactorySection: React.FC = () => {
   const legal = useLegalInfo();
   const divisions = useProductionDivisions();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="p-6 bg-(--bg-obsidian) border border-white/8 space-y-4">
-        <div className="flex items-center gap-2 text-(--accent-bronze) text-xs font-mono-tech uppercase tracking-widest">
-          <Building2 className="w-4 h-4" /> 01. Thông Tin Pháp Lý Doanh Nghiệp
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="space-y-4 border border-white/8 bg-(--bg-obsidian) p-6">
+        <div className="font-mono-tech flex items-center gap-2 text-xs tracking-widest text-(--accent-bronze) uppercase">
+          <Building2 className="h-4 w-4" /> 01. Thông Tin Pháp Lý Doanh Nghiệp
         </div>
         <dl className="space-y-3 text-sm">
-          <div className="flex justify-between py-2 border-b border-white/5">
+          <div className="flex justify-between border-b border-white/5 py-2">
             <dt className="text-(--text-secondary)">Tên viết tắt:</dt>
-            <dd className="text-(--text-primary) font-medium">{legal.shortName}</dd>
+            <dd className="font-medium text-(--text-primary)">
+              {legal.shortName}
+            </dd>
           </div>
-          <div className="flex justify-between py-2 border-b border-white/5">
+          <div className="flex justify-between border-b border-white/5 py-2">
             <dt className="text-(--text-secondary)">Mã số thuế / GPKD:</dt>
-            <dd className="font-mono-tech text-(--accent-bronze) font-semibold">{legal.taxId}</dd>
+            <dd className="font-mono-tech font-semibold text-(--accent-bronze)">
+              {legal.taxId}
+            </dd>
           </div>
-          <div className="flex justify-between py-2 border-b border-white/5">
+          <div className="flex justify-between border-b border-white/5 py-2">
             <dt className="text-(--text-secondary)">Ngày cấp phép:</dt>
-            <dd className="text-(--text-primary)">{legal.licenseDate} ({legal.licenseIssuer || "Sở KH&ĐT TP.HCM"})</dd>
+            <dd className="text-(--text-primary)">
+              {legal.licenseDate} ({legal.licenseIssuer || "Sở KH&ĐT TP.HCM"})
+            </dd>
           </div>
-          <div className="flex justify-between py-2 border-b border-white/5">
+          <div className="flex justify-between border-b border-white/5 py-2">
             <dt className="text-(--text-secondary)">Đại diện pháp luật:</dt>
-            <dd className="text-(--text-primary) font-semibold">Ông {legal.director} — Giám Đốc</dd>
+            <dd className="font-semibold text-(--text-primary)">
+              Ông {legal.director} — Giám Đốc
+            </dd>
           </div>
           <div className="flex justify-between py-2">
             <dt className="text-(--text-secondary)">Hotline điều hành:</dt>
-            <dd className="font-mono-tech text-(--accent-bronze)">{legal.hotline}</dd>
+            <dd className="font-mono-tech text-(--accent-bronze)">
+              {legal.hotline}
+            </dd>
           </div>
         </dl>
       </div>
 
-      <div className="p-6 bg-(--bg-obsidian) border border-white/8 space-y-4">
-        <div className="flex items-center gap-2 text-(--accent-bronze) text-xs font-mono-tech uppercase tracking-widest">
-          <ShieldCheck className="w-4 h-4" /> 02. Tổ Hợp Xưởng Sản Xuất Trực Tiếp
+      <div className="space-y-4 border border-white/8 bg-(--bg-obsidian) p-6">
+        <div className="font-mono-tech flex items-center gap-2 text-xs tracking-widest text-(--accent-bronze) uppercase">
+          <ShieldCheck className="h-4 w-4" /> 02. Tổ Hợp Xưởng Sản Xuất Trực
+          Tiếp
         </div>
-        <p className="text-sm text-(--text-primary) leading-relaxed">
-          Địa chỉ nhà xưởng: <span className="text-(--accent-bronze) font-medium">{legal.factoryAddress}</span>
+        <p className="text-sm leading-relaxed text-(--text-primary)">
+          Địa chỉ nhà xưởng:{" "}
+          <span className="font-medium text-(--accent-bronze)">
+            {legal.factoryAddress}
+          </span>
         </p>
         <div className="grid grid-cols-2 gap-3 pt-2">
           {divisions.map((div) => (
-            <div key={div.code} className="p-3 bg-(--bg-surface) border border-white/6">
+            <div
+              key={div.code}
+              className="border border-white/6 bg-(--bg-surface) p-3"
+            >
               <div className="font-syne text-xl font-bold text-(--accent-bronze)">
-                {div.headcount} <span className="text-xs font-sans font-normal text-(--text-secondary)">nhân sự</span>
+                {div.headcount}{" "}
+                <span className="font-sans text-xs font-normal text-(--text-secondary)">
+                  nhân sự
+                </span>
               </div>
-              <div className="text-xs font-medium text-(--text-primary) mt-0.5">{div.name}</div>
+              <div className="mt-0.5 text-xs font-medium text-(--text-primary)">
+                {div.name}
+              </div>
             </div>
           ))}
         </div>
-        <div className="text-xs text-(--text-secondary) pt-1 border-t border-white/6">
-          Chỉ huy trực tiếp bởi đội ngũ Kỹ sư Kết cấu & Kiến trúc sư giàu kinh nghiệm thực chiến.
+        <div className="border-t border-white/6 pt-1 text-xs text-(--text-secondary)">
+          Chỉ huy trực tiếp bởi đội ngũ Kỹ sư Kết cấu & Kiến trúc sư giàu kinh
+          nghiệm thực chiến.
         </div>
       </div>
     </div>
@@ -62,4 +90,3 @@ export const LegalAndFactorySection: React.FC = () => {
 };
 
 export default LegalAndFactorySection;
-
