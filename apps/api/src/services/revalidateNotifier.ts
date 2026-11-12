@@ -42,13 +42,18 @@ export async function triggerWebRevalidation(
 
   for (const baseUrl of targetUrls) {
     const endpoint = `${baseUrl}/api/revalidate?secret=${encodeURIComponent(secret)}${tagParam}${pathParam}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1500);
+
     try {
       const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       if (res.ok) {
         const data = await res.json().catch(() => null);
@@ -57,6 +62,7 @@ export async function triggerWebRevalidation(
       }
       console.warn(`[ISR Revalidation] Warning: ${baseUrl} replied with status ${res.status}`);
     } catch {
+      clearTimeout(timeoutId);
       // Bỏ qua lỗi kết nối để thử endpoint tiếp theo
     }
   }

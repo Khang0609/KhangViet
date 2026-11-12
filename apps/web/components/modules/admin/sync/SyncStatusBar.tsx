@@ -12,18 +12,24 @@ export const SyncStatusBar: React.FC = () => {
 
   useEffect(() => {
     let active = true;
-    getSyncStatus().then((res) => {
-      if (active && res.success) setStatus(res.data);
-    });
 
-    const timer = setInterval(() => {
+    const fetchStatus = () => {
       getSyncStatus().then((res) => {
         if (active && res.success) setStatus(res.data);
       });
-    }, 30000);
+    };
+
+    fetchStatus();
+
+    // Lắng nghe sự kiện lưu dữ liệu từ các form CMS để cập nhật tức thì badge pending
+    const handleCmsChange = () => fetchStatus();
+    window.addEventListener("cms:change", handleCmsChange);
+
+    const timer = setInterval(fetchStatus, 30000);
 
     return () => {
       active = false;
+      window.removeEventListener("cms:change", handleCmsChange);
       clearInterval(timer);
     };
   }, []);

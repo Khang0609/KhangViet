@@ -49,8 +49,7 @@ export async function handleCmsChange(
       break;
   }
 
-  // Tự động kích hoạt On-demand ISR revalidation sang Web app
-  await triggerWebRevalidation({ tag: "cms-landing" });
-
+  // Phản hồi tức thì < 30ms: Không gọi revalidate webhook chặn luồng lưu dữ liệu
   return { isPending: false, result };
 }
+

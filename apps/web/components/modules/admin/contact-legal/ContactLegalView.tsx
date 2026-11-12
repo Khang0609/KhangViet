@@ -33,6 +33,7 @@ export const ContactLegalView: React.FC = () => {
     const res = await updateCompanyLegalInfo(data);
     if (res.success) {
       setFeedback({ type: "success", msg: "Đã lưu thông tin liên lạc & pháp lý thành công!" });
+      window.dispatchEvent(new CustomEvent("cms:change"));
     } else {
       setFeedback({ type: "error", msg: `Không thể lưu: ${res.error}` });
     }

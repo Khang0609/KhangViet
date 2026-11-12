@@ -37,13 +37,17 @@ export const ProjectListView: React.FC = () => {
     if (res.success) {
       setSelectedProject(null);
       reloadProjects();
+      window.dispatchEvent(new CustomEvent("cms:change"));
     }
   };
 
   const handleDelete = async (id: string) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa dự án này không?")) return;
     const res = await deleteProject(id);
-    if (res.success) reloadProjects();
+    if (res.success) {
+      reloadProjects();
+      window.dispatchEvent(new CustomEvent("cms:change"));
+    }
   };
 
   return (

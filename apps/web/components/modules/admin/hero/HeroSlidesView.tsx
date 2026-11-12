@@ -38,6 +38,9 @@ export const HeroSlidesView: React.FC = () => {
       isSuccess: res.success,
       text: res.success ? "Đã lưu slides thành công!" : `Lỗi: ${res.error}`,
     });
+    if (res.success) {
+      window.dispatchEvent(new CustomEvent("cms:change"));
+    }
     setSaving(false);
   };
 
