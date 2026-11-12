@@ -5,3 +5,4 @@ export * from "./MediaDropzoneView";
 export * from "./MediaPreviewCard";
 export * from "./MediaUrlFetchBar";
 export * from "./UniversalMediaUpload";
+export { ImageUploader } from "./UniversalMediaUpload";

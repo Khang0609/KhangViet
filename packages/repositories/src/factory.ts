@@ -2,6 +2,7 @@ import {
   ICmsRepository,
   ILeadRepository,
   IUserRepository,
+  ISessionRepository,
 } from "./interfaces";
 import { JsonCmsRepository } from "./json/JsonCmsRepository";
 import { JsonLeadRepository } from "./json/JsonLeadRepository";
@@ -13,11 +14,13 @@ import {
   D1LeadRepository,
   D1UserRepository,
 } from "./d1";
+import { D1SessionRepository } from "./d1/repositories/d1-session-repository";
 
 export interface Repositories {
   cms: ICmsRepository;
   lead: ILeadRepository;
   user: IUserRepository;
+  session?: ISessionRepository;
 }
 
 export type StorageDriver = "json" | "d1" | "sqlite";
@@ -39,6 +42,7 @@ export function getRepositories(
       cms: new D1CmsRepository(client),
       lead: new D1LeadRepository(client),
       user: new D1UserRepository(client),
+      session: new D1SessionRepository(client),
     };
   }
 

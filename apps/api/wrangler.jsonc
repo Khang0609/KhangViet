@@ -14,4 +14,9 @@
     "NODE_ENV": "production",
     "WEB_APP_URL": "https://khang-viet-gkn1k0esw-khangs-projects-1a7e2aab.vercel.app",
   },
+  "assets": {
+    "directory": "../web/out",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+  },
 }

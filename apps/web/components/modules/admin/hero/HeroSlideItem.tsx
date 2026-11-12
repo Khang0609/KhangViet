@@ -1,7 +1,7 @@
 import React from "react";
 import { Trash2 } from "lucide-react";
 import type { HeroSlide } from "@khangviet/types";
-import { ImageUrlInput } from "@/components/ui/ImageUrlInput";
+import { ImageUploader } from "@/components/ui/media-upload";
 
 interface Props {
   slide: HeroSlide;
@@ -57,7 +57,7 @@ export const HeroSlideItem: React.FC<Props> = ({ slide, index, onChange, onRemov
         />
       </div>
 
-      <ImageUrlInput
+      <ImageUploader
         label="URL Ảnh Nền (Background Image)"
         value={slide.image}
         onChange={(url) => onChange(index, "image", url)}

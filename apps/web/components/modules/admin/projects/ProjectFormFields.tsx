@@ -1,6 +1,6 @@
 import React from "react";
 import type { FeaturedProject } from "@khangviet/types";
-import { ImageUrlInput } from "@/components/ui/ImageUrlInput";
+import { ImageUploader } from "@/components/ui/media-upload";
 
 interface Props {
   data: FeaturedProject;
@@ -64,7 +64,7 @@ export const ProjectFormFields: React.FC<Props> = ({ data, onChange }) => {
         </div>
       </div>
 
-      <ImageUrlInput
+      <ImageUploader
         label="Ảnh Bìa Dự Án (Cover Image)"
         value={data.coverImage}
         onChange={(url) => onChange("coverImage", url)}

@@ -26,8 +26,16 @@ const DropzoneContainer: React.FC<{
   onPaste: (e: React.ClipboardEvent, folder: string) => void;
   onSelectFile: (file: File) => void; onFetch: (url: string) => void; onDirectApply: (url: string) => void;
 }> = ({ folder, isUploading, allowManualInput, onPaste, onSelectFile, onFetch, onDirectApply }) => (
-  <div tabIndex={0} onPaste={(e) => { if ((e.target as HTMLElement)?.tagName !== "INPUT") onPaste(e, folder); }} className="space-y-2 focus:outline-hidden">
+  <div tabIndex={0} onPaste={(e) => { if ((e.target as HTMLElement)?.tagName !== "INPUT") onPaste(e, folder); }} className="space-y-3 focus:outline-hidden">
     <MediaDropzoneView isUploading={isUploading} onFileSelected={onSelectFile} />
+    <div className="relative flex items-center justify-center py-0.5">
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-t border-white/8" />
+      </div>
+      <span className="relative bg-(--bg-surface) px-2 font-mono-tech text-[10px] tracking-wider text-white/40 uppercase">
+        HOẶC
+      </span>
+    </div>
     <MediaUrlFetchBar onFetch={onFetch} isLoading={isUploading} allowManualInput={allowManualInput} onDirectApply={onDirectApply} />
   </div>
 );
@@ -53,7 +61,7 @@ function useUniversalHandlers(
   return { ...upload, isReplacing, setIsReplacing, handleSelectFile, handleFetch, handleRemove, handleDirectApply };
 }
 
-export const UniversalMediaUpload: React.FC<UniversalMediaUploadProps> = ({
+export const ImageUploader: React.FC<UniversalMediaUploadProps> = ({
   label,
   value,
   onChange,
@@ -79,4 +87,5 @@ export const UniversalMediaUpload: React.FC<UniversalMediaUploadProps> = ({
   );
 };
 
-export default UniversalMediaUpload;
+export const UniversalMediaUpload = ImageUploader;
+export default ImageUploader;

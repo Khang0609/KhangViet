@@ -1,17 +1,18 @@
 import { DatabaseSync } from "node:sqlite";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const rootDir = process.cwd();
-const landingSeedData = JSON.parse(
-  fs.readFileSync(path.join(rootDir, "packages/data/src/seeds/landing-content.json"), "utf8")
-);
-const leadsSeedData = JSON.parse(
-  fs.readFileSync(path.join(rootDir, "packages/data/src/seeds/leads.json"), "utf8")
-);
-const usersSeedData = JSON.parse(
-  fs.readFileSync(path.join(rootDir, "packages/data/src/seeds/users.json"), "utf8")
-);
+// 1. Resolve & import trực tiếp file JSON thông qua package subpath export của @khangviet/data
+import landingSeedData from "@khangviet/data/seeds/landing-content.json" with { type: "json" };
+import leadsSeedData from "@khangviet/data/seeds/leads.json" with { type: "json" };
+import usersSeedData from "@khangviet/data/seeds/users.json" with { type: "json" };
+
+// 2. Định vị thư mục database D1 từ vị trí package @khangviet/data được module loader resolve
+const seedFileUrl = import.meta.resolve("@khangviet/data/seeds/landing-content.json");
+const seedFilePath = fileURLToPath(seedFileUrl);
+// Từ packages/data/src/seeds/... đi lên 4 cấp để ra root workspace
+const rootDir = path.resolve(path.dirname(seedFilePath), "../../../..");
 
 const dbDir = path.resolve(rootDir, "apps/api/.wrangler/state/v3/d1/miniflare-D1DatabaseObject");
 const sqliteFiles = fs.readdirSync(dbDir).filter(f => f.endsWith(".sqlite") && !f.startsWith("metadata"));

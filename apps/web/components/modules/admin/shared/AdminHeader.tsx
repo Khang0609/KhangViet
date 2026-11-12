@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink, ShieldCheck } from "lucide-react";
+import { ShieldCheck, LogOut } from "lucide-react";
+import { logoutUser } from "@/components/modules/auth/authService";
 
 /**
  * Header thanh thoát cho trang quản trị Khang Việt.
@@ -55,14 +56,15 @@ export const AdminHeader: React.FC = () => {
           VN Time: <span className="text-white/80">{currentTime}</span>
         </div>
 
-        <Link
-          href="/"
-          target="_blank"
-          className="flex items-center gap-1.5 rounded border border-white/10 bg-white/4 px-3 py-1.5 font-mono-tech text-xs text-white/80 transition-colors hover:border-(--accent-bronze) hover:text-white"
+        <button
+          type="button"
+          onClick={() => logoutUser()}
+          className="flex cursor-pointer items-center gap-1.5 rounded border border-red-500/30 bg-red-500/10 px-3 py-1.5 font-mono-tech text-xs text-red-400 transition-colors hover:border-red-500/60 hover:bg-red-500/20 hover:text-red-300"
+          title="Đăng xuất khỏi hệ thống CMS"
         >
-          <span>Xem Landing Page</span>
-          <ExternalLink className="h-3.5 w-3.5" />
-        </Link>
+          <LogOut className="h-3.5 w-3.5" />
+          <span>Đăng xuất</span>
+        </button>
       </div>
     </header>
   );

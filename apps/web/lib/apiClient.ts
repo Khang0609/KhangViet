@@ -17,8 +17,19 @@ export function getApiBaseUrl(): string {
 }
 
 /**
+ * Kiểm tra URL mục tiêu có phải là API nội bộ của Khang Việt hay không
+ * để ngăn chặn Credential Leakage sang các domain ngoài Internet.
+ */
+function isInternalApiTarget(url: string, baseUrl: string): boolean {
+  if (url.startsWith("/")) return true;
+  if (url.startsWith(baseUrl)) return true;
+  return false;
+}
+
+/**
  * Hàm fetch dữ liệu tập trung dùng chung (DRY) cho toàn bộ web application.
  * Đảm bảo bắt mọi ngoại lệ mạng, chuẩn hóa JSON payload và trả về Result Pattern.
+ * Bảo mật: Chỉ tự động đính kèm credentials đối với request hướng tới API nội bộ.
  */
 export async function apiClient<T>(
   path: string,
@@ -32,7 +43,16 @@ export async function apiClient<T>(
       ...(options.headers || {}),
     };
 
-    const res = await fetch(url, { ...options, headers });
+    // Chỉ đính kèm credentials nếu request thuộc domain nội bộ
+    const credentials = isInternalApiTarget(url, baseUrl)
+      ? "same-origin"
+      : undefined;
+
+    const res = await fetch(url, {
+      ...options,
+      credentials: options.credentials || credentials,
+      headers,
+    });
     const json = await res.json().catch(() => null);
 
     if (!res.ok) {

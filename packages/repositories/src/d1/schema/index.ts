@@ -5,3 +5,4 @@ export * from "./lead-activities.schema";
 export * from "./projects.schema";
 export * from "./project-media.schema";
 export * from "./cms.schema";
+export * from "./sessions.schema";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Trash2 } from "lucide-react";
 import type { ProjectGalleryItem } from "@khangviet/types";
-import { ImageUrlInput } from "@/components/ui/ImageUrlInput";
+import { ImageUploader } from "@/components/ui/media-upload";
 
 interface Props {
   item: ProjectGalleryItem;
@@ -30,11 +30,11 @@ export const ProjectGalleryRow: React.FC<Props> = ({
           <Trash2 className="h-3 w-3" />
         </button>
       </div>
-      <ImageUrlInput
+      <ImageUploader
         label="Đường dẫn ảnh"
         value={item.src}
         onChange={(url) => onUpdate(index, "src", url)}
-        allowFilePath={allowFilePath}
+        allowManualInput={allowFilePath}
       />
       <div className="grid grid-cols-2 gap-2">
         <input

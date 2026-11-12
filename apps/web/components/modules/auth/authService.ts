@@ -1,20 +1,22 @@
-import { apiClient, type ApiResult } from "@/lib/apiClient";
+import { getApiBaseUrl, type ApiResult } from "@/lib/apiClient";
 import type { LoginCredentials, LoginResponseData } from "@khangviet/types";
 
 /**
  * Gửi yêu cầu xác thực người dùng đến backend qua POST /api/auth/login.
- * Kèm thông tin cookie credentials để nhận refreshToken HttpOnly an toàn.
- * Lưu accessToken và thông tin user vào localStorage phục vụ các phiên làm việc tiếp theo.
+ * Kèm thông tin cookie credentials để nhận session_id HttpOnly an toàn.
+ * Tuyệt đối không lưu token vào localStorage để ngăn chặn tấn công XSS.
  */
 export async function authenticateUser(
   credentials: LoginCredentials
 ): Promise<ApiResult<LoginResponseData>> {
   try {
-    const res = await fetch("/api/auth/login", {
+    const baseUrl = getApiBaseUrl();
+    const res = await fetch(`${baseUrl}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(credentials),
     });
 
@@ -28,11 +30,6 @@ export async function authenticateUser(
 
     const data = json.data as LoginResponseData;
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem("kv_access_token", data.accessToken);
-      localStorage.setItem("kv_user", JSON.stringify(data.user));
-    }
-
     return { success: true, data };
   } catch (err) {
     const msg =
@@ -40,3 +37,22 @@ export async function authenticateUser(
     return { success: false, error: msg };
   }
 }
+
+/**
+ * Đăng xuất người dùng: Gọi backend hủy session D1 và xóa cookie phiên làm việc,
+ * sau đó chuyển hướng an toàn về trang đăng nhập.
+ */
+export async function logoutUser(): Promise<void> {
+  try {
+    const baseUrl = getApiBaseUrl();
+    await fetch(`${baseUrl}/api/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch (err) {
+    console.error("Lỗi khi đăng xuất:", err);
+  } finally {
+    window.location.href = "/login";
+  }
+}
+

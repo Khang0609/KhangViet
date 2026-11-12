@@ -20,8 +20,8 @@ authRouter.use(
 authRouter.openapi(loginRoute, async (c) => {
   const credentials = c.req.valid("json");
   const secret = getJwtSecret(c);
-  const userRepo = getContextRepos(c).user;
-  const result = await AuthService.login(credentials, secret, userRepo);
+  const repos = getContextRepos(c);
+  const result = await AuthService.login(credentials, secret, repos.user);
 
   if (!result.success) {
     return c.json({ success: false as const, error: result.error }, 401);
@@ -30,13 +30,17 @@ authRouter.openapi(loginRoute, async (c) => {
   const isProduction =
     c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
 
-  setCookie(c, "refreshToken", result.data.refreshToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: "Lax",
-    path: "/",
-    maxAge: 7 * 24 * 60 * 60,
-  });
+  // Cấp Session Cookie trực tiếp trên D1
+  if (repos.session) {
+    const session = await repos.session.createSession(result.data.user.id);
+    setCookie(c, "session_id", session.sessionId, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: "Lax",
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60,
+    });
+  }
 
   return c.json(
     {
@@ -48,6 +52,47 @@ authRouter.openapi(loginRoute, async (c) => {
     },
     200
   );
+});
+
+// Endpoint Logout hủy session an toàn
+authRouter.post("/logout", async (c) => {
+  const sessionId = getCookie(c, "session_id");
+  if (sessionId) {
+    const sessionRepo = getContextRepos(c).session;
+    if (sessionRepo) {
+      await sessionRepo.deleteSession(sessionId);
+    }
+  }
+
+  const isProduction =
+    c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
+
+  setCookie(c, "session_id", "", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: "Lax",
+    path: "/",
+    maxAge: 0,
+  });
+
+  return c.json({ success: true, message: "Logged out successfully" }, 200);
+});
+
+// Endpoint /me để frontend xác minh phiên đăng nhập
+authRouter.get("/me", async (c) => {
+  const sessionId = getCookie(c, "session_id");
+  if (!sessionId) {
+    return c.json({ success: false, error: "Not logged in" }, 401);
+  }
+  const sessionRepo = getContextRepos(c).session;
+  if (!sessionRepo) {
+    return c.json({ success: false, error: "Session store unavailable" }, 500);
+  }
+  const user = await sessionRepo.findUserBySessionId(sessionId);
+  if (!user) {
+    return c.json({ success: false, error: "Session expired" }, 401);
+  }
+  return c.json({ success: true, data: user }, 200);
 });
 
 authRouter.openapi(refreshRoute, async (c) => {

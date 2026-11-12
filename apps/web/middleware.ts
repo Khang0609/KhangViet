@@ -9,8 +9,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin")) {
-    const refreshToken = request.cookies.get("refreshToken")?.value;
-    if (!refreshToken) {
+    const sessionId = request.cookies.get("session_id")?.value;
+    if (!sessionId) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
       return NextResponse.redirect(loginUrl);
