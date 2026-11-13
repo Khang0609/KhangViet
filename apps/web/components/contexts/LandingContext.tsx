@@ -10,14 +10,7 @@ import type {
   FeaturedProject,
   ProductionDivision,
 } from "@khangviet/types";
-import {
-  HERO_SLIDES,
-  PARTNER_BRANDS,
-  CORE_DISCIPLINES,
-  FEATURED_PROJECTS,
-  PRODUCTION_DIVISIONS,
-  COMPANY_LEGAL_INFO,
-} from "@/data/khangVietData";
+import { initialLandingContent } from "@khangviet/data";
 
 export interface LandingContextValue {
   landing: LandingContent;
@@ -34,59 +27,31 @@ const LandingContext = createContext<LandingContextValue | null>(null);
 export const LandingProvider: React.FC<{
   content: LandingContent;
   children: ReactNode;
-}> = ({ content: initialContent, children }) => {
-  // Ưu tiên đọc dữ liệu live được Cloudflare Worker Edge HTML inject sẵn trong thẻ script
-  const [liveData, setLiveData] = React.useState<LandingContent>(() => {
-    if (typeof window !== "undefined") {
-      const liveScript = document.getElementById("__KV_LIVE_CONTENT__");
-      if (liveScript && liveScript.textContent) {
-        try {
-          return JSON.parse(liveScript.textContent) as LandingContent;
-        } catch {
-          // ignore
-        }
-      }
-    }
-    return initialContent;
-  });
-
-  React.useEffect(() => {
-    const liveScript = document.getElementById("__KV_LIVE_CONTENT__");
-    if (liveScript && liveScript.textContent) {
-      try {
-        const parsed = JSON.parse(liveScript.textContent) as LandingContent;
-        setLiveData(parsed);
-      } catch {
-        // ignore
-      }
-    }
-  }, []);
-
-  const content = liveData || initialContent;
+}> = ({ content, children }) => {
 
   const value: LandingContextValue = {
     landing: content,
     heroSlides:
       content?.heroSlides && content.heroSlides.length > 0
         ? content.heroSlides
-        : HERO_SLIDES,
+        : initialLandingContent.heroSlides,
     partnerBrands:
       content?.partnerBrands && content.partnerBrands.length > 0
         ? content.partnerBrands
-        : PARTNER_BRANDS,
+        : initialLandingContent.partnerBrands,
     coreDisciplines:
       content?.coreDisciplines && content.coreDisciplines.length > 0
         ? content.coreDisciplines
-        : CORE_DISCIPLINES,
+        : initialLandingContent.coreDisciplines,
     featuredProjects:
       content?.featuredProjects && content.featuredProjects.length > 0
         ? content.featuredProjects
-        : FEATURED_PROJECTS,
+        : initialLandingContent.featuredProjects,
     productionDivisions:
       content?.productionDivisions && content.productionDivisions.length > 0
         ? content.productionDivisions
-        : PRODUCTION_DIVISIONS,
-    legalInfo: content?.companyLegalInfo || COMPANY_LEGAL_INFO,
+        : initialLandingContent.productionDivisions,
+    legalInfo: content?.companyLegalInfo || initialLandingContent.companyLegalInfo,
   };
 
   return (
@@ -98,13 +63,13 @@ export function useLandingContext(): LandingContextValue {
   const context = useContext(LandingContext);
   if (!context) {
     return {
-      landing: {} as LandingContent,
-      heroSlides: HERO_SLIDES,
-      partnerBrands: PARTNER_BRANDS,
-      coreDisciplines: CORE_DISCIPLINES,
-      featuredProjects: FEATURED_PROJECTS,
-      productionDivisions: PRODUCTION_DIVISIONS,
-      legalInfo: COMPANY_LEGAL_INFO,
+      landing: initialLandingContent,
+      heroSlides: initialLandingContent.heroSlides,
+      partnerBrands: initialLandingContent.partnerBrands,
+      coreDisciplines: initialLandingContent.coreDisciplines,
+      featuredProjects: initialLandingContent.featuredProjects,
+      productionDivisions: initialLandingContent.productionDivisions,
+      legalInfo: initialLandingContent.companyLegalInfo,
     };
   }
   return context;

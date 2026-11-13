@@ -38,16 +38,56 @@
     }
   ],
   "partnerBrands": [
-    { "name": "BIDV", "subtitle": "Ngân hàng TMCP Đầu tư & Phát triển VN", "category": "Banking" },
-    { "name": "GO! / BigC", "subtitle": "Central Retail Vietnam", "category": "Hypermarket" },
-    { "name": "VINGROUP", "subtitle": "Tập đoàn Vingroup", "category": "Conglomerate" },
-    { "name": "KINGSMEN", "subtitle": "Kingsmen Vietnam", "category": "Global Fit-out" },
-    { "name": "TRUNG NGUYÊN LEGEND", "subtitle": "Tập đoàn Cà phê Trung Nguyên", "category": "F&B Chain" },
-    { "name": "DECATHLON", "subtitle": "Decathlon Vietnam", "category": "Sports Retail" },
-    { "name": "EXIMBANK", "subtitle": "Ngân hàng TMCP Xuất Nhập Khẩu", "category": "Banking" },
-    { "name": "SHINHAN BANK", "subtitle": "Shinhan Financial Group", "category": "Banking" },
-    { "name": "THE NEW GYM", "subtitle": "Hệ thống Phòng tập 24/7", "category": "Fitness Chain" },
-    { "name": "DIOR", "subtitle": "Christian Dior Couture Booths", "category": "Luxury Retail" }
+    {
+      "name": "BIDV",
+      "subtitle": "Ngân hàng TMCP Đầu tư & Phát triển VN",
+      "category": "Banking"
+    },
+    {
+      "name": "GO! / BigC",
+      "subtitle": "Central Retail Vietnam",
+      "category": "Hypermarket"
+    },
+    {
+      "name": "VINGROUP",
+      "subtitle": "Tập đoàn Vingroup",
+      "category": "Conglomerate"
+    },
+    {
+      "name": "KINGSMEN",
+      "subtitle": "Kingsmen Vietnam",
+      "category": "Global Fit-out"
+    },
+    {
+      "name": "TRUNG NGUYÊN LEGEND",
+      "subtitle": "Tập đoàn Cà phê Trung Nguyên",
+      "category": "F&B Chain"
+    },
+    {
+      "name": "DECATHLON",
+      "subtitle": "Decathlon Vietnam",
+      "category": "Sports Retail"
+    },
+    {
+      "name": "EXIMBANK",
+      "subtitle": "Ngân hàng TMCP Xuất Nhập Khẩu",
+      "category": "Banking"
+    },
+    {
+      "name": "SHINHAN BANK",
+      "subtitle": "Shinhan Financial Group",
+      "category": "Banking"
+    },
+    {
+      "name": "THE NEW GYM",
+      "subtitle": "Hệ thống Phòng tập 24/7",
+      "category": "Fitness Chain"
+    },
+    {
+      "name": "DIOR",
+      "subtitle": "Christian Dior Couture Booths",
+      "category": "Luxury Retail"
+    }
   ],
   "coreDisciplines": [
     {
@@ -285,4 +325,3 @@
     "commitment": "Tiến độ - Chất lượng - Trách nhiệm & Trực tiếp sản xuất không qua trung gian."
   }
 }
-

@@ -1,3 +1,7 @@
+import { initialLandingContent } from "@khangviet/data";
+
+const HOTLINE = initialLandingContent.companyLegalInfo.hotline;
+
 export const WIREFRAME_SPEC_TEXT = `================================================================================
 KHANG VIET DESIGN (SINCE 2009) — PIXEL-LEVEL WIREFRAME & INTERACTION BLUEPRINT
 ================================================================================
@@ -9,7 +13,7 @@ KHANG VIET DESIGN (SINCE 2009) — PIXEL-LEVEL WIREFRAME & INTERACTION BLUEPRINT
 - Cột Giữa: 4 mục điều hướng (01. Dự án | 02. Lĩnh vực | 03. Năng lực xưởng | 04. Về Khang Việt), font Plus Jakarta Sans 13px, gap 36px, chỉ số mono #D4A373.
 - Cột Phải:
   + CTA 1 (Outline): border 1px solid #D4A373, padding 10px 18px, chữ #D4A373 -> Hover: bg-(--accent-bronze) chữ #111215.
-  + CTA 2 (Hotline): Nút "0903 680 449" kèm chấm đèn trạng thái hoạt động màu hổ phách.
+  + CTA 2 (Hotline): Nút "${HOTLINE}" kèm chấm đèn trạng thái hoạt động màu hổ phách.
 
 [KHỐI 2: ASYMMETRIC HERO SECTION (12-COLUMN EDITORIAL GRID)]
 - Padding dọc: Top 128px / Bottom 96px. Nền: Lưới kỹ thuật CAD 64x64px cực mờ (opacity 2.5%).
@@ -52,7 +56,7 @@ KHANG VIET DESIGN (SINCE 2009) — PIXEL-LEVEL WIREFRAME & INTERACTION BLUEPRINT
 
 [KHỐI 7: DUAL CONTACT GATE & LEGAL FOOTER]
 - Cổng chuyển đổi kép (2 cột độc lập nền #1A1C20):
-  + Cổng A (Chủ Cửa Hàng / Showroom): Form khảo sát nhanh 3 trường (Họ tên, Số điện thoại, Nhu cầu thi công) + Nút gọi/Zalo 0903 680 449.
+  + Cổng A (Chủ Cửa Hàng / Showroom): Form khảo sát nhanh 3 trường (Họ tên, Số điện thoại, Nhu cầu thi công) + Nút gọi/Zalo ${HOTLINE}.
   + Cổng B (Tổng Thầu / Chuỗi Tập Đoàn): Khu vực gửi hồ sơ mời thầu / bản vẽ BOQ CAD & kết nối trực tiếp Giám đốc Trần Xuân Đông.
 - Chân trang pháp lý: CÔNG TY TNHH THIẾT KẾ QUẢNG CÁO TRANG TRÍ NỘI THẤT KHANG VIỆT — MST: 0306794247 do Sở KH&ĐT TP.HCM cấp ngày 22/01/2009.`;
 

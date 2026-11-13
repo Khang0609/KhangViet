@@ -1,7 +1,6 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
-import { getCookie } from "hono/cookie";
 import { Scalar } from "@scalar/hono-api-reference";
 import { errorHandler } from "./middlewares/errorHandler";
 import { defaultValidationHook } from "./middlewares/validationHook";
@@ -14,7 +13,6 @@ import { authRouter } from "./routes/auth";
 import { protectedRouter } from "./routes/protected";
 import { AppEnv } from "./middlewares/authMiddleware";
 import { resolveAllowedOrigin } from "./config/cors";
-import { getContextRepos } from "./helpers/repoResolver";
 
 const app = new OpenAPIHono<AppEnv>({
   defaultHook: defaultValidationHook,
@@ -41,55 +39,6 @@ app.get("/api/health", (c) => {
     version: "1.0.0",
     status: "healthy",
   });
-});
-
-// Route phục vụ Trang Chủ (/) với dữ liệu PUBLISHED mới nhất từ Cloudflare D1
-app.get("/", async (c, next) => {
-  if (c.env?.ASSETS) {
-    const url = new URL("/index.html", c.req.url);
-    const assetRes = await c.env.ASSETS.fetch(new Request(url.toString(), c.req.raw));
-    if (assetRes.ok) {
-      const originalHtml = await assetRes.text();
-      try {
-        const repos = getContextRepos(c);
-        const liveData = await repos.cms.getLandingData();
-        const injectedHtml = originalHtml.replace(
-          "</body>",
-          `<script id="__KV_LIVE_CONTENT__" type="application/json">${JSON.stringify(liveData)}</script></body>`
-        );
-        return c.html(injectedHtml, 200, {
-          "Cache-Control": "no-store, no-cache, must-revalidate",
-        });
-      } catch (err) {
-        console.error("[SSR Injection Error]", err);
-        return c.html(originalHtml, 200);
-      }
-    }
-  }
-  return await next();
-});
-
-// Chốt chặn bảo mật Server-side: Chặn truy cập trái phép vào /admin
-app.use("/admin*", async (c, next) => {
-  const sessionId = getCookie(c, "session_id");
-  if (!sessionId) {
-    return c.redirect("/login?redirect=/admin");
-  }
-
-  const sessionRepo = getContextRepos(c).session;
-  if (!sessionRepo) {
-    return c.redirect("/login?redirect=/admin");
-  }
-
-  const user = await sessionRepo.findUserBySessionId(sessionId);
-  if (!user || user.role !== "ADMIN") {
-    return c.redirect("/login?redirect=/admin");
-  }
-
-  if (c.env?.ASSETS) {
-    return await c.env.ASSETS.fetch(c.req.raw);
-  }
-  return await next();
 });
 
 // Mount Routes

@@ -5,6 +5,7 @@ import { defaultValidationHook } from "../middlewares/validationHook";
 import { createRateLimiter } from "../middlewares/rateLimiter";
 import { AppEnv } from "../middlewares/authMiddleware";
 import { getContextRepos } from "../helpers/repoResolver";
+import { notifyNewLead } from "../services/leadNotifier";
 
 export const publicLeadsRouter = new OpenAPIHono<AppEnv>({
   defaultHook: defaultValidationHook,
@@ -74,6 +75,8 @@ publicLeadsRouter.openapi(createLeadRoute, async (c) => {
     projectScale: body.projectScale?.trim() || undefined,
     message: body.message?.trim() || undefined,
   });
+
+  await notifyNewLead(newLead, c.env);
 
   return c.json(
     {

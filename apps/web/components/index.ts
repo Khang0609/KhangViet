@@ -1,4 +1,3 @@
-export * from "./navigation";
 export * from "./ui/BaseModal";
 export * from "./ui/TechBadge";
 export * from "./ui/PhoneCallButton";

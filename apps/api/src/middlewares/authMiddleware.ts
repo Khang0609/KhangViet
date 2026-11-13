@@ -21,6 +21,8 @@ export type AppEnv = {
     ENVIRONMENT?: string;
     NODE_ENV?: string;
     WEB_APP_URL?: string;
+    TELEGRAM_BOT_TOKEN?: string;
+    TELEGRAM_CHAT_ID?: string | null;
   };
 };
 

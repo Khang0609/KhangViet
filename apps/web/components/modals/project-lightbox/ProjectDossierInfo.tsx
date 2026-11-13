@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, CheckCircle2, Layers, MapPin } from 'lucide-react';
-import { FeaturedProject } from '@/data/khangVietData';
+import type { FeaturedProject } from '@khangviet/types';
 import TechBadge from '../../ui/TechBadge';
 import PhoneCallButton from '../../ui/PhoneCallButton';
 
