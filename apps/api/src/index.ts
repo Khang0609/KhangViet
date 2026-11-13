@@ -43,6 +43,32 @@ app.get("/api/health", (c) => {
   });
 });
 
+// Route phục vụ Trang Chủ (/) với dữ liệu PUBLISHED mới nhất từ Cloudflare D1
+app.get("/", async (c, next) => {
+  if (c.env?.ASSETS) {
+    const url = new URL("/index.html", c.req.url);
+    const assetRes = await c.env.ASSETS.fetch(new Request(url.toString(), c.req.raw));
+    if (assetRes.ok) {
+      const originalHtml = await assetRes.text();
+      try {
+        const repos = getContextRepos(c);
+        const liveData = await repos.cms.getLandingData();
+        const injectedHtml = originalHtml.replace(
+          "</body>",
+          `<script id="__KV_LIVE_CONTENT__" type="application/json">${JSON.stringify(liveData)}</script></body>`
+        );
+        return c.html(injectedHtml, 200, {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        });
+      } catch (err) {
+        console.error("[SSR Injection Error]", err);
+        return c.html(originalHtml, 200);
+      }
+    }
+  }
+  return await next();
+});
+
 // Chốt chặn bảo mật Server-side: Chặn truy cập trái phép vào /admin
 app.use("/admin*", async (c, next) => {
   const sessionId = getCookie(c, "session_id");
@@ -66,6 +92,16 @@ app.use("/admin*", async (c, next) => {
   return await next();
 });
 
+// Mount Routes
+app.route("/api/auth", authRouter);
+app.route("/api", protectedRouter);
+app.route("/api/v1/content", publicContentRouter);
+app.route("/api/v1/leads", publicLeadsRouter);
+
+app.use("/api/v1/admin/*", adminAuthMiddleware);
+app.route("/api/v1/admin/cms", adminCmsRouter);
+app.route("/api/v1/admin/leads", adminLeadsRouter);
+
 // Fallback phục vụ Static Assets của Frontend cho tất cả các đường dẫn giao diện
 app.notFound(async (c) => {
   const pathname = new URL(c.req.url).pathname;
@@ -78,16 +114,6 @@ app.notFound(async (c) => {
     404
   );
 });
-
-// Mount Routes
-app.route("/api/auth", authRouter);
-app.route("/api", protectedRouter);
-app.route("/api/v1/content", publicContentRouter);
-app.route("/api/v1/leads", publicLeadsRouter);
-
-app.use("/api/v1/admin/*", adminAuthMiddleware);
-app.route("/api/v1/admin/cms", adminCmsRouter);
-app.route("/api/v1/admin/leads", adminLeadsRouter);
 
 // OpenAPI Spec & Documentation UI - Dev only (SEC-08)
 if (process.env.NODE_ENV !== "production") {

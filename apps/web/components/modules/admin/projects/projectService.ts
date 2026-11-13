@@ -3,10 +3,10 @@ import { adminRequest } from "../shared/adminClient";
 import type { Result } from "../shared/types";
 
 /**
- * Lấy danh sách toàn bộ các dự án từ Content API
+ * Lấy danh sách toàn bộ các dự án (bao gồm cả DRAFT) cho Admin CMS
  */
 export async function getProjects(): Promise<Result<FeaturedProject[]>> {
-  return adminRequest<FeaturedProject[]>("/api/v1/content/projects");
+  return adminRequest<FeaturedProject[]>("/api/v1/content/projects?includeDrafts=true");
 }
 
 /**

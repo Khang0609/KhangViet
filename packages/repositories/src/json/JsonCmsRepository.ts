@@ -58,19 +58,32 @@ export class JsonCmsRepository implements ICmsRepository {
     return mockStore.landing.featuredProjects.length < prevLen;
   }
 
+  async getHeroSlides(includeDraft: boolean = true): Promise<HeroSlide[]> {
+    if (includeDraft && mockStore.draftHeroSlides) {
+      return mockStore.draftHeroSlides;
+    }
+    return mockStore.landing.heroSlides;
+  }
+
   async updateHeroSlides(slides: HeroSlide[]): Promise<HeroSlide[]> {
-    mockStore.landing.heroSlides = slides;
+    mockStore.draftHeroSlides = slides;
     return slides;
+  }
+
+  async getLegalInfo(includeDraft: boolean = true): Promise<CompanyLegalInfo> {
+    if (includeDraft && mockStore.draftLegalInfo) {
+      return mockStore.draftLegalInfo;
+    }
+    return mockStore.landing.companyLegalInfo;
   }
 
   async updateLegalInfo(
     info: Partial<CompanyLegalInfo>
   ): Promise<CompanyLegalInfo> {
-    mockStore.landing.companyLegalInfo = {
-      ...mockStore.landing.companyLegalInfo,
-      ...info,
-    };
-    return mockStore.landing.companyLegalInfo;
+    const current = await this.getLegalInfo(true);
+    const updated = { ...current, ...info };
+    mockStore.draftLegalInfo = updated;
+    return updated;
   }
 
 
@@ -96,19 +109,30 @@ export class JsonCmsRepository implements ICmsRepository {
   }
 
   async applyPendingChanges(): Promise<{ appliedCount: number; success: boolean }> {
+    let appliedCount = 0;
+    if (mockStore.draftHeroSlides) {
+      mockStore.landing.heroSlides = mockStore.draftHeroSlides;
+      mockStore.draftHeroSlides = undefined;
+      appliedCount++;
+    }
+    if (mockStore.draftLegalInfo) {
+      mockStore.landing.companyLegalInfo = mockStore.draftLegalInfo;
+      mockStore.draftLegalInfo = undefined;
+      appliedCount++;
+    }
+
     const pendings = mockStore.pendingChanges.filter((c) => c.status === "PENDING");
-    if (pendings.length === 0) {
-      return { appliedCount: 0, success: true };
+    if (pendings.length > 0) {
+      const nowIso = new Date().toISOString();
+      for (const change of pendings) {
+        applySingleChange(change, mockStore.landing);
+        change.status = "APPLIED";
+        change.appliedAt = nowIso;
+      }
+      appliedCount += pendings.length;
     }
 
-    const nowIso = new Date().toISOString();
-    for (const change of pendings) {
-      applySingleChange(change, mockStore.landing);
-      change.status = "APPLIED";
-      change.appliedAt = nowIso;
-    }
-
-    return { appliedCount: pendings.length, success: true };
+    return { appliedCount, success: true };
   }
 
   async discardPendingChange(id: string): Promise<boolean> {
@@ -121,11 +145,14 @@ export class JsonCmsRepository implements ICmsRepository {
   async getSyncStatus(): Promise<SyncStatus> {
     const now = new Date();
     const vnHour = (now.getUTCHours() + 7) % 24;
-    const pending = mockStore.pendingChanges.filter((c) => c.status === "PENDING");
+    const pendingChanges = mockStore.pendingChanges.filter((c) => c.status === "PENDING");
+    let count = pendingChanges.length;
+    if (mockStore.draftHeroSlides) count++;
+    if (mockStore.draftLegalInfo) count++;
     return {
       isMidnightWindow: vnHour >= 0 && vnHour < 2,
-      hasPendingChanges: pending.length > 0,
-      pendingCount: pending.length,
+      hasPendingChanges: count > 0,
+      pendingCount: count,
       serverTime: now.toISOString(),
       currentHourVN: vnHour,
     };

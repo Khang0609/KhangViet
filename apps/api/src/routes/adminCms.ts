@@ -26,10 +26,15 @@ adminCmsRouter.openapi(getPendingChangesRoute, async (c) => {
 
 adminCmsRouter.openapi(applyPendingChangesRoute, async (c) => {
   const result = await getContextRepos(c).cms.applyPendingChanges();
-  if (result.appliedCount > 0) {
-    const { triggerWebRevalidation } = await import("../services/revalidateNotifier");
-    await triggerWebRevalidation({ tag: "cms-landing" }, c.env);
-  }
+  const message = result.appliedCount > 0
+    ? `Đã phát hành thành công ${result.appliedCount} thay đổi!`
+    : "Không có thay đổi nào đang chờ (No pending changes).";
+  return c.json({ success: true as const, data: result, message }, 200);
+});
+
+// Alias tương thích ngược cho endpoint apply
+adminCmsRouter.post("/apply-changes", async (c) => {
+  const result = await getContextRepos(c).cms.applyPendingChanges();
   const message = result.appliedCount > 0
     ? `Đã phát hành thành công ${result.appliedCount} thay đổi!`
     : "Không có thay đổi nào đang chờ (No pending changes).";

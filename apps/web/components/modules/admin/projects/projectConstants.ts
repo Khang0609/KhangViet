@@ -17,6 +17,7 @@ export const defaultEmptyProject: FeaturedProject = {
   engineeringNotes: ["Gia công cơ khí CNC"],
   summary: "",
   coverImage: "",
+  status: "DRAFT",
   gallery: [],
 };
 

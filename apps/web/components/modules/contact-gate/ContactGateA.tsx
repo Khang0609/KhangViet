@@ -93,7 +93,7 @@ export const ContactGateA: React.FC = () => {
       )}
 
       <div className="mt-4">
-        <PhoneCallButton variant="outline" label="Gọi ngay / Zalo: 0903 680 449" className="w-full py-3" />
+        <PhoneCallButton variant="outline" className="w-full py-3" />
       </div>
     </div>
   );

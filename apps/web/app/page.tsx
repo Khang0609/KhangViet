@@ -21,18 +21,15 @@ export default async function Home() {
           <Header />
 
           <main id="top">
-            <HeroSection slides={landing.heroSlides} />
-            <TrustMarquee brands={landing.partnerBrands} />
-            <DisciplinesSection disciplines={landing.coreDisciplines} />
-            <ProjectShowcase projects={landing.featuredProjects} />
-            <InHouseEngineering
-              divisions={landing.productionDivisions}
-              legalInfo={landing.companyLegalInfo}
-            />
+            <HeroSection />
+            <TrustMarquee />
+            <DisciplinesSection />
+            <ProjectShowcase />
+            <InHouseEngineering />
             <ContactDualGates />
           </main>
 
-          <Footer legalInfo={landing.companyLegalInfo} />
+          <Footer />
           <LazyModalContainer />
         </div>
       </ModalProvider>

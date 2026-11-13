@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   const { openProfileModal } = useModalContext();
   const contextLegal = useLegalInfo();
-  const activeLegal = legalInfo || contextLegal;
+  const activeLegal = contextLegal || legalInfo;
 
   const handleOpenSpec = () => {
     if (onOpenSpecWireframe) onOpenSpecWireframe();

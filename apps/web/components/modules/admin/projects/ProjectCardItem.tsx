@@ -22,8 +22,15 @@ export const ProjectCardItem: React.FC<Props> = ({
           alt={project.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="font-mono-tech absolute top-2 left-2 rounded bg-black/70 px-2 py-0.5 text-[10px] text-(--accent-bronze)">
-          {project.code}
+        <div className="font-mono-tech absolute top-2 left-2 flex items-center gap-1.5">
+          <span className="rounded bg-black/70 px-2 py-0.5 text-[10px] text-(--accent-bronze)">
+            {project.code}
+          </span>
+          {project.status === "DRAFT" && (
+            <span className="rounded border border-amber-500/40 bg-amber-500/20 px-1.5 py-0.5 text-[9px] font-semibold text-amber-300">
+              [Bản Nháp]
+            </span>
+          )}
         </div>
       </div>
 

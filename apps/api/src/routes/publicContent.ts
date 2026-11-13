@@ -13,6 +13,11 @@ const getLandingRoute = createRoute({
   method: "get",
   path: "/landing",
   summary: "Lấy dữ liệu Landing Page",
+  request: {
+    query: z.object({
+      includeDrafts: z.string().optional(),
+    }),
+  },
   responses: {
     200: {
       content: {
@@ -32,6 +37,11 @@ const getProjectsRoute = createRoute({
   method: "get",
   path: "/projects",
   summary: "Lấy danh sách các dự án tiêu biểu",
+  request: {
+    query: z.object({
+      includeDrafts: z.string().optional(),
+    }),
+  },
   responses: {
     200: {
       content: {
@@ -89,13 +99,29 @@ const getProjectByIdRoute = createRoute({
 
 publicContentRouter.openapi(getLandingRoute, async (c) => {
   const repos = getContextRepos(c);
+  const { includeDrafts } = c.req.valid("query");
+  const isDraft = includeDrafts === "true";
+  const [projects, heroSlides, legalInfo] = await Promise.all([
+    repos.cms.getProjects(isDraft),
+    repos.cms.getHeroSlides(isDraft),
+    repos.cms.getLegalInfo(isDraft),
+  ]);
   const data = await repos.cms.getLandingData();
-  return c.json({ success: true as const, data }, 200);
+  return c.json({
+    success: true as const,
+    data: {
+      ...data,
+      heroSlides,
+      featuredProjects: projects.length > 0 ? projects : data.featuredProjects,
+      companyLegalInfo: legalInfo,
+    },
+  }, 200);
 });
 
 publicContentRouter.openapi(getProjectsRoute, async (c) => {
   const repos = getContextRepos(c);
-  const projects = await repos.cms.getProjects();
+  const { includeDrafts } = c.req.valid("query");
+  const projects = await repos.cms.getProjects(includeDrafts === "true");
   return c.json({ success: true as const, data: projects }, 200);
 });
 

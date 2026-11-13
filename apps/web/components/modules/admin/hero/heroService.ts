@@ -6,7 +6,7 @@ import type { Result } from "../shared/types";
  * Lấy danh sách Hero Slides hiện tại từ Landing Content
  */
 export async function getHeroSlides(): Promise<Result<HeroSlide[]>> {
-  const res = await adminRequest<LandingContent>("/api/v1/content/landing");
+  const res = await adminRequest<LandingContent>("/api/v1/content/landing?includeDrafts=true");
   if (!res.success) return res;
   return { success: true, data: res.data.heroSlides };
 }

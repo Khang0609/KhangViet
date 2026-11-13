@@ -34,7 +34,36 @@ const LandingContext = createContext<LandingContextValue | null>(null);
 export const LandingProvider: React.FC<{
   content: LandingContent;
   children: ReactNode;
-}> = ({ content, children }) => {
+}> = ({ content: initialContent, children }) => {
+  // Ưu tiên đọc dữ liệu live được Cloudflare Worker Edge HTML inject sẵn trong thẻ script
+  const [liveData, setLiveData] = React.useState<LandingContent>(() => {
+    if (typeof window !== "undefined") {
+      const liveScript = document.getElementById("__KV_LIVE_CONTENT__");
+      if (liveScript && liveScript.textContent) {
+        try {
+          return JSON.parse(liveScript.textContent) as LandingContent;
+        } catch {
+          // ignore
+        }
+      }
+    }
+    return initialContent;
+  });
+
+  React.useEffect(() => {
+    const liveScript = document.getElementById("__KV_LIVE_CONTENT__");
+    if (liveScript && liveScript.textContent) {
+      try {
+        const parsed = JSON.parse(liveScript.textContent) as LandingContent;
+        setLiveData(parsed);
+      } catch {
+        // ignore
+      }
+    }
+  }, []);
+
+  const content = liveData || initialContent;
+
   const value: LandingContextValue = {
     landing: content,
     heroSlides:

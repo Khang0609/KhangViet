@@ -10,7 +10,7 @@ import type {
 
 export interface ICmsRepository {
   getLandingData(): Promise<LandingContent>;
-  getProjects(): Promise<FeaturedProject[]>;
+  getProjects(includeDrafts?: boolean): Promise<FeaturedProject[]>;
   getProjectById(id: string): Promise<FeaturedProject | null>;
   createProject(
     project: Omit<FeaturedProject, "id"> & { id?: string }
@@ -20,7 +20,9 @@ export interface ICmsRepository {
     project: Partial<FeaturedProject>
   ): Promise<FeaturedProject | null>;
   deleteProject(id: string): Promise<boolean>;
+  getHeroSlides(includeDraft?: boolean): Promise<HeroSlide[]>;
   updateHeroSlides(slides: HeroSlide[]): Promise<HeroSlide[]>;
+  getLegalInfo(includeDraft?: boolean): Promise<CompanyLegalInfo>;
   updateLegalInfo(info: Partial<CompanyLegalInfo>): Promise<CompanyLegalInfo>;
 
   // Pending changes & Midnight sync methods

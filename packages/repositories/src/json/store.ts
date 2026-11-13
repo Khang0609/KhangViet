@@ -17,12 +17,16 @@ class MockMemoryStore {
   public leads: ContactLead[] = JSON.parse(JSON.stringify(initialLeads));
   public users: User[] = JSON.parse(JSON.stringify(initialUsers));
   public pendingChanges: PendingChange[] = [];
+  public draftHeroSlides?: typeof initialLandingContent.heroSlides;
+  public draftLegalInfo?: typeof initialLandingContent.companyLegalInfo;
 
   reset() {
     this.landing = JSON.parse(JSON.stringify(initialLandingContent));
     this.leads = JSON.parse(JSON.stringify(initialLeads));
     this.users = JSON.parse(JSON.stringify(initialUsers));
     this.pendingChanges = [];
+    this.draftHeroSlides = undefined;
+    this.draftLegalInfo = undefined;
   }
 }
 

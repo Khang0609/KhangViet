@@ -53,6 +53,7 @@ export const FeaturedProjectSchema = z.object({
   engineeringNotes: z.array(z.string()),
   summary: z.string(),
   coverImage: z.string(),
+  status: ProjectStatusSchema.optional(),
   gallery: z.array(ProjectGalleryItemSchema),
 });
 export type FeaturedProject = z.infer<typeof FeaturedProjectSchema>;

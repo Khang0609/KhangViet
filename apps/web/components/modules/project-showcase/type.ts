@@ -21,5 +21,6 @@ export interface FeaturedProject {
   engineeringNotes: string[];
   summary: string;
   coverImage: string;
+  status?: "DRAFT" | "PUBLISHED" | "ARCHIVED";
   gallery: ProjectGalleryItem[];
 }
