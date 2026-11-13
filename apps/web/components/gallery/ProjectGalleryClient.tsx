@@ -10,6 +10,8 @@ import { GalleryHeroStats } from "./GalleryHeroStats";
 import { KeyAccountsSpotlight } from "./KeyAccountsSpotlight";
 import { GalleryFilterBar } from "./GalleryFilterBar";
 import { ProjectCard } from "./ProjectCard";
+import { ProjectDetailDrawer } from "./ProjectDetailDrawer";
+import { QuoteRequestModal } from "./QuoteRequestModal";
 
 interface ProjectGalleryClientProps {
   data: ProjectGalleryResponse;
@@ -30,6 +32,7 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
   const [activeProject, setActiveProject] = useState<GalleryProject | null>(
     null
   );
+  const [quoteProject, setQuoteProject] = useState<GalleryProject | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -216,10 +219,23 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
               {filteredProjects.length}
             </span>{" "}
             / {data.projects.length} dự án tiêu biểu
-            {activeProject ? ` • Đang chọn: ${activeProject.id}` : ""}
           </div>
         </div>
       </main>
+
+      <ProjectDetailDrawer
+        project={activeProject}
+        onClose={() => setActiveProject(null)}
+        onRequestQuote={(project) => {
+          setActiveProject(null);
+          setQuoteProject(project);
+        }}
+      />
+
+      <QuoteRequestModal
+        project={quoteProject}
+        onClose={() => setQuoteProject(null)}
+      />
 
       {toastMessage && (
         <div className="fixed right-5 bottom-5 z-50 flex items-center gap-2.5 rounded-xl border border-brand/50 bg-zinc-900 px-4 py-3 text-xs text-white shadow-xl">
