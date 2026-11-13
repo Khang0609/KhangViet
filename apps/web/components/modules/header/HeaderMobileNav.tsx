@@ -34,7 +34,7 @@ export const HeaderMobileNav: React.FC<HeaderMobileNavProps> = ({
               href={item.href}
               onClick={onClose}
               className={`flex items-center justify-between border-b border-white/6 py-3 text-sm ${
-                isActive ? "text-(--text-primary) font-semibold" : ""
+                isActive ? "font-semibold text-(--text-primary)" : ""
               }`}
             >
               <span>
