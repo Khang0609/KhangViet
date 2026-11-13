@@ -48,6 +48,10 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   );
 };
 
+export function useOptionalModalContext(): ModalContextValue | null {
+  return useContext(ModalContext);
+}
+
 export function useModalContext(): ModalContextValue {
   const context = useContext(ModalContext);
   if (!context) {
