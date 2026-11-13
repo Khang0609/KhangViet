@@ -136,3 +136,18 @@ body {
 .amber-frame-glow {
   box-shadow: 0 0 65px -15px rgba(212, 163, 115, 0.22);
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.blueprint-grid-orange {
+  background-image:
+    linear-gradient(to right, rgba(242, 125, 38, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(242, 125, 38, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
