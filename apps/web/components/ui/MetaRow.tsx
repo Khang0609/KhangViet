@@ -12,11 +12,11 @@ export const MetaRow: React.FC<MetaRowProps> = ({
   accent = false,
 }) => {
   return (
-    <div className="grid grid-cols-[6rem_1fr] gap-4 border-b border-white/6 py-3 last:border-0">
-      <dt className="font-mono-tech text-[9px] uppercase tracking-wider text-(--text-secondary)">
+    <div className="grid grid-cols-[7rem_1fr] gap-4 border-b border-black/8 py-3 last:border-0">
+      <dt className="text-xs font-medium text-[#625f5a]">
         {label}
       </dt>
-      <dd className={`text-xs leading-5 ${accent ? 'text-(--accent-bronze)' : 'text-white/80'}`}>
+      <dd className={`text-sm leading-5 ${accent ? 'font-medium text-(--accent-bronze)' : 'text-[#1a1918]'}`}>
         {value}
       </dd>
     </div>

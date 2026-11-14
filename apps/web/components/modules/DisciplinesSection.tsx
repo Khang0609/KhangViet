@@ -18,65 +18,36 @@ export const DisciplinesSection: React.FC<DisciplinesSectionProps> = ({
     disciplines && disciplines.length > 0 ? disciplines : contextDisciplines;
 
   return (
-    <section id="linh-vuc" className="scroll-mt-20 py-24 md:py-32">
+    <section id="linh-vuc" className="scroll-mt-20 bg-[#f4f1ea] py-20 md:py-28">
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
         <SectionHeading
-          index="01"
-          eyebrow="Core disciplines"
+          eyebrow="Lĩnh vực cốt lõi"
           title="Ba trụ cột. Một tiêu chuẩn hoàn thiện."
           description="Từ kiến trúc mặt dựng quy mô lớn đến từng chi tiết trưng bày — mọi hạng mục được kiểm soát xuyên suốt bởi cùng một đội ngũ."
         />
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+        <div className="mt-12 grid gap-8 lg:grid-cols-3">
           {activeDisciplines.map((discipline) => (
-            <article
-              key={discipline.number}
-              className="group flex flex-col border border-white/8 bg-(--bg-surface) transition-all duration-500 hover:-translate-y-1 hover:border-(--accent-bronze)/60"
-            >
-              <div className="relative h-52 overflow-hidden">
+            <article key={discipline.number} className="group flex flex-col">
+              <div className="aspect-4/3 overflow-hidden rounded-2xl bg-[#eae5dc]">
                 <img
                   src={discipline.previewImage}
                   alt={discipline.vietnameseTitle}
-                  className="h-full w-full object-cover grayscale-35 transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                  className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-(--bg-surface) via-transparent to-transparent" />
-                <span className="font-mono-tech absolute top-5 left-5 border border-white/15 bg-black/60 px-2.5 py-1 text-[9px] tracking-widest text-(--accent-bronze)">
-                  {discipline.code}
-                </span>
               </div>
-              <div className="flex flex-1 flex-col p-6 md:p-8">
-                <div className="mb-5 flex items-start justify-between gap-4">
-                  <div>
-                    <div className="font-syne text-4xl font-bold text-white/10">
-                      {discipline.number}
-                    </div>
-                    <h3 className="font-syne -mt-2 text-xl font-bold">
-                      {discipline.title}
-                    </h3>
-                  </div>
-                  <ArrowUpRight className="h-5 w-5 text-(--accent-bronze)" />
+              <div className="mt-5 flex flex-1 flex-col">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-xl font-semibold tracking-tight text-[#1a1918]">
+                    {discipline.vietnameseTitle}
+                  </h3>
+                  <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-(--accent-bronze) transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
-                <p className="text-sm leading-relaxed font-semibold">
-                  {discipline.vietnameseTitle}
-                </p>
-                <p className="mt-3 text-xs leading-6 text-(--text-secondary)">
+                <p className="mt-2.5 text-sm leading-relaxed text-[#625f5a]">
                   {discipline.description}
                 </p>
-                <ul className="mt-6 space-y-2 border-t border-white/8 pt-5">
-                  {discipline.specs.slice(0, 3).map((spec) => (
-                    <li
-                      key={spec}
-                      className="flex items-start gap-2 text-[11px] leading-5 text-white/70"
-                    >
-                      <span className="mt-2 h-1 w-1 shrink-0 bg-(--accent-bronze)" />
-                      {spec}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto flex items-end justify-between border-t border-white/8 pt-6">
-                  <span className="max-w-32 text-[10px] tracking-wider text-(--text-secondary) uppercase">
-                    {discipline.metricLabel}
-                  </span>
-                  <span className="font-mono-tech text-sm text-(--accent-bronze)">
+                <div className="mt-4 flex items-center justify-between border-t border-black/8 pt-3.5 text-xs">
+                  <span className="text-[#625f5a]">{discipline.metricLabel}</span>
+                  <span className="font-semibold text-[#1a1918]">
                     {discipline.metricValue}
                   </span>
                 </div>

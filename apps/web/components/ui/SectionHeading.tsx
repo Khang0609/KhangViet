@@ -31,11 +31,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
     >
       {(index || eyebrow) && (
         <div className={cn(isHorizontal && "lg:col-span-3")}>
-          <div className="font-mono-tech flex items-center gap-3 text-[10px] tracking-[0.2em] text-(--accent-bronze) uppercase">
-            {index && <span>{index}</span>}
-            {index && eyebrow && (
-              <span className="h-px w-8 bg-(--accent-bronze)" />
-            )}
+          <div className="flex items-center gap-2.5 text-xs font-medium tracking-[0.14em] text-(--accent-bronze) uppercase">
             {eyebrow && <span>{eyebrow}</span>}
           </div>
         </div>
@@ -48,7 +44,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       >
         <h2
           className={cn(
-            "font-sans text-3xl leading-[1.08] font-bold tracking-tight md:text-5xl",
+            "font-sans text-3xl leading-[1.12] font-semibold tracking-tight md:text-4xl lg:text-5xl",
             titleClassName,
           )}
         >

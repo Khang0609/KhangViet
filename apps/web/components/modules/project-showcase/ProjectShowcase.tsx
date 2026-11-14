@@ -22,17 +22,16 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
   return (
     <section
       id="du-an"
-      className="scroll-mt-20 border-y border-white/8 bg-[#0e0f12] py-24 md:py-32"
+      className="scroll-mt-20 border-y border-black/8 bg-white py-20 md:py-28"
     >
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
         <SectionHeading
-          index="02"
-          eyebrow="Selected works archive"
+          eyebrow="Công trình tiêu biểu"
           title="Công trình là tuyên ngôn rõ nhất."
           description="Hồ sơ thực tế về những hệ thống nhận diện được chế tác để bền bỉ, chính xác và nổi bật trong mọi điều kiện không gian."
         />
 
-        <div className="mt-14 space-y-20 md:space-y-28">
+        <div className="mt-14 space-y-20 md:space-y-24">
           {activeProjects.map((project, projectIndex) => (
             <article
               key={project.id}

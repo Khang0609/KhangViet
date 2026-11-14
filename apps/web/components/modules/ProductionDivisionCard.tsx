@@ -16,31 +16,26 @@ export const ProductionDivisionCard: React.FC<ProductionDivisionCardProps> = ({
   const DivisionIcon = DIVISION_ICONS[index] || Factory;
 
   return (
-    <article className="group border border-white/8 bg-[#15171a] p-5 transition-colors hover:border-(--border-bronze-subtle)">
-      <div className="flex items-start justify-between gap-5">
-        <div>
-          <div className="font-mono-tech text-[9px] tracking-widest text-(--accent-bronze)">
-            {division.code}
-          </div>
-          <h3 className="font-syne mt-2 text-base font-bold">
-            {division.name}
-          </h3>
-        </div>
-        <DivisionIcon className="h-5 w-5 text-(--text-secondary) transition-colors group-hover:text-(--accent-bronze)" />
+    <article className="group rounded-xl border border-white/8 bg-white/3 p-5 transition-colors hover:border-white/20">
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="text-base font-semibold text-white">
+          {division.name}
+        </h3>
+        <DivisionIcon className="h-4 w-4 shrink-0 text-white/40 transition-colors group-hover:text-(--accent-bronze)" />
       </div>
-      <div className="my-5 flex items-end gap-2">
-        <span className="font-syne text-5xl font-bold text-(--accent-bronze)">
+      <div className="my-4 flex items-baseline gap-2">
+        <span className="text-3xl font-semibold text-(--accent-bronze)">
           {division.headcount}
         </span>
-        <span className="pb-1 text-[10px] leading-4 text-(--text-secondary) uppercase">
+        <span className="text-xs text-white/60">
           {division.unitLabel}
         </span>
       </div>
-      <p className="text-[11px] leading-5 text-(--text-secondary)">
+      <p className="text-xs leading-relaxed text-white/70">
         {division.role}
       </p>
-      <p className="font-mono-tech mt-4 border-t border-white/6 pt-3 text-[9px] leading-4 text-white/50">
-        EQUIPMENT // {division.equipment}
+      <p className="mt-3 border-t border-white/8 pt-3 text-[11px] leading-relaxed text-white/50">
+        {division.equipment}
       </p>
     </article>
   );

@@ -61,32 +61,32 @@ export const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({
       <input
         required
         name="name"
-        placeholder="01. HỌ VÀ TÊN"
+        placeholder="Họ và tên"
         disabled={isSubmitting}
-        className="w-full border border-white/10 bg-white/2.5 px-4 py-4 text-sm outline-hidden transition-colors placeholder:text-white/30 focus:border-(--accent-bronze) disabled:opacity-50"
+        className="w-full rounded-xl border border-black/12 bg-[#f4f1ea]/50 px-4 py-3.5 text-sm text-[#1a1918] outline-hidden transition-colors placeholder:text-[#625f5a]/70 focus:border-(--accent-bronze) focus:bg-white disabled:opacity-50"
       />
       <input
         required
         type="tel"
         name="phone"
-        placeholder="02. SỐ ĐIỆN THOẠI"
+        placeholder="Số điện thoại"
         disabled={isSubmitting}
-        className="w-full border border-white/10 bg-white/2.5 px-4 py-4 text-sm outline-hidden transition-colors placeholder:text-white/30 focus:border-(--accent-bronze) disabled:opacity-50"
+        className="w-full rounded-xl border border-black/12 bg-[#f4f1ea]/50 px-4 py-3.5 text-sm text-[#1a1918] outline-hidden transition-colors placeholder:text-[#625f5a]/70 focus:border-(--accent-bronze) focus:bg-white disabled:opacity-50"
       />
       <textarea
         required
         name="request"
         rows={3}
         defaultValue={defaultRequestText}
-        placeholder="03. NHU CẦU THI CÔNG / ĐỊA ĐIỂM"
+        placeholder="Nhu cầu thi công / địa điểm dự kiến"
         disabled={isSubmitting}
-        className="w-full resize-none border border-white/10 bg-white/2.5 px-4 py-4 text-sm outline-hidden transition-colors placeholder:text-white/30 focus:border-(--accent-bronze) disabled:opacity-50"
+        className="w-full resize-none rounded-xl border border-black/12 bg-[#f4f1ea]/50 px-4 py-3.5 text-sm text-[#1a1918] outline-hidden transition-colors placeholder:text-[#625f5a]/70 focus:border-(--accent-bronze) focus:bg-white disabled:opacity-50"
       />
-      {errorMessage && <p className="text-xs text-red-400">{errorMessage}</p>}
+      {errorMessage && <p className="text-xs text-red-600">{errorMessage}</p>}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="flex w-full cursor-pointer items-center justify-between bg-(--accent-bronze) px-5 py-4 text-xs font-bold tracking-wider text-black uppercase transition-colors hover:bg-(--accent-bronze-light) disabled:opacity-60"
+        className="flex w-full cursor-pointer items-center justify-between rounded-full bg-[#1a1918] px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-(--accent-bronze) disabled:opacity-60"
       >
         {isSubmitting ? "Đang gửi hồ sơ..." : submitLabel}
         {isSubmitting ? (

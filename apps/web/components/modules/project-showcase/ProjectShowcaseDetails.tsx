@@ -18,37 +18,37 @@ export const ProjectShowcaseDetails: React.FC<ProjectShowcaseDetailsProps> = ({
 
   return (
     <div
-      className={`flex flex-col justify-between lg:col-span-4 ${projectIndex % 2 ? "lg:order-1" : ""}`}
+      className={`flex flex-col justify-between lg:col-span-5 ${projectIndex % 2 ? "lg:order-1" : ""}`}
     >
       <div>
-        <div className="font-mono-tech text-[10px] tracking-[0.2em] text-(--accent-bronze) uppercase">
-          {project.code}
+        <div className="text-xs font-medium tracking-[0.12em] text-(--accent-bronze) uppercase">
+          {project.categoryTag || project.code}
         </div>
-        <h3 className="font-syne mt-4 text-2xl leading-tight font-bold md:text-3xl">
+        <h3 className="mt-3 text-2xl leading-snug font-semibold tracking-tight text-[#1a1918] md:text-3xl">
           {project.title}
         </h3>
-        <p className="mt-5 text-sm leading-7 text-(--text-secondary)">
+        <p className="mt-4 text-sm leading-relaxed text-[#625f5a]">
           {project.summary}
         </p>
       </div>
       <div className="mt-8">
-        <dl className="border-y border-white/8">
+        <dl className="border-y border-black/8">
           <MetaRow label="Khách hàng" value={project.client} />
           <MetaRow label="Quy mô" value={project.scaleMetric} accent />
           <MetaRow label="Thời kỳ" value={project.year} />
           <MetaRow
-            label="Vật liệu chính"
+            label="Vật liệu"
             value={project.materials.slice(0, 2).join(" • ")}
           />
         </dl>
         <button
           type="button"
           onClick={() => openProjectModal(project, 0)}
-          className="group mt-6 flex w-full cursor-pointer items-center justify-between border border-(--border-bronze-subtle) px-5 py-4 text-xs font-semibold tracking-wider text-(--accent-bronze) uppercase transition-colors hover:bg-(--accent-bronze) hover:text-black"
+          className="mt-6 flex w-full cursor-pointer items-center justify-between rounded-full border border-black/15 bg-[#f4f1ea]/60 px-6 py-3.5 text-sm font-medium text-[#1a1918] transition-colors hover:border-[#1a1918] hover:bg-[#1a1918] hover:text-white"
         >
-          Xem hồ sơ dự án
-          <span className="font-mono-tech">
-            0{project.gallery.length} frames
+          <span>Xem hồ sơ dự án</span>
+          <span className="text-xs opacity-70">
+            {project.gallery.length} ảnh
           </span>
         </button>
       </div>

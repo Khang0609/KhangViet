@@ -7,13 +7,12 @@ export const ContactDualGates: React.FC = () => {
   return (
     <section
       id="contact-gate"
-      className="scroll-mt-20 border-t border-white/8 bg-[#0d0e11] py-24 md:py-32"
+      className="scroll-mt-20 border-t border-black/8 bg-[#f4f1ea] py-20 md:py-28"
     >
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
         <SectionHeading
           orientation="vertical"
-          index="04"
-          eyebrow="Start a project"
+          eyebrow="Bắt đầu dự án"
           title={
             <>
               Mỗi quy mô dự án.
@@ -24,7 +23,7 @@ export const ContactDualGates: React.FC = () => {
           className="mb-12 max-w-3xl"
         />
 
-        <div className="grid border border-white/8 lg:grid-cols-2">
+        <div className="grid overflow-hidden rounded-2xl border border-black/10 bg-white lg:grid-cols-2">
           <ContactGateA />
           <ContactGateB />
         </div>
