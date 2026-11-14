@@ -16,7 +16,7 @@ async function seedProjectMediaList(
     await client.insert(projectMediaTable).values({
       id: item.id || generateUuidV7(),
       projectId,
-      mediaType: "GALLERY_IMAGE",
+      mediaType: "ACTUAL",
       publicUrl: item.src,
       caption: item.caption,
       location: item.location,
@@ -48,8 +48,8 @@ async function seedSingleProject(
     engineeringNotes: p.engineeringNotes,
     summary: p.summary,
     coverImage: p.coverImage,
-    status: "PUBLISHED",
-    sortOrder: 0,
+    segment: "B2B",
+    stage: "COMPLETED",
     createdAt: now,
     updatedAt: now,
   }).onConflictDoNothing();

@@ -54,7 +54,7 @@ function mapProject(p: ProjectRecord, mediaList: ProjectMediaRecord[] = []): Fea
     engineeringNotes: p.engineeringNotes,
     summary: p.summary,
     coverImage: p.coverImage,
-    status: p.status,
+    status: "PUBLISHED",
     gallery: mediaList.map(mapMediaToGallery),
   };
 }
@@ -87,10 +87,8 @@ export class D1CmsRepository implements ICmsRepository {
     };
   }
 
-  async getProjects(includeDrafts: boolean = false): Promise<FeaturedProject[]> {
-    const projects = includeDrafts
-      ? await this.client.select().from(projectsTable)
-      : await this.client.select().from(projectsTable).where(eq(projectsTable.status, "PUBLISHED"));
+  async getProjects(_includeDrafts: boolean = false): Promise<FeaturedProject[]> {
+    const projects = await this.client.select().from(projectsTable);
 
     const media = await this.client.select().from(projectMediaTable).orderBy(asc(projectMediaTable.sortOrder));
     const mediaMap = new Map<string, ProjectMediaRecord[]>();
@@ -126,8 +124,6 @@ export class D1CmsRepository implements ICmsRepository {
       engineeringNotes: data.engineeringNotes,
       summary: data.summary,
       coverImage: data.coverImage,
-      status: (data.status as any) || "DRAFT",
-      sortOrder: 0,
       createdAt: now,
       updatedAt: now,
     });
@@ -143,7 +139,6 @@ export class D1CmsRepository implements ICmsRepository {
     const now = new Date().toISOString();
     const updateValues: Record<string, unknown> = {
       updatedAt: now,
-      status: (data.status as any) || "DRAFT",
     };
     if (fields.year !== undefined) updateValues.year = parseYear(fields.year);
     for (const [k, v] of Object.entries(fields)) {
@@ -224,12 +219,8 @@ export class D1CmsRepository implements ICmsRepository {
   async applyPendingChanges(): Promise<{ appliedCount: number; success: boolean }> {
     const now = new Date().toISOString();
 
-    // 1. Thăng hạng tất cả dự án DRAFT -> PUBLISHED
-    const updatedProjects = await this.client
-      .update(projectsTable)
-      .set({ status: "PUBLISHED", updatedAt: now })
-      .where(eq(projectsTable.status, "DRAFT"))
-      .returning({ id: projectsTable.id });
+    // 1. Projects không còn cơ chế DRAFT -> PUBLISHED (cập nhật trực tiếp)
+    const updatedProjects: { id: string }[] = [];
 
     // 2. Thăng hạng metadata drafts -> live keys
     const allMeta = await this.client.select().from(cmsMetadataTable).all();

@@ -64,9 +64,11 @@ function buildDefaultMediaAndComparisons(
     comparisons.push({
       id: `cmp-${p.id}-1`,
       projectId: p.id,
+      label: "Đối chiếu Phối cảnh 3D ⇄ Thực tế thi công",
+      title: "Đối chiếu Phối cảnh 3D ⇄ Thực tế thi công",
       renderMediaId: renderId,
       actualMediaId: actualId,
-      title: "Đối chiếu Phối cảnh 3D ⇄ Thực tế thi công",
+      aspectRatio: "16/10",
       sortOrder: 0,
       renderUrl,
       actualUrl,

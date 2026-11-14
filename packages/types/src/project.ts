@@ -19,6 +19,12 @@ export type ProjectSegment = z.infer<typeof ProjectSegmentSchema>;
 export const ProjectStageSchema = z.enum(["COMPLETED", "TENDER_3D"]);
 export type ProjectStage = z.infer<typeof ProjectStageSchema>;
 
+export const LandingSlotTypeSchema = z.enum([
+  "HERO_SLIDE",
+  "FEATURED_SHOWCASE",
+]);
+export type LandingSlotType = z.infer<typeof LandingSlotTypeSchema>;
+
 export const ProjectMediaTypeSchema = z.enum([
   "ACTUAL",
   "RENDER_3D",
@@ -33,7 +39,7 @@ export type ProjectMediaType = z.infer<typeof ProjectMediaTypeSchema>;
 export const ProjectMediaSchema = z.object({
   id: z.string(),
   projectId: z.string(),
-  mediaType: ProjectMediaTypeSchema.default("GALLERY_IMAGE"),
+  mediaType: ProjectMediaTypeSchema.default("ACTUAL"),
   r2Key: z.string().optional().nullable(),
   publicUrl: z.string(),
   caption: z.string().optional().nullable(),
@@ -48,17 +54,50 @@ export const ProjectMediaSchema = z.object({
 });
 export type ProjectMedia = z.infer<typeof ProjectMediaSchema>;
 
+export const OrganizationSchema = z.object({
+  identityId: z.string(),
+  scale: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+  logoUrl: z.string().optional().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type Organization = z.infer<typeof OrganizationSchema>;
+
+export const KeyAccountSchema = z.object({
+  organizationId: z.string(),
+  slug: z.string(),
+  tag: z.string(),
+  sortOrder: z.number().int().default(0),
+});
+export type KeyAccount = z.infer<typeof KeyAccountSchema>;
+
 export const ProjectComparisonPairSchema = z.object({
   id: z.string(),
   projectId: z.string(),
+  label: z.string().optional().default(""),
+  title: z.string().optional().nullable(),
   renderMediaId: z.string(),
   actualMediaId: z.string(),
-  title: z.string().optional().nullable(),
+  aspectRatio: z.string().default("16/10"),
   sortOrder: z.number().int().default(0),
   renderUrl: z.string().optional(),
   actualUrl: z.string().optional(),
 });
 export type ProjectComparisonPair = z.infer<typeof ProjectComparisonPairSchema>;
+
+export const LandingPlacementMetaSchema = z.object({
+  lightingMode: z.string().optional(),
+  tag: z.string().optional(),
+  overrideImage: z.string().optional(),
+  overrideTitle: z.string().optional(),
+  slideId: z.string().optional(),
+  image: z.string().optional(),
+  title: z.string().optional(),
+  location: z.string().optional(),
+  specs: z.string().optional(),
+});
+export type LandingPlacementMeta = z.infer<typeof LandingPlacementMetaSchema>;
 
 export const FeaturedProjectSchema = z.object({
   id: z.string(),
