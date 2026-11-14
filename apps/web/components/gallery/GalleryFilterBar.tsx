@@ -48,13 +48,13 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
   onCopyShareUrl,
 }) => {
   return (
-    <div className="sticky top-20 z-30 border-b border-white/8 bg-(--bg-obsidian)/95 shadow-lg shadow-black/40 backdrop-blur-md">
+    <div className="sticky top-20 z-30 border-b border-black/8 bg-[#f4f1ea]/95 backdrop-blur-md">
       <div className="mx-auto max-w-360 space-y-3 px-5 py-3.5 md:px-8 xl:px-12">
         <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-center">
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
             {/* Segmented Control: B2B vs C2B */}
             <div
-              className="inline-flex rounded-lg border border-white/8 bg-zinc-900 p-1"
+              className="inline-flex rounded-full border border-black/10 bg-white p-1"
               role="group"
               aria-label="Phân khúc khách hàng"
             >
@@ -65,10 +65,10 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
                     key={opt.value}
                     type="button"
                     onClick={() => onUpdateFilter("segment", opt.value)}
-                    className={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
+                    className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
                       active
-                        ? "bg-brand text-white"
-                        : "text-zinc-400 hover:text-white"
+                        ? "bg-[#1a1918] text-white"
+                        : "text-[#625f5a] hover:text-[#1a1918]"
                     }`}
                   >
                     {opt.label}
@@ -79,7 +79,7 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
 
             {/* Stage Toggle: Thực tế vs 2D/3D */}
             <div
-              className="inline-flex flex-wrap rounded-lg border border-white/8 bg-zinc-900 p-1"
+              className="inline-flex flex-wrap rounded-full border border-black/10 bg-white p-1"
               role="group"
               aria-label="Giai đoạn dự án"
             >
@@ -90,10 +90,10 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
                     key={opt.value}
                     type="button"
                     onClick={() => onUpdateFilter("stage", opt.value)}
-                    className={`flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                    className={`flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                       active
-                        ? "bg-zinc-800 text-white"
-                        : "text-zinc-400 hover:text-white"
+                        ? "bg-[#eae5dc] text-[#1a1918]"
+                        : "text-[#625f5a] hover:text-[#1a1918]"
                     }`}
                   >
                     {opt.dotColor && (
@@ -110,20 +110,20 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
 
           <div className="flex items-center gap-2">
             <div className="relative w-full lg:w-72">
-              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+              <Search className="absolute top-1/2 left-3.5 h-3.5 w-3.5 -translate-y-1/2 text-[#625f5a]" />
               <input
                 type="text"
                 value={filter.search}
                 onChange={(e) => onUpdateFilter("search", e.target.value)}
                 placeholder="Tìm BIDV, GO!, Quận 7, Inox..."
-                className="w-full rounded-lg border border-white/8 bg-zinc-900 py-1.5 pr-8 pl-9 text-xs text-white placeholder-zinc-500 outline-hidden transition-colors focus:border-brand"
+                className="w-full rounded-full border border-black/10 bg-white py-2 pr-8 pl-9 text-xs text-[#1a1918] placeholder-[#625f5a]/70 outline-hidden transition-colors focus:border-(--accent-bronze)"
               />
               {filter.search && (
                 <button
                   type="button"
                   onClick={() => onUpdateFilter("search", "")}
                   aria-label="Xóa từ khóa"
-                  className="absolute top-1/2 right-2.5 -translate-y-1/2 cursor-pointer text-zinc-500 hover:text-white"
+                  className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[#625f5a] hover:text-[#1a1918]"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -134,15 +134,15 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
               type="button"
               onClick={onCopyShareUrl}
               title="Sao chép đường dẫn kèm bộ lọc hiện tại để gửi khách hàng"
-              className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-white/8 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:bg-zinc-800"
+              className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-black/10 bg-white px-3.5 py-2 text-xs font-medium text-[#1a1918] transition-colors hover:border-[#1a1918]"
             >
-              <Share2 className="h-3.5 w-3.5 text-brand" />
+              <Share2 className="h-3.5 w-3.5 text-(--accent-bronze)" />
               <span className="hidden sm:inline">Gửi link danh mục</span>
             </button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-4 border-t border-zinc-800/80 pt-2">
+        <div className="flex items-center justify-between gap-4 border-t border-black/8 pt-2.5">
           <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto">
             {["ALL", ...categories].map((cat) => {
               const active = filter.category === cat;
@@ -154,8 +154,8 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
                   onClick={() => onUpdateFilter("category", cat)}
                   className={`shrink-0 cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                     active
-                      ? "border-brand bg-brand/15 text-brand"
-                      : "border-white/8 bg-zinc-900 text-zinc-400 hover:border-white/20 hover:text-white"
+                      ? "border-[#1a1918] bg-[#1a1918] text-white"
+                      : "border-black/10 bg-white text-[#625f5a] hover:border-black/25 hover:text-[#1a1918]"
                   }`}
                 >
                   {label}
@@ -163,8 +163,8 @@ export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
               );
             })}
           </div>
-          <div className="hidden shrink-0 text-xs text-zinc-400 sm:block">
-            Hiển thị <span className="font-bold text-white">{resultCount}</span>{" "}
+          <div className="hidden shrink-0 text-xs text-[#625f5a] sm:block">
+            Hiển thị <span className="font-semibold text-[#1a1918]">{resultCount}</span>{" "}
             công trình
           </div>
         </div>

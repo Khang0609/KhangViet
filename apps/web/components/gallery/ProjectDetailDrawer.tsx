@@ -56,21 +56,21 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
         role="dialog"
         aria-modal="true"
         aria-label={project.title}
-        className="fixed top-0 right-0 z-50 flex h-full w-full max-w-2xl flex-col border-l border-white/10 bg-(--bg-surface) shadow-2xl"
+        className="fixed top-0 right-0 z-50 flex h-full w-full max-w-2xl flex-col border-l border-black/10 bg-[#f4f1ea] text-[#1a1918] shadow-2xl"
       >
         {/* Drawer Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-white/8 bg-zinc-900/80 px-5 py-4">
-          <div className="flex min-w-0 items-center gap-2.5">
+        <div className="flex shrink-0 items-center justify-between border-b border-black/8 bg-white/80 px-5 py-4 backdrop-blur-md">
+          <div className="flex min-w-0 items-center gap-2">
             <span
-              className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-bold uppercase ${
+              className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
                 isTender3D
-                  ? "bg-brand/20 text-brand border border-brand/30"
-                  : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                  ? "bg-(--accent-bronze)/15 text-(--accent-bronze)"
+                  : "bg-emerald-500/15 text-emerald-700"
               }`}
             >
               {isTender3D ? "Hồ sơ 2D/3D Trúng thầu" : "Đã nghiệm thu thực tế"}
             </span>
-            <span className="shrink-0 rounded border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-zinc-300">
+            <span className="shrink-0 rounded-full border border-black/10 bg-[#f4f1ea] px-2.5 py-0.5 text-[11px] font-medium text-[#625f5a]">
               {project.segment === "B2B"
                 ? "Chuỗi đối tác B2B"
                 : "Khách lẻ C2B"}
@@ -80,23 +80,23 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Đóng chi tiết dự án"
-            className="cursor-pointer rounded-lg bg-zinc-800 p-1.5 text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-white"
+            className="cursor-pointer rounded-full border border-black/10 bg-white p-1.5 text-[#1a1918] transition-colors hover:bg-[#1a1918] hover:text-white"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Scrollable Body */}
         <div className="flex-1 space-y-6 overflow-y-auto p-5 sm:p-6">
           <div>
-            <div className="text-xs font-bold tracking-wider text-brand uppercase">
+            <div className="text-xs font-semibold tracking-wider text-(--accent-bronze) uppercase">
               {project.client}
             </div>
-            <h2 className="mt-1 text-xl leading-snug font-extrabold text-white sm:text-2xl">
+            <h2 className="mt-1 text-xl leading-snug font-semibold text-[#1a1918] sm:text-2xl">
               {project.title}
             </h2>
-            <p className="mt-1.5 flex items-center gap-1.5 text-xs text-zinc-400">
-              <MapPin className="h-3.5 w-3.5 shrink-0 text-brand" />
+            <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#625f5a]">
+              <MapPin className="h-3.5 w-3.5 shrink-0 text-(--accent-bronze)" />
               <span>{project.location}</span>
             </p>
           </div>
@@ -104,10 +104,10 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
           {/* Image Stage Switcher */}
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-xs font-bold tracking-wider text-zinc-400 uppercase">
+              <span className="text-xs font-semibold tracking-wider text-[#625f5a] uppercase">
                 Hồ sơ hình ảnh công trình
               </span>
-              <div className="inline-flex rounded-lg border border-white/8 bg-zinc-950 p-1">
+              <div className="inline-flex rounded-full border border-black/10 bg-white p-1">
                 {(
                   [
                     { id: "render3d", label: "Phối cảnh 2D/3D" },
@@ -121,10 +121,10 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
                       key={tab.id}
                       type="button"
                       onClick={() => setActiveTab(tab.id)}
-                      className={`cursor-pointer rounded px-2.5 py-1 text-xs font-medium transition-colors ${
+                      className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                         active
-                          ? "bg-brand text-white"
-                          : "text-zinc-400 hover:text-white"
+                          ? "bg-[#1a1918] text-white"
+                          : "text-[#625f5a] hover:text-[#1a1918]"
                       }`}
                     >
                       {tab.label}
@@ -216,34 +216,34 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
           </div>
 
           {/* Technical Specs */}
-          <div className="rounded-xl border border-white/8 bg-zinc-900/70 p-4">
-            <h3 className="mb-3 text-xs font-bold tracking-wider text-zinc-400 uppercase">
+          <div className="rounded-2xl border border-black/10 bg-white p-5">
+            <h3 className="mb-3 text-xs font-semibold tracking-wider text-[#625f5a] uppercase">
               Thông số kỹ thuật &amp; Quy mô
             </h3>
             <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-xs sm:grid-cols-2">
-              <div className="flex justify-between border-b border-zinc-800 pb-2 sm:block sm:border-b-0 sm:pb-0">
-                <dt className="text-zinc-500">Chủ đầu tư / Nhãn hàng</dt>
-                <dd className="mt-0.5 font-semibold text-zinc-200">
+              <div className="flex justify-between border-b border-black/8 pb-2 sm:block sm:border-b-0 sm:pb-0">
+                <dt className="text-[#625f5a]">Chủ đầu tư / Nhãn hàng</dt>
+                <dd className="mt-0.5 font-semibold text-[#1a1918]">
                   {project.client}
                 </dd>
               </div>
-              <div className="flex justify-between border-b border-zinc-800 pb-2 sm:block sm:border-b-0 sm:pb-0">
-                <dt className="text-zinc-500">Phân khúc triển khai</dt>
-                <dd className="mt-0.5 font-semibold text-zinc-200">
+              <div className="flex justify-between border-b border-black/8 pb-2 sm:block sm:border-b-0 sm:pb-0">
+                <dt className="text-[#625f5a]">Phân khúc triển khai</dt>
+                <dd className="mt-0.5 font-semibold text-[#1a1918]">
                   {project.segment === "B2B"
                     ? "Chuỗi đối tác B2B"
                     : "Khách hàng doanh nghiệp lẻ (C2B)"}
                 </dd>
               </div>
-              <div className="flex justify-between border-b border-zinc-800 pb-2 sm:block sm:border-b-0 sm:pb-0">
-                <dt className="text-zinc-500">Vật liệu &amp; Kết cấu chính</dt>
-                <dd className="mt-0.5 font-semibold text-zinc-200">
+              <div className="flex justify-between border-b border-black/8 pb-2 sm:block sm:border-b-0 sm:pb-0">
+                <dt className="text-[#625f5a]">Vật liệu &amp; Kết cấu chính</dt>
+                <dd className="mt-0.5 font-semibold text-[#1a1918]">
                   {project.material}
                 </dd>
               </div>
               <div className="flex justify-between sm:block">
-                <dt className="text-zinc-500">Đội phụ trách &amp; Tiến độ</dt>
-                <dd className="mt-0.5 font-semibold text-zinc-200">
+                <dt className="text-[#625f5a]">Đội phụ trách &amp; Tiến độ</dt>
+                <dd className="mt-0.5 font-semibold text-[#1a1918]">
                   {project.team}
                 </dd>
               </div>
@@ -252,29 +252,29 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
 
           {/* Engineering Description */}
           <div>
-            <h3 className="mb-2 text-xs font-bold tracking-wider text-zinc-400 uppercase">
+            <h3 className="mb-2 text-xs font-semibold tracking-wider text-[#625f5a] uppercase">
               Ghi chú thi công từ xưởng Khang Việt
             </h3>
-            <p className="text-xs leading-relaxed text-zinc-300 sm:text-sm">
+            <p className="text-xs leading-relaxed text-[#1a1918]/85 sm:text-sm">
               {project.desc}
             </p>
           </div>
         </div>
 
         {/* Sticky Footer CTA */}
-        <div className="flex shrink-0 items-center justify-between gap-3 border-t border-white/8 bg-zinc-900/95 p-4">
+        <div className="flex shrink-0 items-center justify-between gap-3 border-t border-black/8 bg-white p-4">
           <div className="text-xs">
-            <span className="block text-zinc-400">
+            <span className="block text-[#625f5a]">
               Bạn cần hạng mục tương tự?
             </span>
-            <span className="font-semibold text-white">
+            <span className="font-semibold text-[#1a1918]">
               Xưởng sản xuất trực tiếp • Không qua trung gian
             </span>
           </div>
           <button
             type="button"
             onClick={() => onRequestQuote(project)}
-            className="shrink-0 cursor-pointer rounded-lg bg-brand px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-brand/90"
+            className="shrink-0 cursor-pointer rounded-full bg-[#1a1918] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:bg-(--accent-bronze)"
           >
             Yêu cầu báo giá mẫu này
           </button>

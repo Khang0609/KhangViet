@@ -20,30 +20,29 @@ export const KeyAccountsSpotlight: React.FC<KeyAccountsSpotlightProps> = ({
       : undefined;
 
   return (
-    <section className="border-b border-white/8 bg-(--bg-obsidian) py-6 sm:py-8">
+    <section className="border-b border-black/8 bg-[#eae5dc]/45 py-6">
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
-        <div className="mb-4 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">
-              01. Đối Tác Chiến Lược Dài Hạn (Enterprise Key Accounts)
+        <div className="mb-3.5 flex items-center justify-between gap-4">
+          <div className="flex flex-wrap items-baseline gap-2">
+            <h2 className="text-xs font-semibold tracking-wider text-[#1a1918] uppercase">
+              Đối tác chiến lược
             </h2>
-            <p className="mt-0.5 text-xs text-zinc-500">
-              Chọn thương hiệu lớn để lọc nhanh toàn bộ chuỗi dự án đã triển
-              khai
-            </p>
+            <span className="text-xs text-[#625f5a]">
+              — Chọn thương hiệu để lọc nhanh chuỗi dự án
+            </span>
           </div>
           {selectedAccountId !== "ALL" && (
             <button
               type="button"
               onClick={() => onSelectAccount("ALL")}
-              className="shrink-0 cursor-pointer text-xs font-medium text-brand hover:underline"
+              className="shrink-0 cursor-pointer text-xs font-medium text-(--accent-bronze) hover:underline"
             >
-              × Bỏ chọn thương hiệu
+              × Bỏ chọn
             </button>
           )}
         </div>
 
-        <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1 lg:grid lg:grid-cols-6">
+        <div className="no-scrollbar flex gap-2.5 overflow-x-auto pb-1 lg:grid lg:grid-cols-6">
           {keyAccounts.map((acc) => {
             const isActive = selectedAccountId === acc.id;
             return (
@@ -51,32 +50,34 @@ export const KeyAccountsSpotlight: React.FC<KeyAccountsSpotlightProps> = ({
                 key={acc.id}
                 type="button"
                 onClick={() => onSelectAccount(isActive ? "ALL" : acc.id)}
-                className={`min-w-44 shrink-0 cursor-pointer rounded-xl border p-3.5 text-left transition-all lg:min-w-0 ${
+                className={`min-w-42 shrink-0 cursor-pointer rounded-xl border px-4 py-3 text-left transition-all lg:min-w-0 ${
                   isActive
-                    ? "border-brand bg-brand/12 shadow-lg shadow-brand/10"
-                    : "border-white/8 bg-(--bg-surface) hover:border-white/20 hover:bg-(--bg-surface-elevated)"
+                    ? "border-[#1a1918] bg-[#1a1918] text-white"
+                    : "border-black/10 bg-white text-[#1a1918] hover:border-black/25"
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span
-                    className={`truncate text-xs font-bold ${
-                      isActive ? "text-brand" : "text-white"
-                    }`}
-                  >
+                  <span className="truncate text-xs font-semibold">
                     {acc.name}
                   </span>
                   {isActive && (
-                    <span className="h-2 w-2 shrink-0 rounded-full bg-brand" />
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-(--accent-bronze)" />
                   )}
                 </div>
-                <div className="mt-1 text-[11px] text-zinc-400">{acc.tag}</div>
+                <div
+                  className={`mt-0.5 truncate text-[11px] ${
+                    isActive ? "text-white/70" : "text-[#625f5a]"
+                  }`}
+                >
+                  {acc.tag}
+                </div>
               </button>
             );
           })}
         </div>
 
         {activeAccount && (
-          <div className="mt-4 flex flex-col items-start justify-between gap-4 rounded-xl border border-brand/40 bg-zinc-900/90 p-4 sm:flex-row sm:items-center">
+          <div className="mt-3.5 flex flex-col items-start justify-between gap-4 rounded-xl border border-black/10 bg-white p-4 sm:flex-row sm:items-center">
             <div>
               <div className="flex items-center gap-2">
                 <span className="rounded border border-brand/30 bg-brand/20 px-2 py-0.5 text-[10px] font-bold text-brand uppercase">

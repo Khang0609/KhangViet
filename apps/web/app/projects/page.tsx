@@ -17,7 +17,7 @@ export default async function ProjectsPage() {
     <>
       <SiteHeader />
       <ProjectGalleryClient data={galleryData} />
-      <footer className="border-t border-white/8 bg-[#090a0c] py-8 text-center text-xs text-zinc-500">
+      <footer className="border-t border-black/8 bg-[#181715] py-8 text-center text-xs text-white/60">
         © {new Date().getFullYear()} Khang Việt Design Co., Ltd — Xưởng sản xuất
         trực tiếp tại Bình Tân, TP.HCM.
       </footer>

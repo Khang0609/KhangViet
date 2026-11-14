@@ -150,7 +150,7 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
   }, [data.projects, filter]);
 
   return (
-    <div className="min-h-screen bg-(--bg-obsidian) text-white">
+    <div className="min-h-screen bg-[#f4f1ea] text-[#1a1918]">
       <GalleryHeroStats stats={data.stats} />
 
       <KeyAccountsSpotlight
@@ -167,24 +167,24 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
         onCopyShareUrl={handleCopyShareUrl}
       />
 
-      <main className="mx-auto max-w-360 px-5 py-8 md:px-8 xl:px-12">
+      <main className="mx-auto max-w-360 px-5 py-10 md:px-8 xl:px-12">
         <div className="mb-5 flex items-center justify-between sm:hidden">
-          <span className="text-xs text-zinc-400">
+          <span className="text-xs text-[#625f5a]">
             Tìm thấy{" "}
-            <strong className="text-white">{filteredProjects.length}</strong>{" "}
+            <strong className="text-[#1a1918]">{filteredProjects.length}</strong>{" "}
             công trình
           </span>
           <button
             type="button"
             onClick={resetAllFilters}
-            className="cursor-pointer text-xs font-medium text-brand"
+            className="cursor-pointer text-xs font-medium text-(--accent-bronze)"
           >
             Đặt lại bộ lọc
           </button>
         </div>
 
         {filteredProjects.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-x-7 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProjects.map((project) => (
               <ProjectCard
                 key={project.id}
@@ -194,28 +194,28 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-white/8 bg-(--bg-surface) py-16 text-center">
-            <h3 className="text-base font-bold text-white">
+          <div className="rounded-2xl border border-black/10 bg-white py-16 text-center">
+            <h3 className="text-base font-semibold text-[#1a1918]">
               Không tìm thấy công trình phù hợp
             </h3>
-            <p className="mx-auto mt-1 max-w-md text-xs text-zinc-400">
+            <p className="mx-auto mt-1 max-w-md text-xs text-[#625f5a]">
               Thử thay đổi từ khóa tìm kiếm hoặc đặt lại bộ lọc phân khúc B2B /
               C2B để xem toàn bộ kho dự án của Khang Việt.
             </p>
             <button
               type="button"
               onClick={resetAllFilters}
-              className="mt-4 cursor-pointer rounded-lg bg-brand px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand/90"
+              className="mt-4 cursor-pointer rounded-full bg-[#1a1918] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:bg-(--accent-bronze)"
             >
               Xóa toàn bộ bộ lọc
             </button>
           </div>
         )}
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/8 pt-6 sm:flex-row">
-          <div className="text-xs text-zinc-400">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-black/8 pt-6 sm:flex-row">
+          <div className="text-xs text-[#625f5a]">
             Đang hiển thị{" "}
-            <span className="font-semibold text-white">
+            <span className="font-semibold text-[#1a1918]">
               {filteredProjects.length}
             </span>{" "}
             / {data.projects.length} dự án tiêu biểu
@@ -238,8 +238,8 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
       />
 
       {toastMessage && (
-        <div className="fixed right-5 bottom-5 z-50 flex items-center gap-2.5 rounded-xl border border-brand/50 bg-zinc-900 px-4 py-3 text-xs text-white shadow-xl">
-          <span className="h-2 w-2 rounded-full bg-brand" />
+        <div className="fixed right-5 bottom-5 z-50 flex items-center gap-2.5 rounded-full bg-[#1a1918] px-5 py-3 text-xs text-white shadow-xl">
+          <span className="h-2 w-2 rounded-full bg-(--accent-bronze)" />
           <span>{toastMessage}</span>
         </div>
       )}

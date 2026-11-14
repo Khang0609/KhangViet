@@ -24,25 +24,25 @@ export const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({
       maxWidth="max-w-lg"
       ariaLabel={`Yêu cầu báo giá tham chiếu ${project.title}`}
     >
-      <div className="p-6">
+      <div className="bg-white p-6 text-[#1a1918]">
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
-            <span className="font-mono-tech text-[10px] tracking-widest text-(--accent-bronze) uppercase">
+            <span className="text-xs font-medium tracking-wider text-(--accent-bronze) uppercase">
               Khang Việt Design • Báo giá nhanh
             </span>
-            <h3 className="mt-1 text-lg font-extrabold text-white">
+            <h3 className="mt-1 text-lg font-semibold text-[#1a1918]">
               Yêu Cầu Khảo Sát &amp; Báo Giá
             </h3>
-            <p className="mt-1 text-xs text-zinc-400">
+            <p className="mt-1 text-xs text-[#625f5a]">
               Tham chiếu:{" "}
-              <span className="font-semibold text-brand">{project.title}</span>
+              <span className="font-semibold text-[#1a1918]">{project.title}</span>
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Đóng hộp thoại báo giá"
-            className="cursor-pointer rounded-lg bg-zinc-800 p-1.5 text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-white"
+            className="cursor-pointer rounded-full border border-black/10 bg-[#f4f1ea] p-1.5 text-[#625f5a] transition-colors hover:bg-[#1a1918] hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>
