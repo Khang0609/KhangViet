@@ -58,3 +58,31 @@ export const CompanyLegalInfoSchema = z.object({
   commitment: z.string(),
 });
 export type CompanyLegalInfo = z.infer<typeof CompanyLegalInfoSchema>;
+
+export const LandingPlacementSlotSchema = z.enum([
+  "HERO_SLIDE",
+  "FEATURED_SHOWCASE",
+]);
+export type LandingPlacementSlot = z.infer<typeof LandingPlacementSlotSchema>;
+
+export const LandingPlacementSchema = z.object({
+  id: z.string(),
+  slotType: LandingPlacementSlotSchema,
+  projectId: z.string().min(1, "projectId không được để trống"),
+  sortOrder: z.number().int().min(0).default(0),
+  customMeta: z.record(z.string(), z.unknown()).optional().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type LandingPlacement = z.infer<typeof LandingPlacementSchema>;
+
+export const UpsertLandingPlacementSchema = z.object({
+  id: z.string().optional(),
+  slotType: LandingPlacementSlotSchema,
+  projectId: z.string().min(1, "projectId không được để trống"),
+  sortOrder: z.number().int().min(0).default(0),
+  customMeta: z.record(z.string(), z.unknown()).optional().nullable(),
+});
+export type UpsertLandingPlacement = z.infer<
+  typeof UpsertLandingPlacementSchema
+>;

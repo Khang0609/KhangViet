@@ -7,6 +7,7 @@ import {
 import { JsonCmsRepository } from "./json/JsonCmsRepository";
 import { JsonLeadRepository } from "./json/JsonLeadRepository";
 import { JsonUserRepository } from "./json/JsonUserRepository";
+import { JsonSessionRepository } from "./json/JsonSessionRepository";
 import {
   createD1Client,
   type D1DatabaseBinding,
@@ -54,6 +55,7 @@ export function getRepositories(
     cms: new JsonCmsRepository(),
     lead: new JsonLeadRepository(),
     user: new JsonUserRepository(),
+    session: new JsonSessionRepository(),
   };
 
   return cachedJsonRepositories;

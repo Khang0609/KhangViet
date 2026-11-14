@@ -3,12 +3,19 @@ import { initialLandingContent } from "@khangviet/data";
 import type {
   LandingContent,
   FeaturedProject,
+  ProjectDetail,
+  ProjectListQuery,
+  PaginationMeta,
+  GalleryApiResponse,
   HeroSlide,
   CompanyLegalInfo,
   PendingChange,
   ChangeActionType,
   SyncStatus,
   ProjectGalleryItem,
+  LandingPlacement,
+  LandingPlacementSlot,
+  UpsertLandingPlacement,
 } from "@khangviet/types";
 import { ICmsRepository } from "../../interfaces/ICmsRepository";
 import { type D1Client } from "../client";
@@ -265,4 +272,49 @@ export class D1CmsRepository implements ICmsRepository {
   async getPendingChanges(): Promise<PendingChange[]> { return []; }
   async enqueueChange(): Promise<PendingChange> { return {} as PendingChange; }
   async discardPendingChange(): Promise<boolean> { return true; }
+
+  // Gallery / Placement stubs (D1 schema migration handled separately)
+  async queryProjects(
+    query: ProjectListQuery
+  ): Promise<{ items: FeaturedProject[]; pagination: PaginationMeta }> {
+    const all = await this.getProjects(false);
+    const total = all.length;
+    const start = (query.page - 1) * query.limit;
+    return {
+      items: all.slice(start, start + query.limit),
+      pagination: {
+        page: query.page,
+        limit: query.limit,
+        total,
+        totalPages: total === 0 ? 0 : Math.ceil(total / query.limit),
+      },
+    };
+  }
+
+  async getGalleryData(query: ProjectListQuery): Promise<GalleryApiResponse> {
+    return {
+      items: [],
+      pagination: { page: query.page, limit: query.limit, total: 0, totalPages: 0 },
+      keyAccounts: [],
+      categories: [],
+    };
+  }
+
+  async getProjectDetailById(id: string): Promise<ProjectDetail | null> {
+    const p = await this.getProjectById(id);
+    if (!p) return null;
+    return { ...p, media: [], comparisonPairs: [] };
+  }
+
+  async getPlacements(_slotType?: LandingPlacementSlot): Promise<LandingPlacement[]> {
+    return [];
+  }
+
+  async upsertPlacement(_input: UpsertLandingPlacement): Promise<LandingPlacement> {
+    throw new Error("D1 placements migration not yet applied");
+  }
+
+  async deletePlacement(_id: string): Promise<boolean> {
+    return false;
+  }
 }

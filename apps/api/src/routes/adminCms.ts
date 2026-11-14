@@ -4,46 +4,22 @@ import { handleCmsChange } from "./adminCmsHelper";
 import { AppEnv } from "../middlewares/authMiddleware";
 import { getContextRepos } from "../helpers/repoResolver";
 import {
-  getSyncStatusRoute, getPendingChangesRoute,
-  applyPendingChangesRoute, discardPendingChangeRoute,
-} from "../contracts/adminCmsSyncContracts";
-import {
-  createProjectRoute, updateProjectRoute, deleteProjectRoute,
+  createProjectRoute,
+  updateProjectRoute,
+  deleteProjectRoute,
 } from "../contracts/adminCmsProjectContracts";
-import { updateHeroRoute, updateLegalRoute } from "../contracts/adminCmsMetaContracts";
+import {
+  updateHeroRoute,
+  updateLegalRoute,
+} from "../contracts/adminCmsMetaContracts";
+import {
+  getPlacementsRoute,
+  upsertPlacementRoute,
+  deletePlacementRoute,
+} from "../contracts/adminCmsPlacementContracts";
 
 export const adminCmsRouter = new OpenAPIHono<AppEnv>({
   defaultHook: defaultValidationHook,
-});
-
-adminCmsRouter.openapi(getSyncStatusRoute, async (c) => {
-  return c.json({ success: true as const, data: await getContextRepos(c).cms.getSyncStatus() }, 200);
-});
-
-adminCmsRouter.openapi(getPendingChangesRoute, async (c) => {
-  return c.json({ success: true as const, data: await getContextRepos(c).cms.getPendingChanges() }, 200);
-});
-
-adminCmsRouter.openapi(applyPendingChangesRoute, async (c) => {
-  const result = await getContextRepos(c).cms.applyPendingChanges();
-  const message = result.appliedCount > 0
-    ? `Đã phát hành thành công ${result.appliedCount} thay đổi!`
-    : "Không có thay đổi nào đang chờ (No pending changes).";
-  return c.json({ success: true as const, data: result, message }, 200);
-});
-
-// Alias tương thích ngược cho endpoint apply
-adminCmsRouter.post("/apply-changes", async (c) => {
-  const result = await getContextRepos(c).cms.applyPendingChanges();
-  const message = result.appliedCount > 0
-    ? `Đã phát hành thành công ${result.appliedCount} thay đổi!`
-    : "Không có thay đổi nào đang chờ (No pending changes).";
-  return c.json({ success: true as const, data: result, message }, 200);
-});
-
-adminCmsRouter.openapi(discardPendingChangeRoute, async (c) => {
-  const { id } = c.req.valid("param");
-  return c.json({ success: await getContextRepos(c).cms.discardPendingChange(id) }, 200);
 });
 
 adminCmsRouter.openapi(createProjectRoute, async (c) => {
@@ -55,14 +31,40 @@ adminCmsRouter.openapi(createProjectRoute, async (c) => {
 adminCmsRouter.openapi(updateProjectRoute, async (c) => {
   const { id } = c.req.valid("param");
   const res = await handleCmsChange(c, "UPDATE_PROJECT", c.req.valid("json"), id);
-  if (!res) return c.json({ success: false as const, error: "Project not found" }, 404);
+  if (!res) {
+    return c.json({ success: false as const, error: `Project with id '${id}' not found` }, 404);
+  }
   return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
 });
 
 adminCmsRouter.openapi(deleteProjectRoute, async (c) => {
   const { id } = c.req.valid("param");
   const res = await handleCmsChange(c, "DELETE_PROJECT", {}, id);
+  if (!res.result) {
+    return c.json({ success: false as const, error: `Project with id '${id}' not found` }, 404);
+  }
   return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
+});
+
+adminCmsRouter.openapi(getPlacementsRoute, async (c) => {
+  const { slotType } = c.req.valid("query");
+  const data = await getContextRepos(c).cms.getPlacements(slotType);
+  return c.json({ success: true as const, data }, 200);
+});
+
+adminCmsRouter.openapi(upsertPlacementRoute, async (c) => {
+  const body = c.req.valid("json");
+  const data = await getContextRepos(c).cms.upsertPlacement(body);
+  return c.json({ success: true as const, data }, 200);
+});
+
+adminCmsRouter.openapi(deletePlacementRoute, async (c) => {
+  const { id } = c.req.valid("param");
+  const deleted = await getContextRepos(c).cms.deletePlacement(id);
+  if (!deleted) {
+    return c.json({ success: false as const, error: `Placement with id '${id}' not found` }, 404);
+  }
+  return c.json({ success: true as const, data: { deleted: true as const, id } }, 200);
 });
 
 adminCmsRouter.openapi(updateHeroRoute, async (c) => {

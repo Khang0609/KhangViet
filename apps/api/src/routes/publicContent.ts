@@ -1,5 +1,12 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { LandingContentSchema, FeaturedProjectSchema } from "@khangviet/types";
+import {
+  LandingContentSchema,
+  FeaturedProjectSchema,
+  ProjectDetailSchema,
+  ProjectListQuerySchema,
+  PaginationMetaSchema,
+  GalleryApiResponseSchema,
+} from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 import { defaultValidationHook } from "../middlewares/validationHook";
 import { AppEnv } from "../middlewares/authMiddleware";
@@ -12,12 +19,7 @@ export const publicContentRouter = new OpenAPIHono<AppEnv>({
 const getLandingRoute = createRoute({
   method: "get",
   path: "/landing",
-  summary: "Lấy dữ liệu Landing Page",
-  request: {
-    query: z.object({
-      includeDrafts: z.string().optional(),
-    }),
-  },
+  summary: "Lấy dữ liệu Landing Page từ Curated Placements",
   responses: {
     200: {
       content: {
@@ -33,14 +35,12 @@ const getLandingRoute = createRoute({
   },
 });
 
-const getProjectsRoute = createRoute({
+const getGalleryRoute = createRoute({
   method: "get",
-  path: "/projects",
-  summary: "Lấy danh sách các dự án tiêu biểu",
+  path: "/gallery",
+  summary: "Lấy dữ liệu trang Project Gallery kèm bộ lọc đa chiều và phân trang",
   request: {
-    query: z.object({
-      includeDrafts: z.string().optional(),
-    }),
+    query: ProjectListQuerySchema,
   },
   responses: {
     200: {
@@ -48,11 +48,52 @@ const getProjectsRoute = createRoute({
         "application/json": {
           schema: z.object({
             success: z.literal(true),
-            data: z.array(FeaturedProjectSchema),
+            data: GalleryApiResponseSchema,
+          }),
+        },
+      },
+      description: "Thành công lấy dữ liệu Project Gallery",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+      description: "Tham số truy vấn lọc/phân trang không hợp lệ",
+    },
+  },
+});
+
+const getProjectsRoute = createRoute({
+  method: "get",
+  path: "/projects",
+  summary: "Lấy danh sách các dự án có lọc và phân trang",
+  request: {
+    query: ProjectListQuerySchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            success: z.literal(true),
+            data: z.object({
+              items: z.array(FeaturedProjectSchema),
+              pagination: PaginationMetaSchema,
+            }),
           }),
         },
       },
       description: "Thành công lấy danh sách dự án",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+      description: "Tham số truy vấn không hợp lệ",
     },
   },
 });
@@ -60,10 +101,10 @@ const getProjectsRoute = createRoute({
 const getProjectByIdRoute = createRoute({
   method: "get",
   path: "/projects/{id}",
-  summary: "Lấy chi tiết dự án theo ID",
+  summary: "Lấy chi tiết dự án theo ID kèm media và comparisonPairs",
   request: {
     params: z.object({
-      id: z.string().min(1),
+      id: z.string().trim().min(1, "ID dự án không được để trống"),
     }),
   },
   responses: {
@@ -72,7 +113,7 @@ const getProjectByIdRoute = createRoute({
         "application/json": {
           schema: z.object({
             success: z.literal(true),
-            data: FeaturedProjectSchema,
+            data: ProjectDetailSchema,
           }),
         },
       },
@@ -84,7 +125,7 @@ const getProjectByIdRoute = createRoute({
           schema: ErrorResponseSchema,
         },
       },
-      description: "Tham số không hợp lệ",
+      description: "Tham số ID không hợp lệ",
     },
     404: {
       content: {
@@ -99,36 +140,28 @@ const getProjectByIdRoute = createRoute({
 
 publicContentRouter.openapi(getLandingRoute, async (c) => {
   const repos = getContextRepos(c);
-  const { includeDrafts } = c.req.valid("query");
-  const isDraft = includeDrafts === "true";
-  const [projects, heroSlides, legalInfo] = await Promise.all([
-    repos.cms.getProjects(isDraft),
-    repos.cms.getHeroSlides(isDraft),
-    repos.cms.getLegalInfo(isDraft),
-  ]);
   const data = await repos.cms.getLandingData();
-  return c.json({
-    success: true as const,
-    data: {
-      ...data,
-      heroSlides,
-      featuredProjects: projects.length > 0 ? projects : data.featuredProjects,
-      companyLegalInfo: legalInfo,
-    },
-  }, 200);
+  return c.json({ success: true as const, data }, 200);
+});
+
+publicContentRouter.openapi(getGalleryRoute, async (c) => {
+  const repos = getContextRepos(c);
+  const query = c.req.valid("query");
+  const data = await repos.cms.getGalleryData(query);
+  return c.json({ success: true as const, data }, 200);
 });
 
 publicContentRouter.openapi(getProjectsRoute, async (c) => {
   const repos = getContextRepos(c);
-  const { includeDrafts } = c.req.valid("query");
-  const projects = await repos.cms.getProjects(includeDrafts === "true");
-  return c.json({ success: true as const, data: projects }, 200);
+  const query = c.req.valid("query");
+  const data = await repos.cms.queryProjects(query);
+  return c.json({ success: true as const, data }, 200);
 });
 
 publicContentRouter.openapi(getProjectByIdRoute, async (c) => {
   const repos = getContextRepos(c);
   const { id } = c.req.valid("param");
-  const project = await repos.cms.getProjectById(id);
+  const project = await repos.cms.getProjectDetailById(id);
 
   if (!project) {
     return c.json(

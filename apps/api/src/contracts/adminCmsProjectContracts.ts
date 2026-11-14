@@ -14,7 +14,11 @@ export const createProjectRoute = createRoute({
   summary: "Tạo mới dự án",
   request: {
     body: {
-      content: { "application/json": { schema: FeaturedProjectSchema } },
+      content: {
+        "application/json": {
+          schema: FeaturedProjectSchema.extend({ id: z.string().optional() }),
+        },
+      },
     },
   },
   responses: {
@@ -26,6 +30,10 @@ export const createProjectRoute = createRoute({
       content: { "application/json": { schema: ErrorResponseSchema } },
       description: "Dữ liệu payload không hợp lệ",
     },
+    409: {
+      content: { "application/json": { schema: ErrorResponseSchema } },
+      description: "Mã dự án (code) đã tồn tại",
+    },
   },
 });
 
@@ -34,9 +42,9 @@ export const updateProjectRoute = createRoute({
   path: "/projects/{id}",
   summary: "Cập nhật dự án theo ID",
   request: {
-    params: z.object({ id: z.string().min(1) }),
+    params: z.object({ id: z.string().trim().min(1) }),
     body: {
-      content: { "application/json": { schema: FeaturedProjectSchema } },
+      content: { "application/json": { schema: FeaturedProjectSchema.partial() } },
     },
   },
   responses: {
@@ -52,6 +60,10 @@ export const updateProjectRoute = createRoute({
       content: { "application/json": { schema: ErrorResponseSchema } },
       description: "Không tìm thấy dự án",
     },
+    409: {
+      content: { "application/json": { schema: ErrorResponseSchema } },
+      description: "Mã dự án (code) bị trùng",
+    },
   },
 });
 
@@ -60,7 +72,7 @@ export const deleteProjectRoute = createRoute({
   path: "/projects/{id}",
   summary: "Xóa dự án theo ID",
   request: {
-    params: z.object({ id: z.string().min(1) }),
+    params: z.object({ id: z.string().trim().min(1) }),
   },
   responses: {
     200: {
@@ -70,6 +82,10 @@ export const deleteProjectRoute = createRoute({
     400: {
       content: { "application/json": { schema: ErrorResponseSchema } },
       description: "ID không hợp lệ",
+    },
+    404: {
+      content: { "application/json": { schema: ErrorResponseSchema } },
+      description: "Không tìm thấy dự án để xóa",
     },
   },
 });

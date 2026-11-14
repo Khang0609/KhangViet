@@ -13,10 +13,19 @@ export type ProjectGalleryItem = z.infer<typeof ProjectGalleryItemSchema>;
 export const ProjectStatusSchema = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
 export type ProjectStatus = z.infer<typeof ProjectStatusSchema>;
 
+export const ProjectSegmentSchema = z.enum(["B2B", "C2B"]);
+export type ProjectSegment = z.infer<typeof ProjectSegmentSchema>;
+
+export const ProjectStageSchema = z.enum(["COMPLETED", "TENDER_3D"]);
+export type ProjectStage = z.infer<typeof ProjectStageSchema>;
+
 export const ProjectMediaTypeSchema = z.enum([
+  "ACTUAL",
+  "RENDER_3D",
+  "CONSTRUCTION",
+  "FLOOR_PLAN",
   "COVER",
   "GALLERY_IMAGE",
-  "FLOOR_PLAN",
   "VIDEO",
 ]);
 export type ProjectMediaType = z.infer<typeof ProjectMediaTypeSchema>;
@@ -39,6 +48,18 @@ export const ProjectMediaSchema = z.object({
 });
 export type ProjectMedia = z.infer<typeof ProjectMediaSchema>;
 
+export const ProjectComparisonPairSchema = z.object({
+  id: z.string(),
+  projectId: z.string(),
+  renderMediaId: z.string(),
+  actualMediaId: z.string(),
+  title: z.string().optional().nullable(),
+  sortOrder: z.number().int().default(0),
+  renderUrl: z.string().optional(),
+  actualUrl: z.string().optional(),
+});
+export type ProjectComparisonPair = z.infer<typeof ProjectComparisonPairSchema>;
+
 export const FeaturedProjectSchema = z.object({
   id: z.string(),
   code: z.string(),
@@ -53,7 +74,36 @@ export const FeaturedProjectSchema = z.object({
   engineeringNotes: z.array(z.string()),
   summary: z.string(),
   coverImage: z.string(),
+  segment: ProjectSegmentSchema.optional(),
+  stage: ProjectStageSchema.optional(),
+  keyAccountId: z.string().optional().nullable(),
+  teamAndTimeline: z.string().optional().nullable(),
   status: ProjectStatusSchema.optional(),
   gallery: z.array(ProjectGalleryItemSchema),
 });
 export type FeaturedProject = z.infer<typeof FeaturedProjectSchema>;
+
+export const ProjectDetailSchema = FeaturedProjectSchema.extend({
+  media: z.array(ProjectMediaSchema),
+  comparisonPairs: z.array(ProjectComparisonPairSchema),
+});
+export type ProjectDetail = z.infer<typeof ProjectDetailSchema>;
+
+export const PaginationMetaSchema = z.object({
+  page: z.number().int().min(1),
+  limit: z.number().int().min(1),
+  total: z.number().int().min(0),
+  totalPages: z.number().int().min(0),
+});
+export type PaginationMeta = z.infer<typeof PaginationMetaSchema>;
+
+export const ProjectListQuerySchema = z.object({
+  segment: z.enum(["ALL", "B2B", "C2B"]).optional(),
+  stage: z.enum(["ALL", "COMPLETED", "TENDER_3D"]).optional(),
+  categoryTag: z.string().trim().min(1).optional(),
+  keyAccount: z.string().trim().min(1).optional(),
+  search: z.string().trim().optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(50).default(12),
+});
+export type ProjectListQuery = z.infer<typeof ProjectListQuerySchema>;

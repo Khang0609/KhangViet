@@ -1,17 +1,26 @@
 import type {
   LandingContent,
   FeaturedProject,
+  ProjectDetail,
+  ProjectListQuery,
+  PaginationMeta,
+  GalleryApiResponse,
   HeroSlide,
   CompanyLegalInfo,
-  PendingChange,
-  ChangeActionType,
-  SyncStatus,
+  LandingPlacement,
+  LandingPlacementSlot,
+  UpsertLandingPlacement,
 } from "@khangviet/types";
 
 export interface ICmsRepository {
   getLandingData(): Promise<LandingContent>;
   getProjects(includeDrafts?: boolean): Promise<FeaturedProject[]>;
+  queryProjects(
+    query: ProjectListQuery
+  ): Promise<{ items: FeaturedProject[]; pagination: PaginationMeta }>;
+  getGalleryData(query: ProjectListQuery): Promise<GalleryApiResponse>;
   getProjectById(id: string): Promise<FeaturedProject | null>;
+  getProjectDetailById(id: string): Promise<ProjectDetail | null>;
   createProject(
     project: Omit<FeaturedProject, "id"> & { id?: string }
   ): Promise<FeaturedProject>;
@@ -25,14 +34,8 @@ export interface ICmsRepository {
   getLegalInfo(includeDraft?: boolean): Promise<CompanyLegalInfo>;
   updateLegalInfo(info: Partial<CompanyLegalInfo>): Promise<CompanyLegalInfo>;
 
-  // Pending changes & Midnight sync methods
-  getPendingChanges(): Promise<PendingChange[]>;
-  enqueueChange(
-    action: ChangeActionType,
-    payload: unknown,
-    targetId?: string
-  ): Promise<PendingChange>;
-  applyPendingChanges(): Promise<{ appliedCount: number; success: boolean }>;
-  discardPendingChange(id: string): Promise<boolean>;
-  getSyncStatus(): Promise<SyncStatus>;
+  // Curated Landing Placements
+  getPlacements(slotType?: LandingPlacementSlot): Promise<LandingPlacement[]>;
+  upsertPlacement(input: UpsertLandingPlacement): Promise<LandingPlacement>;
+  deletePlacement(id: string): Promise<boolean>;
 }

@@ -1,11 +1,16 @@
 import { z } from "zod";
+import {
+  PaginationMetaSchema,
+  ProjectSegmentSchema,
+  ProjectStageSchema,
+} from "./project";
 
 /**
  * Phân khúc khách hàng trên trang Project Gallery:
  * - B2B: Chuỗi đối tác, ngân hàng, bán lẻ quy mô lớn
  * - C2B: Khách hàng doanh nghiệp lẻ, showroom, cửa hàng độc lập
  */
-export const GallerySegmentSchema = z.enum(["B2B", "C2B"]);
+export const GallerySegmentSchema = ProjectSegmentSchema;
 export type GallerySegment = z.infer<typeof GallerySegmentSchema>;
 
 /**
@@ -13,7 +18,7 @@ export type GallerySegment = z.infer<typeof GallerySegmentSchema>;
  * - COMPLETED: Đã thi công & nghiệm thu thực tế
  * - TENDER_3D: Hồ sơ phối cảnh 2D/3D trúng thầu
  */
-export const GalleryExecutionStageSchema = z.enum(["COMPLETED", "TENDER_3D"]);
+export const GalleryExecutionStageSchema = ProjectStageSchema;
 export type GalleryExecutionStage = z.infer<typeof GalleryExecutionStageSchema>;
 
 /**
@@ -90,3 +95,15 @@ export const ProjectGalleryResponseSchema = z.object({
 export type ProjectGalleryResponse = z.infer<
   typeof ProjectGalleryResponseSchema
 >;
+
+/**
+ * Payload chuẩn trả về từ endpoint GET /api/v1/content/gallery
+ */
+export const GalleryApiResponseSchema = z.object({
+  items: z.array(GalleryProjectSchema),
+  pagination: PaginationMetaSchema,
+  keyAccounts: z.array(GalleryKeyAccountSchema),
+  categories: z.array(z.string()),
+  stats: GalleryStatsSchema.optional(),
+});
+export type GalleryApiResponse = z.infer<typeof GalleryApiResponseSchema>;
