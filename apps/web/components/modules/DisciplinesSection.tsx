@@ -42,10 +42,10 @@ export const DisciplinesSection: React.FC<DisciplinesSectionProps> = ({
                   </h3>
                   <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-(--accent-bronze) transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
-                <p className="mt-2.5 text-sm leading-relaxed text-[#625f5a]">
+                <p className="mt-2.5 flex-1 text-sm leading-relaxed text-[#625f5a]">
                   {discipline.description}
                 </p>
-                <div className="mt-4 flex items-center justify-between border-t border-black/8 pt-3.5 text-xs">
+                <div className="mt-auto flex items-center justify-between border-t border-black/8 pt-4 text-xs">
                   <span className="text-[#625f5a]">{discipline.metricLabel}</span>
                   <span className="font-semibold text-[#1a1918]">
                     {discipline.metricValue}

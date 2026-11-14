@@ -22,10 +22,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
             <p className="text-xs font-medium tracking-[0.14em] text-[#625f5a] uppercase">
               Since 2009 • Architectural Signage & Interior
             </p>
-            <h1 className="mt-5 text-[clamp(2.5rem,4.4vw,4.15rem)] leading-[1.06] font-semibold tracking-tight text-[#1a1918]">
+            <h1 className="mt-5 text-[clamp(2.35rem,4.1vw,3.9rem)] leading-[1.08] font-semibold tracking-tight text-[#1a1918]">
               Kiến Tạo Diện Mạo{" "}
-              <span className="text-(--accent-bronze)">Thương Hiệu</span> Đỉnh
-              Cao.
+              <span className="whitespace-nowrap text-(--accent-bronze)">
+                Thương Hiệu
+              </span>{" "}
+              Đỉnh Cao.
             </h1>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-[#625f5a]">
               Hơn 15 năm đồng hành cùng các tập đoàn hàng đầu, thiết kế và thi
