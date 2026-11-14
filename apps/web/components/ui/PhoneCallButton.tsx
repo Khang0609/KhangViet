@@ -50,9 +50,9 @@ export const PhoneCallButton: React.FC<PhoneCallButtonProps> = ({
     return (
       <a
         href={telHref}
-        className={`font-mono-tech flex items-center gap-2 border border-white/10 bg-white/3 px-3.5 py-2.5 text-[11px] transition-colors hover:border-(--accent-bronze) hover:text-(--accent-bronze) ${className}`}
+        className={`flex items-center gap-2 rounded-full bg-[#1a1918] px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-(--accent-bronze) ${className}`}
       >
-        <span className="h-1.5 w-1.5 bg-(--accent-bronze) shadow-[0_0_10px_var(--accent-bronze)]" />
+        <span className="h-1.5 w-1.5 rounded-full bg-(--accent-bronze)" />
         {activeLabel}
       </a>
     );

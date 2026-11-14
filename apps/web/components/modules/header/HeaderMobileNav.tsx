@@ -17,7 +17,7 @@ export const HeaderMobileNav: React.FC<HeaderMobileNavProps> = ({
   onOpenProfile,
 }) => {
   return (
-    <div className="border-t border-white/8 bg-(--bg-obsidian) px-5 py-5 lg:hidden">
+    <div className="border-t border-black/8 bg-[#f4f1ea] px-5 py-5 lg:hidden">
       <nav
         className="mx-auto grid max-w-360 gap-1"
         aria-label="Điều hướng di động"
@@ -33,17 +33,12 @@ export const HeaderMobileNav: React.FC<HeaderMobileNavProps> = ({
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`flex items-center justify-between border-b border-white/6 py-3 text-sm ${
-                isActive ? "font-semibold text-(--text-primary)" : ""
+              className={`flex items-center justify-between border-b border-black/8 py-3.5 text-sm ${
+                isActive ? "font-semibold text-[#1a1918]" : "text-[#625f5a]"
               }`}
             >
-              <span>
-                <span className="font-mono-tech mr-3 text-(--accent-bronze)">
-                  {item.number}
-                </span>
-                {item.label}
-              </span>
-              <ArrowRight className="h-4 w-4 text-(--text-secondary)" />
+              <span>{item.label}</span>
+              <ArrowRight className="h-4 w-4 text-[#625f5a]" />
             </Link>
           );
         })}
@@ -55,9 +50,9 @@ export const HeaderMobileNav: React.FC<HeaderMobileNavProps> = ({
               onClose();
               onOpenProfile();
             }}
-            className="mt-4 flex cursor-pointer items-center justify-center gap-2 bg-(--accent-bronze) px-4 py-3 text-xs font-bold tracking-wider text-(--bg-obsidian) uppercase"
+            className="mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#1a1918] px-4 py-3 text-xs font-semibold text-white"
           >
-            <FileText className="h-4 w-4" />
+            <FileText className="h-4 w-4 text-(--accent-bronze)" />
             Xem hồ sơ năng lực
           </button>
         )}

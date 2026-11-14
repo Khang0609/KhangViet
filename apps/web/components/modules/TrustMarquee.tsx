@@ -14,26 +14,24 @@ export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands }) => {
 
   return (
     <section
-      className="overflow-hidden border-b border-white/8 bg-[#14161a] py-8"
+      className="overflow-hidden border-b border-black/8 bg-[#eae5dc]/60 py-7"
       aria-label="Đối tác tiêu biểu"
     >
-      <div className="mb-6 flex items-center justify-center gap-3 px-5">
-        <span className="h-px w-8 bg-white/15" />
-        <span className="font-mono-tech text-[9px] tracking-[0.25em] text-(--text-secondary) uppercase">
-          Trusted by leading corporations
+      <div className="mb-5 flex items-center justify-center gap-3 px-5">
+        <span className="text-xs font-medium tracking-[0.18em] text-[#625f5a] uppercase">
+          Đối tác tin tưởng đồng hành
         </span>
-        <span className="h-px w-8 bg-white/15" />
       </div>
       <div className="animate-marquee">
         {[...activeBrands, ...activeBrands].map((partner, index) => (
           <div
             key={`${partner.name}-${index}`}
-            className="group mx-2 flex min-w-56 items-center gap-4 border border-white/6 px-5 py-4 transition-colors hover:border-(--border-bronze-subtle)"
+            className="mx-6 flex items-baseline gap-2.5 py-1"
           >
-            <span className="font-syne text-sm font-bold text-(--text-secondary) transition-colors group-hover:text-(--text-primary)">
+            <span className="text-base font-semibold tracking-tight text-[#1a1918]">
               {partner.name}
             </span>
-            <span className="font-mono-tech text-[8px] tracking-wider text-white/30 uppercase">
+            <span className="text-xs text-[#625f5a]">
               {partner.category}
             </span>
           </div>
