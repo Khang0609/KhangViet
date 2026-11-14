@@ -30,7 +30,7 @@ export const SpecAndProfileModal: React.FC<SpecAndProfileModalProps> = ({
       ariaLabel="Hồ sơ năng lực & Kiến trúc UI Khang Việt"
     >
       <div className="flex flex-col overflow-hidden max-h-[90vh]">
-        <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-(--bg-obsidian) border-b border-white/8">
+        <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-(--bg-obsidian) border-b border-black/8">
           <TechBadge variant="square">
             KHANG VIET ARCHIVE // TECHNICAL DOSSIER & UI ARCHITECTURE
           </TechBadge>
@@ -39,10 +39,10 @@ export const SpecAndProfileModal: React.FC<SpecAndProfileModalProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('profile')}
-              className={`px-3.5 py-1.5 text-xs font-medium tracking-wider uppercase transition-all cursor-pointer flex items-center gap-1.5 border ${
+              className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 border ${
                 activeTab === 'profile'
-                  ? 'bg-(--accent-bronze) text-(--bg-obsidian) border-(--accent-bronze) font-semibold'
-                  : 'bg-(--bg-surface) text-(--text-secondary) border-white/10 hover:text-(--text-primary)'
+                  ? 'bg-[#1a1918] text-white border-[#1a1918]'
+                  : 'bg-white text-(--text-secondary) border-black/10 hover:text-(--text-primary)'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -51,10 +51,10 @@ export const SpecAndProfileModal: React.FC<SpecAndProfileModalProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('wireframe')}
-              className={`px-3.5 py-1.5 text-xs font-medium tracking-wider uppercase transition-all cursor-pointer flex items-center gap-1.5 border ${
+              className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 border ${
                 activeTab === 'wireframe'
-                  ? 'bg-(--accent-bronze) text-(--bg-obsidian) border-(--accent-bronze) font-semibold'
-                  : 'bg-(--bg-surface) text-(--text-secondary) border-white/10 hover:text-(--text-primary)'
+                  ? 'bg-[#1a1918] text-white border-[#1a1918]'
+                  : 'bg-white text-(--text-secondary) border-black/10 hover:text-(--text-primary)'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -63,7 +63,7 @@ export const SpecAndProfileModal: React.FC<SpecAndProfileModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 text-(--text-secondary) hover:text-(--text-primary) hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors cursor-pointer"
+              className="rounded-full p-2 text-(--text-secondary) hover:text-(--text-primary) hover:bg-black/5 border border-transparent hover:border-black/10 transition-colors cursor-pointer"
               aria-label="Đóng"
             >
               <X className="w-5 h-5" />

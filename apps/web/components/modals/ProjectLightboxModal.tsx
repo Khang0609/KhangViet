@@ -41,7 +41,7 @@ export const ProjectLightboxModal: React.FC<ProjectLightboxModalProps> = ({
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2.5 bg-(--bg-obsidian)/90 text-(--text-primary) hover:text-(--accent-bronze) border border-white/15 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 z-20 rounded-full p-2 bg-white/90 text-[#1a1918] hover:bg-[#1a1918] hover:text-white border border-black/10 shadow-sm transition-colors cursor-pointer"
           aria-label="Đóng chi tiết dự án"
         >
           <X className="w-5 h-5" />

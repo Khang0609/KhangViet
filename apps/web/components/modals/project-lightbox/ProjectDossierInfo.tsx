@@ -27,7 +27,7 @@ export const ProjectDossierInfo: React.FC<ProjectDossierInfoProps> = ({
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 p-4 bg-(--bg-obsidian) border border-white/8">
+      <div className="grid grid-cols-2 gap-3 rounded-xl p-4 bg-(--bg-obsidian) border border-black/8">
         <div>
           <div className="text-[11px] font-mono-tech text-(--text-secondary) uppercase flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5 text-(--accent-bronze)" /> Địa điểm triển khai
@@ -55,7 +55,7 @@ export const ProjectDossierInfo: React.FC<ProjectDossierInfoProps> = ({
           {project.materials.map((mat: string, i: number) => (
             <li
               key={i}
-              className="text-xs text-(--text-secondary) flex items-start gap-2.5 py-1.5 border-b border-white/5"
+              className="text-xs text-(--text-secondary) flex items-start gap-2.5 py-1.5 border-b border-black/6"
             >
               <span className="font-mono-tech text-(--accent-bronze) text-[11px] mt-0.5">
                 0{i + 1}.
@@ -80,15 +80,15 @@ export const ProjectDossierInfo: React.FC<ProjectDossierInfoProps> = ({
         </div>
       </div>
 
-      <div className="pt-3 border-t border-white/8 flex flex-col sm:flex-row gap-3">
+      <div className="pt-3 border-t border-black/8 flex flex-col sm:flex-row gap-3">
         <a
           href="#contact-gate"
           onClick={onClose}
-          className="flex-1 py-3 px-4 bg-(--accent-bronze) hover:bg-(--accent-bronze-light) text-(--bg-obsidian) font-semibold text-xs uppercase tracking-wider text-center transition-colors"
+          className="flex-1 rounded-full py-3 px-5 bg-[#1a1918] hover:bg-(--accent-bronze) text-white font-medium text-xs text-center transition-colors"
         >
           Yêu Cầu Báo Giá Hạng Mục Tương Tự
         </a>
-        <PhoneCallButton variant="outline" className="py-3 px-4" />
+        <PhoneCallButton variant="outline" className="rounded-full border-black/15 py-3 px-4" />
       </div>
     </div>
   );

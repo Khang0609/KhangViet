@@ -45,11 +45,11 @@ export const BaseModal: React.FC<BaseModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-label={ariaLabel}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
-        className={`relative w-full ${maxWidth} max-h-[92vh] bg-(--bg-surface) border border-white/15 shadow-2xl flex flex-col overflow-hidden`}
+        className={`relative w-full ${maxWidth} max-h-[92vh] rounded-2xl bg-(--bg-surface) border border-black/10 shadow-2xl flex flex-col overflow-hidden`}
       >
         {children}
       </div>

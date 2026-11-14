@@ -89,23 +89,19 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
     key: K,
     value: GalleryFilterState[K]
   ) => {
-    setFilter((prev) => {
-      const next = { ...prev, [key]: value };
-      syncUrlParams(next);
-      return next;
-    });
+    const next = { ...filter, [key]: value };
+    setFilter(next);
+    syncUrlParams(next);
   };
 
   const handleSelectKeyAccount = (accountId: string) => {
-    setFilter((prev) => {
-      const next: GalleryFilterState = {
-        ...prev,
-        keyAccount: accountId,
-        segment: accountId !== "ALL" ? "B2B" : prev.segment,
-      };
-      syncUrlParams(next);
-      return next;
-    });
+    const next: GalleryFilterState = {
+      ...filter,
+      keyAccount: accountId,
+      segment: accountId !== "ALL" ? "B2B" : filter.segment,
+    };
+    setFilter(next);
+    syncUrlParams(next);
   };
 
   const resetAllFilters = () => {
