@@ -1,10 +1,23 @@
-import type { LandingContent } from "@khangviet/types";
+﻿import type { LandingContent } from "@khangviet/types";
 import { initialLandingContent } from "@khangviet/data";
+import { apiClient } from "@/lib/apiClient";
 
 /**
- * Cung cấp nội dung tĩnh cho Landing Page từ kho dữ liệu chuẩn @khangviet/data.
- * Đảm bảo tốc độ tải tức thì và không phụ thuộc vào kết nối API lúc build/runtime.
+ * Lấy nội dung Landing Page (heroSlides & featuredProjects từ landing_placements)
+ * qua API Gateway (`GET /api/v1/content/landing`).
+ * Hỗ trợ Next.js ISR revalidate và fallback an toàn về @khangviet/data nếu API offline lúc build.
  */
 export async function getLandingContent(): Promise<LandingContent> {
-  return initialLandingContent;
+  const res = await apiClient<LandingContent>("/api/v1/content/landing", {
+    next: { revalidate: 60, tags: ["landing-content"] },
+  } as RequestInit);
+
+  if (!res.success || !res.data) {
+    console.warn(
+      `[contentService] Fallback to @khangviet/data (${res.success ? "empty data" : res.error})`
+    );
+    return initialLandingContent;
+  }
+
+  return res.data;
 }
