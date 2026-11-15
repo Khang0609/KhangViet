@@ -48,15 +48,15 @@ export const InHouseEngineering: React.FC<InHouseEngineeringProps> = ({
                 description="Không qua trung gian. Mỗi đường hàn, mã màu và điểm sáng đều được kiểm soát trực tiếp bởi đội ngũ Khang Việt."
               />
 
-              <div className="mt-10 flex items-baseline gap-3 border-t border-black/10 pt-8">
-                <span className="text-5xl font-semibold tracking-tight text-[#1a1918] tabular-nums">
+              <div className="mt-10 flex items-start gap-3.5 border-t border-black/10 pt-8">
+                <span className="text-5xl leading-[0.82] font-semibold tracking-tight text-[#1a1918] tabular-nums">
                   {totalHeadcount}
                 </span>
                 <div>
-                  <div className="text-sm font-semibold text-[#1a1918]">
+                  <div className="text-sm leading-tight font-semibold text-[#1a1918]">
                     Nhân sự thi công trực tiếp
                   </div>
-                  <div className="mt-0.5 text-xs text-[#625f5a]">
+                  <div className="mt-1 text-xs text-[#625f5a]">
                     Kiểm soát chất lượng xuyên suốt QA / QC / HSE
                   </div>
                 </div>

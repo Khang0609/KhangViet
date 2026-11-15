@@ -1,175 +1,163 @@
 "use client";
 
 import React from "react";
-import { Search, Share2, X } from "lucide-react";
 import type { GalleryFilterState } from "@khangviet/types";
 
-interface GalleryFilterBarProps {
+interface GalleryFilterSidebarProps {
   filter: GalleryFilterState;
   categories: string[];
-  resultCount: number;
   onUpdateFilter: <K extends keyof GalleryFilterState>(
     key: K,
     value: GalleryFilterState[K]
   ) => void;
-  onCopyShareUrl: () => void;
+  onResetFilters: () => void;
 }
 
 const SEGMENT_OPTIONS: { value: GalleryFilterState["segment"]; label: string }[] =
   [
     { value: "ALL", label: "Tất cả" },
-    { value: "B2B", label: "Chuỗi B2B" },
-    { value: "C2B", label: "Khách lẻ (C2B)" },
+    { value: "B2B", label: "Doanh nghiệp & Chuỗi" },
+    { value: "C2B", label: "Cửa hàng & Cá nhân" },
   ];
 
 const STAGE_OPTIONS: {
   value: GalleryFilterState["stage"];
   label: string;
-  dotColor?: string;
 }[] = [
-  { value: "ALL", label: "Mọi giai đoạn" },
-  {
-    value: "COMPLETED",
-    label: "Đã hoàn thiện (Thực tế)",
-    dotColor: "bg-emerald-400",
-  },
-  {
-    value: "TENDER_3D",
-    label: "Trúng thầu (2D/3D)",
-    dotColor: "bg-brand",
-  },
+  { value: "ALL", label: "Tất cả" },
+  { value: "COMPLETED", label: "Đã hoàn thiện" },
+  { value: "TENDER_3D", label: "Phối cảnh thiết kế" },
 ];
 
-export const GalleryFilterBar: React.FC<GalleryFilterBarProps> = ({
-  filter,
-  categories,
-  resultCount,
-  onUpdateFilter,
-  onCopyShareUrl,
-}) => {
+const CATEGORY_LABELS: Record<string, string> = {
+  "ARCHITECTURAL FACADE & BANKING FIT-OUT": "Mặt dựng & Nội thất",
+  "MEGA-SCALE LED SIGNAGE & PYLON": "Biển hiệu & Pano LED",
+};
+
+function formatCategoryLabel(category: string): string {
+  return CATEGORY_LABELS[category] ?? category;
+}
+
+interface FilterRadioGroupProps<T extends string> {
+  title: string;
+  options: { value: T; label: string }[];
+  selectedValue: T;
+  onSelect: (value: T) => void;
+}
+
+function FilterRadioGroup<T extends string>({
+  title,
+  options,
+  selectedValue,
+  onSelect,
+}: FilterRadioGroupProps<T>) {
   return (
-    <div className="sticky top-20 z-30 border-b border-black/8 bg-[#f4f1ea]/95 backdrop-blur-md">
-      <div className="mx-auto max-w-360 space-y-3 px-5 py-3.5 md:px-8 xl:px-12">
-        <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-center">
-          <div className="flex flex-wrap items-center gap-2.5">
-            {/* Segmented Control: B2B vs C2B */}
-            <div
-              className="inline-flex rounded-full border border-black/10 bg-white p-1"
-              role="group"
-              aria-label="Phân khúc khách hàng"
-            >
-              {SEGMENT_OPTIONS.map((opt) => {
-                const active = filter.segment === opt.value;
-                return (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => onUpdateFilter("segment", opt.value)}
-                    className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
-                      active
-                        ? "bg-[#1a1918] text-white"
-                        : "text-[#625f5a] hover:text-[#1a1918]"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Stage Toggle: Thực tế vs 2D/3D */}
-            <div
-              className="inline-flex flex-wrap rounded-full border border-black/10 bg-white p-1"
-              role="group"
-              aria-label="Giai đoạn dự án"
-            >
-              {STAGE_OPTIONS.map((opt) => {
-                const active = filter.stage === opt.value;
-                return (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => onUpdateFilter("stage", opt.value)}
-                    className={`flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
-                      active
-                        ? "bg-[#eae5dc] text-[#1a1918]"
-                        : "text-[#625f5a] hover:text-[#1a1918]"
-                    }`}
-                  >
-                    {opt.dotColor && (
-                      <span
-                        className={`h-1.5 w-1.5 rounded-full ${opt.dotColor}`}
-                      />
-                    )}
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="relative w-full lg:w-72">
-              <Search className="absolute top-1/2 left-3.5 h-3.5 w-3.5 -translate-y-1/2 text-[#625f5a]" />
-              <input
-                type="text"
-                value={filter.search}
-                onChange={(e) => onUpdateFilter("search", e.target.value)}
-                placeholder="Tìm BIDV, GO!, Quận 7, Inox..."
-                className="w-full rounded-full border border-black/10 bg-white py-2 pr-8 pl-9 text-xs text-[#1a1918] placeholder-[#625f5a]/70 outline-hidden transition-colors focus:border-(--accent-bronze)"
-              />
-              {filter.search && (
-                <button
-                  type="button"
-                  onClick={() => onUpdateFilter("search", "")}
-                  aria-label="Xóa từ khóa"
-                  className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[#625f5a] hover:text-[#1a1918]"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={onCopyShareUrl}
-              title="Sao chép đường dẫn kèm bộ lọc hiện tại để gửi khách hàng"
-              className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-black/10 bg-white px-3.5 py-2 text-xs font-medium text-[#1a1918] transition-colors hover:border-[#1a1918]"
-            >
-              <Share2 className="h-3.5 w-3.5 text-(--accent-bronze)" />
-              <span className="hidden sm:inline">Gửi link danh mục</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between gap-4 border-t border-black/8 pt-2.5">
-          <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto">
-            {["ALL", ...categories].map((cat) => {
-              const active = filter.category === cat;
-              const label = cat === "ALL" ? "Tất cả hạng mục" : cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => onUpdateFilter("category", cat)}
-                  className={`shrink-0 cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+    <div className="border-t border-black/8 pt-5 first:border-t-0 first:pt-0">
+      <h3 className="text-xs font-semibold text-[#1a1918]">{title}</h3>
+      <ul className="mt-3 space-y-2.5">
+        {options.map((opt) => {
+          const active = selectedValue === opt.value;
+          return (
+            <li key={opt.value}>
+              <button
+                type="button"
+                onClick={() => onSelect(opt.value)}
+                aria-pressed={active}
+                className="group flex w-full cursor-pointer items-center gap-2.5 text-left text-sm transition-colors"
+              >
+                <span
+                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors ${
                     active
-                      ? "border-[#1a1918] bg-[#1a1918] text-white"
-                      : "border-black/10 bg-white text-[#625f5a] hover:border-black/25 hover:text-[#1a1918]"
+                      ? "border-[#1a1918]"
+                      : "border-black/25 group-hover:border-[#1a1918]"
                   }`}
                 >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-          <div className="hidden shrink-0 text-xs text-[#625f5a] sm:block">
-            Hiển thị <span className="font-semibold text-[#1a1918]">{resultCount}</span>{" "}
-            công trình
-          </div>
-        </div>
-      </div>
+                  {active && (
+                    <span className="h-2 w-2 rounded-full bg-(--accent-bronze)" />
+                  )}
+                </span>
+                <span
+                  className={
+                    active
+                      ? "font-medium text-[#1a1918]"
+                      : "text-[#625f5a] group-hover:text-[#1a1918]"
+                  }
+                >
+                  {opt.label}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
     </div>
+  );
+}
+
+export const GalleryFilterBar: React.FC<GalleryFilterSidebarProps> = ({
+  filter,
+  categories,
+  onUpdateFilter,
+  onResetFilters,
+}) => {
+  const hasActiveFilter =
+    filter.segment !== "ALL" ||
+    filter.stage !== "ALL" ||
+    filter.category !== "ALL" ||
+    filter.keyAccount !== "ALL" ||
+    filter.search.trim().length > 0;
+
+  const categoryOptions = [
+    { value: "ALL", label: "Tất cả" },
+    ...categories.map((cat) => ({
+      value: cat,
+      label: formatCategoryLabel(cat),
+    })),
+  ];
+
+  return (
+    <aside
+      aria-label="Bộ lọc dự án"
+      className="rounded-2xl border border-black/10 bg-white p-5"
+    >
+      <div className="mb-5 flex items-center justify-between border-b border-black/8 pb-3.5">
+        <span className="text-xs font-semibold tracking-wider text-[#1a1918] uppercase">
+          Bộ lọc
+        </span>
+        {hasActiveFilter && (
+          <button
+            type="button"
+            onClick={onResetFilters}
+            className="cursor-pointer text-xs font-medium text-(--accent-bronze) hover:underline"
+          >
+            Xóa lọc
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-5">
+        <FilterRadioGroup
+          title="Hạng mục"
+          options={categoryOptions}
+          selectedValue={filter.category}
+          onSelect={(val) => onUpdateFilter("category", val)}
+        />
+
+        <FilterRadioGroup
+          title="Khách hàng"
+          options={SEGMENT_OPTIONS}
+          selectedValue={filter.segment}
+          onSelect={(val) => onUpdateFilter("segment", val)}
+        />
+
+        <FilterRadioGroup
+          title="Trạng thái"
+          options={STAGE_OPTIONS}
+          selectedValue={filter.stage}
+          onSelect={(val) => onUpdateFilter("stage", val)}
+        />
+      </div>
+    </aside>
   );
 };
 

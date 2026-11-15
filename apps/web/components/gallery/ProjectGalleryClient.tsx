@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { Search, Share2, SlidersHorizontal, X } from "lucide-react";
 import type {
   GalleryFilterState,
   GalleryProject,
   ProjectGalleryResponse,
 } from "@khangviet/types";
-import { GalleryHeroStats } from "./GalleryHeroStats";
 import { KeyAccountsSpotlight } from "./KeyAccountsSpotlight";
 import { GalleryFilterBar } from "./GalleryFilterBar";
 import { ProjectCard } from "./ProjectCard";
@@ -33,6 +33,7 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
     null
   );
   const [quoteProject, setQuoteProject] = useState<GalleryProject | null>(null);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -147,74 +148,133 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-[#1a1918]">
-      <GalleryHeroStats stats={data.stats} />
+      <div className="pt-20">
+        <KeyAccountsSpotlight
+          keyAccounts={data.keyAccounts}
+          selectedAccountId={filter.keyAccount}
+          onSelectAccount={handleSelectKeyAccount}
+        />
+      </div>
 
-      <KeyAccountsSpotlight
-        keyAccounts={data.keyAccounts}
-        selectedAccountId={filter.keyAccount}
-        onSelectAccount={handleSelectKeyAccount}
-      />
-
-      <GalleryFilterBar
-        filter={filter}
-        categories={data.categories}
-        resultCount={filteredProjects.length}
-        onUpdateFilter={updateFilter}
-        onCopyShareUrl={handleCopyShareUrl}
-      />
-
-      <main className="mx-auto max-w-360 px-5 py-10 md:px-8 xl:px-12">
-        <div className="mb-5 flex items-center justify-between sm:hidden">
-          <span className="text-xs text-[#625f5a]">
-            Tìm thấy{" "}
-            <strong className="text-[#1a1918]">{filteredProjects.length}</strong>{" "}
-            công trình
-          </span>
-          <button
-            type="button"
-            onClick={resetAllFilters}
-            className="cursor-pointer text-xs font-medium text-(--accent-bronze)"
-          >
-            Đặt lại bộ lọc
-          </button>
-        </div>
-
-        {filteredProjects.length > 0 ? (
-          <div className="grid grid-cols-1 gap-x-7 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onSelect={setActiveProject}
-              />
-            ))}
+      <main className="mx-auto max-w-360 px-5 py-8 md:px-8 lg:py-10 xl:px-12">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+          {/* Desktop Sidebar Filter */}
+          <div className="hidden w-64 shrink-0 lg:sticky lg:top-24 lg:block xl:w-70">
+            <GalleryFilterBar
+              filter={filter}
+              categories={data.categories}
+              onUpdateFilter={updateFilter}
+              onResetFilters={resetAllFilters}
+            />
           </div>
-        ) : (
-          <div className="rounded-2xl border border-black/10 bg-white py-16 text-center">
-            <h3 className="text-base font-semibold text-[#1a1918]">
-              Không tìm thấy công trình phù hợp
-            </h3>
-            <p className="mx-auto mt-1 max-w-md text-xs text-[#625f5a]">
-              Thử thay đổi từ khóa tìm kiếm hoặc đặt lại bộ lọc phân khúc B2B /
-              C2B để xem toàn bộ kho dự án của Khang Việt.
-            </p>
-            <button
-              type="button"
-              onClick={resetAllFilters}
-              className="mt-4 cursor-pointer rounded-full bg-[#1a1918] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:bg-(--accent-bronze)"
-            >
-              Xóa toàn bộ bộ lọc
-            </button>
-          </div>
-        )}
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-black/8 pt-6 sm:flex-row">
-          <div className="text-xs text-[#625f5a]">
-            Đang hiển thị{" "}
-            <span className="font-semibold text-[#1a1918]">
-              {filteredProjects.length}
-            </span>{" "}
-            / {data.projects.length} dự án tiêu biểu
+          {/* Right Content Area */}
+          <div className="min-w-0 flex-1">
+            {/* Compact Toolbar: Result Count + Search + Share */}
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm text-[#625f5a]">
+                  Hiển thị{" "}
+                  <span className="font-semibold text-[#1a1918] tabular-nums">
+                    {filteredProjects.length}
+                  </span>{" "}
+                  công trình
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => setMobileFilterOpen((prev) => !prev)}
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-black/10 bg-white px-3.5 py-1.5 text-xs font-medium text-[#1a1918] lg:hidden"
+                >
+                  <SlidersHorizontal className="h-3.5 w-3.5 text-(--accent-bronze)" />
+                  Bộ lọc
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1 sm:w-68 sm:flex-initial">
+                  <Search className="absolute top-1/2 left-3.5 h-3.5 w-3.5 -translate-y-1/2 text-[#625f5a]" />
+                  <input
+                    type="text"
+                    value={filter.search}
+                    onChange={(e) => updateFilter("search", e.target.value)}
+                    placeholder="Tìm dự án, địa điểm, vật liệu..."
+                    className="w-full rounded-full border border-black/10 bg-white py-2 pr-8 pl-9 text-xs text-[#1a1918] placeholder-[#625f5a]/70 outline-hidden transition-colors focus:border-(--accent-bronze)"
+                  />
+                  {filter.search && (
+                    <button
+                      type="button"
+                      onClick={() => updateFilter("search", "")}
+                      aria-label="Xóa từ khóa"
+                      className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[#625f5a] hover:text-[#1a1918]"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleCopyShareUrl}
+                  title="Sao chép đường dẫn kèm bộ lọc hiện tại"
+                  className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-black/10 bg-white px-3.5 py-2 text-xs font-medium text-[#1a1918] transition-colors hover:border-[#1a1918]"
+                >
+                  <Share2 className="h-3.5 w-3.5 text-(--accent-bronze)" />
+                  <span className="hidden sm:inline">Chia sẻ</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Collapsible Filter */}
+            {mobileFilterOpen && (
+              <div className="mb-6 lg:hidden">
+                <GalleryFilterBar
+                  filter={filter}
+                  categories={data.categories}
+                  onUpdateFilter={updateFilter}
+                  onResetFilters={resetAllFilters}
+                />
+              </div>
+            )}
+
+            {filteredProjects.length > 0 ? (
+              <div className="grid grid-cols-1 gap-x-7 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+                {filteredProjects.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onSelect={setActiveProject}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-black/10 bg-white py-16 text-center">
+                <h3 className="text-base font-semibold text-[#1a1918]">
+                  Không tìm thấy công trình phù hợp
+                </h3>
+                <p className="mx-auto mt-1 max-w-md text-xs text-[#625f5a]">
+                  Thử thay đổi từ khóa tìm kiếm hoặc đặt lại bộ lọc để xem toàn
+                  bộ kho dự án của Khang Việt.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetAllFilters}
+                  className="mt-4 cursor-pointer rounded-full bg-[#1a1918] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:bg-(--accent-bronze)"
+                >
+                  Xóa toàn bộ bộ lọc
+                </button>
+              </div>
+            )}
+
+            <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-black/8 pt-6 sm:flex-row">
+              <div className="text-xs text-[#625f5a]">
+                Đang hiển thị{" "}
+                <span className="font-semibold text-[#1a1918] tabular-nums">
+                  {filteredProjects.length}
+                </span>{" "}
+                / {data.projects.length} dự án tiêu biểu
+              </div>
+            </div>
           </div>
         </div>
       </main>
