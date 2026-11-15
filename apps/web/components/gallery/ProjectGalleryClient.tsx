@@ -7,7 +7,6 @@ import type {
   GalleryProject,
   ProjectGalleryResponse,
 } from "@khangviet/types";
-import { KeyAccountsSpotlight } from "./KeyAccountsSpotlight";
 import { GalleryFilterBar } from "./GalleryFilterBar";
 import { ProjectCard } from "./ProjectCard";
 import { ProjectDetailDrawer } from "./ProjectDetailDrawer";
@@ -148,15 +147,7 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-[#1a1918]">
-      <div className="pt-20">
-        <KeyAccountsSpotlight
-          keyAccounts={data.keyAccounts}
-          selectedAccountId={filter.keyAccount}
-          onSelectAccount={handleSelectKeyAccount}
-        />
-      </div>
-
-      <main className="mx-auto max-w-360 px-5 py-8 md:px-8 lg:py-10 xl:px-12">
+      <main className="mx-auto max-w-360 px-5 pt-28 pb-12 md:px-8 lg:pt-30 xl:px-12">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           {/* Desktop Sidebar Filter */}
           <div className="hidden w-64 shrink-0 lg:sticky lg:top-24 lg:block xl:w-70">

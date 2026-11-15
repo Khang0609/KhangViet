@@ -10,12 +10,12 @@ export const ProductionDivisionCard: React.FC<ProductionDivisionCardProps> = ({
   division,
 }) => {
   return (
-    <article className="group grid gap-4 py-6 first:pt-2 last:pb-2 sm:grid-cols-12 sm:items-baseline">
-      <div className="flex items-baseline gap-2.5 sm:col-span-3">
-        <span className="text-3xl font-semibold tracking-tight text-(--accent-bronze) tabular-nums">
+    <article className="group grid gap-4 py-6 first:pt-2 last:pb-2 sm:grid-cols-12 sm:items-start">
+      <div className="flex items-start gap-2.5 sm:col-span-3">
+        <span className="text-3xl leading-[0.82] font-semibold tracking-tight text-(--accent-bronze) tabular-nums">
           {division.headcount}
         </span>
-        <span className="text-xs font-medium text-[#625f5a]">
+        <span className="text-xs leading-tight font-medium text-[#625f5a]">
           {division.unitLabel}
         </span>
       </div>
