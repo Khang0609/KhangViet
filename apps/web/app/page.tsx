@@ -23,8 +23,8 @@ export default async function Home() {
           <main id="top">
             <HeroSection />
             <TrustMarquee />
-            <DisciplinesSection />
             <ProjectShowcase />
+            <DisciplinesSection />
             <InHouseEngineering />
             <ContactDualGates />
           </main>

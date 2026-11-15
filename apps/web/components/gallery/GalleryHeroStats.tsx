@@ -29,7 +29,7 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
 
           <div className="grid grid-cols-3 gap-6 border-t border-black/8 pt-5 sm:gap-10 lg:border-t-0 lg:pt-0">
             <div>
-              <div className="text-2xl font-semibold text-[#1a1918] sm:text-3xl">
+              <div className="text-2xl font-semibold text-[#1a1918] tabular-nums sm:text-3xl">
                 {totalLabel.replace("+", "")}
                 <span className="text-(--accent-bronze)">+</span>
               </div>
@@ -38,7 +38,7 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
               </div>
             </div>
             <div>
-              <div className="text-2xl font-semibold text-[#1a1918] sm:text-3xl">
+              <div className="text-2xl font-semibold text-[#1a1918] tabular-nums sm:text-3xl">
                 {brandsLabel.replace("+", "")}
                 <span className="text-(--accent-bronze)">+</span>
               </div>
@@ -47,7 +47,7 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
               </div>
             </div>
             <div>
-              <div className="text-2xl font-semibold text-[#1a1918] sm:text-3xl">
+              <div className="text-2xl font-semibold text-[#1a1918] tabular-nums sm:text-3xl">
                 100<span className="text-(--accent-bronze)">%</span>
               </div>
               <div className="mt-1 text-xs text-[#625f5a]">
