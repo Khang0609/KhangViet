@@ -21,9 +21,9 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
               Công Trình Thực Tế &amp; Hồ Sơ Trúng Thầu.
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-[#625f5a]">
-              Tra cứu trực quan các dự án đã nghiệm thu thực tế và phối cảnh
-              2D/3D trúng thầu của Khang Việt — từ chuỗi đối tác B2B đến khách
-              hàng doanh nghiệp lẻ.
+              Hành trình kiến tạo không gian thương hiệu của Khang Việt — mở đầu
+              từ hệ thống đối tác chuỗi hàng đầu toàn quốc đến các giải pháp kỹ
+              thuật thi công trực tiếp tại xưởng Bình Tân.
             </p>
           </div>
 
