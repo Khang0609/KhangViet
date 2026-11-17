@@ -75,17 +75,6 @@ export const ChapterScrollRail: React.FC<ChapterScrollRailProps> = ({
             isExpanded ? "w-72 p-3" : "w-11 px-2 py-3"
           }`}
         >
-          {/* Header khi mở rộng */}
-          <div
-            className={`overflow-hidden transition-all duration-200 ${
-              isExpanded ? "mb-2.5 max-h-6 px-2 opacity-100" : "max-h-0 opacity-0"
-            }`}
-          >
-            <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-white/50 uppercase">
-              Mục lục nhảy nhanh
-            </span>
-          </div>
-
           {/* Phần 01: Đối tác (Chấm tròn) */}
           <div className="space-y-1">
             {partnerClusters.map((cluster) => {
