@@ -31,7 +31,7 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
       <main>
         {/* Phần 1: Cụm Bento Đối tác chiến lược */}
         <div className="border-b border-black/8 bg-[#faf9f6] py-8 sm:py-10">
-          <div className="mx-auto flex max-w-360 flex-col justify-between gap-3 px-5 md:flex-row md:items-end md:px-8 xl:px-12">
+          <div className="mx-auto flex max-w-6xl flex-col justify-between gap-3 px-5 md:flex-row md:items-end md:px-8 xl:px-10">
             <div>
               <span className="text-[11px] font-semibold tracking-[0.16em] text-(--accent-bronze) uppercase">
                 Phần 01 · Nền tảng uy tín B2B
@@ -57,7 +57,7 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
 
         {/* Dải chuyển hồi sang Phần 2: Giải pháp kỹ thuật (Floating Dark Canvas) */}
         <div className="bg-[#faf9f6] py-8 sm:py-12">
-          <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
+          <div className="mx-auto max-w-6xl px-5 md:px-8 xl:px-10">
             <div className="flex flex-col justify-between gap-4 rounded-3xl border border-black/10 bg-[#181715] p-6 text-white sm:p-10 md:flex-row md:items-end lg:p-12">
               <div>
                 <span className="text-[11px] font-semibold tracking-[0.16em] text-(--accent-bronze) uppercase">

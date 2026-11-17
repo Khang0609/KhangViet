@@ -116,7 +116,7 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
     <div className="min-h-screen bg-[#faf9f6] text-[#1a1918]">
       {/* Tầng 2 Editorial Header */}
       <section className="border-b border-black/8 bg-[#f4f1ea] pt-28 pb-8 sm:pt-32">
-        <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
+        <div className="mx-auto max-w-6xl px-5 md:px-8 xl:px-10">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <Link
               href="/projects"
@@ -198,7 +198,7 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
       </section>
 
       {/* Split-View Index (Theo bố cục Wireframe B2) */}
-      <main className="mx-auto max-w-360 px-5 py-8 md:px-8 md:py-12 xl:px-12">
+      <main className="mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-12 xl:px-10">
         <div className="mb-5 flex items-center justify-between gap-4">
           <p className="font-mono text-xs text-[#625f5a]">
             SPLIT-VIEW INDEX · Rê chuột hoặc chạm vào danh sách bên trái để xem nhanh hình ảnh thực tế bên phải.

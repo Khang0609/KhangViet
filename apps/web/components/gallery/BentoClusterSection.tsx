@@ -392,7 +392,7 @@ export const BentoClusterSection: React.FC<BentoClusterSectionProps> = ({
           : `py-12 sm:py-16 ${surface.section}`
       }`}
     >
-      <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
+      <div className="mx-auto max-w-6xl px-5 md:px-8 xl:px-10">
         <div
           className={
             isCharcoal

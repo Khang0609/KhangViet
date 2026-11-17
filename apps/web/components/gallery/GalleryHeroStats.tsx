@@ -11,7 +11,7 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
 
   return (
     <section className="border-b border-black/8 bg-[#f4f1ea] pt-28 pb-8 sm:pt-32 sm:pb-10">
-      <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
+      <div className="mx-auto max-w-6xl px-5 md:px-8 xl:px-10">
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <p className="text-xs font-medium tracking-[0.14em] text-(--accent-bronze) uppercase">
