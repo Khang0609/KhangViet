@@ -381,13 +381,26 @@ export const BentoClusterSection: React.FC<BentoClusterSectionProps> = ({
   const tiles = buildBentoTiles(projects, href);
   const chapterCode = String(chapterNumber).padStart(2, "0");
 
+  const isCharcoal = config.surfaceTone === "charcoal";
+
   return (
     <section
       id={config.id}
-      className={`scroll-mt-36 py-12 sm:py-16 ${surface.section}`}
+      className={`scroll-mt-36 ${
+        isCharcoal
+          ? "bg-[#faf9f6] py-8 sm:py-12"
+          : `py-12 sm:py-16 ${surface.section}`
+      }`}
     >
       <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
-        {/* Cluster Story Header */}
+        <div
+          className={
+            isCharcoal
+              ? "rounded-3xl border border-black/10 bg-[#181715] p-6 text-white sm:p-10 lg:p-12"
+              : ""
+          }
+        >
+          {/* Cluster Story Header */}
         <div className="mb-7 flex flex-col justify-between gap-5 md:mb-9 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <div className="flex flex-wrap items-center gap-2.5">
@@ -442,6 +455,7 @@ export const BentoClusterSection: React.FC<BentoClusterSectionProps> = ({
           surface,
           accentColor
         )}
+        </div>
       </div>
     </section>
   );

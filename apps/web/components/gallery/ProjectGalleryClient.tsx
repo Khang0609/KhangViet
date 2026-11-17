@@ -55,22 +55,24 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
           />
         ))}
 
-        {/* Dải chuyển hồi sang Phần 2: Giải pháp kỹ thuật */}
-        <div className="border-b border-black/10 bg-[#181715] py-12 text-white sm:py-14">
-          <div className="mx-auto flex max-w-360 flex-col justify-between gap-4 px-5 md:flex-row md:items-end md:px-8 xl:px-12">
-            <div>
-              <span className="text-[11px] font-semibold tracking-[0.16em] text-(--accent-bronze) uppercase">
-                Phần 02 · Chuyên sâu kỹ thuật &amp; Khách hàng doanh nghiệp lẻ
-              </span>
-              <h2 className="mt-1.5 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Giải Pháp Thi Công Theo Hạng Mục
-              </h2>
+        {/* Dải chuyển hồi sang Phần 2: Giải pháp kỹ thuật (Floating Dark Canvas) */}
+        <div className="bg-[#faf9f6] py-8 sm:py-12">
+          <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
+            <div className="flex flex-col justify-between gap-4 rounded-3xl border border-black/10 bg-[#181715] p-6 text-white sm:p-10 md:flex-row md:items-end lg:p-12">
+              <div>
+                <span className="text-[11px] font-semibold tracking-[0.16em] text-(--accent-bronze) uppercase">
+                  Phần 02 · Chuyên sâu kỹ thuật &amp; Khách hàng doanh nghiệp lẻ
+                </span>
+                <h2 className="mt-1.5 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                  Giải Pháp Thi Công Theo Hạng Mục
+                </h2>
+              </div>
+              <p className="max-w-lg text-sm leading-relaxed text-white/70">
+                Tổng hợp toàn bộ công trình theo từng năng lực sản xuất trực tiếp tại
+                xưởng: từ bảng hiệu mặt dựng, hộp đèn chữ nổi đến nội thất quầy kệ và
+                mỹ thuật không gian.
+              </p>
             </div>
-            <p className="max-w-lg text-sm leading-relaxed text-white/70">
-              Tổng hợp toàn bộ công trình theo từng năng lực sản xuất trực tiếp tại
-              xưởng: từ bảng hiệu mặt dựng, hộp đèn chữ nổi đến nội thất quầy kệ và
-              mỹ thuật không gian.
-            </p>
           </div>
         </div>
 
