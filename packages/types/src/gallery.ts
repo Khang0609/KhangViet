@@ -155,3 +155,31 @@ export const GalleryApiResponseSchema = z.object({
   clusters: z.array(GalleryClusterConfigSchema).optional(),
 });
 export type GalleryApiResponse = z.infer<typeof GalleryApiResponseSchema>;
+
+/**
+ * Contract Freeze: Payload cập nhật danh sách cấu hình cụm Bento từ Admin Studio
+ */
+export const UpdateGalleryClustersRequestSchema = z.object({
+  clusters: z.array(GalleryClusterConfigSchema),
+});
+export type UpdateGalleryClustersRequest = z.infer<
+  typeof UpdateGalleryClustersRequestSchema
+>;
+
+/**
+ * Contract Freeze: Payload tạo / cập nhật dự án trong Admin Studio
+ */
+export const CreateGalleryProjectInputSchema = GalleryProjectSchema.omit({
+  id: true,
+}).extend({
+  id: z.string().optional(),
+});
+export type CreateGalleryProjectInput = z.infer<
+  typeof CreateGalleryProjectInputSchema
+>;
+
+export const UpdateGalleryProjectInputSchema =
+  CreateGalleryProjectInputSchema.partial();
+export type UpdateGalleryProjectInput = z.infer<
+  typeof UpdateGalleryProjectInputSchema
+>;
