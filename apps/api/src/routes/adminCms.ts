@@ -11,6 +11,7 @@ import {
 import {
   updateHeroRoute,
   updateLegalRoute,
+  updateGalleryClustersRoute,
 } from "../contracts/adminCmsMetaContracts";
 import {
   getPlacementsRoute,
@@ -76,4 +77,10 @@ adminCmsRouter.openapi(updateHeroRoute, async (c) => {
 adminCmsRouter.openapi(updateLegalRoute, async (c) => {
   const res = await handleCmsChange(c, "UPDATE_LEGAL", c.req.valid("json"));
   return c.json({ success: true as const, pending: res.isPending, data: res.result }, 200);
+});
+
+adminCmsRouter.openapi(updateGalleryClustersRoute, async (c) => {
+  const { clusters } = c.req.valid("json");
+  const data = await getContextRepos(c).cms.updateGalleryClusters(clusters);
+  return c.json({ success: true as const, pending: false, data }, 200);
 });

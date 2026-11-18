@@ -5,6 +5,7 @@ import type {
   ProjectListQuery,
   PaginationMeta,
   GalleryApiResponse,
+  GalleryClusterConfig,
   GalleryProject,
   HeroSlide,
   CompanyLegalInfo,
@@ -136,6 +137,7 @@ export class JsonCmsRepository implements ICmsRepository {
       keyAccounts: mockStore.keyAccounts,
       categories: mockStore.galleryCategories,
       stats: mockStore.galleryStats,
+      clusters: mockStore.galleryClusters,
     };
   }
 
@@ -186,6 +188,25 @@ export class JsonCmsRepository implements ICmsRepository {
       id: data.id || `project-${Date.now()}`,
     };
     mockStore.landing.featuredProjects.push(newProject);
+    mockStore.galleryProjects.unshift({
+      id: newProject.id,
+      code: newProject.code,
+      title: newProject.title,
+      client: newProject.client,
+      keyAccount: newProject.keyAccountId ?? null,
+      segment: newProject.segment ?? "B2B",
+      stage: newProject.stage ?? "COMPLETED",
+      category: newProject.categoryTag,
+      location: newProject.locations.join(" • "),
+      material: newProject.materials.slice(0, 2).join(", "),
+      team: newProject.teamAndTimeline ?? "Đội ngũ Khang Việt",
+      imgActual: newProject.coverImage,
+      img3D: newProject.gallery[0]?.src ?? newProject.coverImage,
+      focalPoint: newProject.focalPoint,
+      desc: newProject.summary,
+      year: newProject.year,
+      featured: false,
+    });
     return newProject;
   }
 
@@ -213,6 +234,29 @@ export class JsonCmsRepository implements ICmsRepository {
 
     const updated = { ...mockStore.landing.featuredProjects[index], ...data };
     mockStore.landing.featuredProjects[index] = updated;
+
+    const gIdx = mockStore.galleryProjects.findIndex((p) => p.id === id);
+    if (gIdx !== -1) {
+      mockStore.galleryProjects[gIdx] = {
+        ...mockStore.galleryProjects[gIdx],
+        code: updated.code,
+        title: updated.title,
+        client: updated.client,
+        keyAccount: updated.keyAccountId ?? mockStore.galleryProjects[gIdx].keyAccount,
+        segment: updated.segment ?? mockStore.galleryProjects[gIdx].segment,
+        stage: updated.stage ?? mockStore.galleryProjects[gIdx].stage,
+        category: updated.categoryTag,
+        location: updated.locations.join(" • "),
+        material: updated.materials.slice(0, 2).join(", "),
+        team: updated.teamAndTimeline ?? mockStore.galleryProjects[gIdx].team,
+        imgActual: updated.coverImage,
+        img3D: updated.gallery[0]?.src ?? mockStore.galleryProjects[gIdx].img3D,
+        focalPoint: updated.focalPoint ?? mockStore.galleryProjects[gIdx].focalPoint,
+        desc: updated.summary,
+        year: updated.year,
+      };
+    }
+
     return updated;
   }
 
@@ -220,7 +264,14 @@ export class JsonCmsRepository implements ICmsRepository {
     const prevLen = mockStore.landing.featuredProjects.length;
     mockStore.landing.featuredProjects =
       mockStore.landing.featuredProjects.filter((p) => p.id !== id);
-    if (mockStore.landing.featuredProjects.length < prevLen) {
+    const prevGalleryLen = mockStore.galleryProjects.length;
+    mockStore.galleryProjects = mockStore.galleryProjects.filter(
+      (p) => p.id !== id
+    );
+    if (
+      mockStore.landing.featuredProjects.length < prevLen ||
+      mockStore.galleryProjects.length < prevGalleryLen
+    ) {
       mockStore.landingPlacements = mockStore.landingPlacements.filter(
         (pl) => pl.projectId !== id
       );
@@ -332,5 +383,16 @@ export class JsonCmsRepository implements ICmsRepository {
       (p) => p.id !== id
     );
     return mockStore.landingPlacements.length < prevLen;
+  }
+
+  async getGalleryClusters(): Promise<GalleryClusterConfig[] | undefined> {
+    return mockStore.galleryClusters;
+  }
+
+  async updateGalleryClusters(
+    clusters: GalleryClusterConfig[]
+  ): Promise<GalleryClusterConfig[]> {
+    mockStore.galleryClusters = clusters;
+    return clusters;
   }
 }

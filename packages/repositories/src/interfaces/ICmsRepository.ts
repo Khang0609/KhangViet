@@ -5,6 +5,7 @@ import type {
   ProjectListQuery,
   PaginationMeta,
   GalleryApiResponse,
+  GalleryClusterConfig,
   HeroSlide,
   CompanyLegalInfo,
   LandingPlacement,
@@ -38,4 +39,10 @@ export interface ICmsRepository {
   getPlacements(slotType?: LandingPlacementSlot): Promise<LandingPlacement[]>;
   upsertPlacement(input: UpsertLandingPlacement): Promise<LandingPlacement>;
   deletePlacement(id: string): Promise<boolean>;
+
+  // Gallery Bento Cluster Configurations
+  getGalleryClusters(): Promise<GalleryClusterConfig[] | undefined>;
+  updateGalleryClusters(
+    clusters: GalleryClusterConfig[]
+  ): Promise<GalleryClusterConfig[]>;
 }

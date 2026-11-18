@@ -7,6 +7,7 @@ import type {
   ProjectListQuery,
   PaginationMeta,
   GalleryApiResponse,
+  GalleryClusterConfig,
   GalleryProject,
   GalleryKeyAccount,
   HeroSlide,
@@ -295,11 +296,14 @@ export class D1CmsRepository implements ICmsRepository {
       logoUrl: ka.logoUrl,
     }));
 
+    const clusters = await this.getGalleryClusters();
+
     return {
       items,
       pagination,
       keyAccounts,
       categories: categoryRows.map((c) => c.categoryTag),
+      clusters,
     };
   }
 
@@ -639,5 +643,32 @@ export class D1CmsRepository implements ICmsRepository {
       .where(eq(landingPlacementsTable.id, id))
       .returning({ id: landingPlacementsTable.id });
     return deleted.length > 0;
+  }
+
+  async getGalleryClusters(): Promise<GalleryClusterConfig[] | undefined> {
+    const row = await this.client
+      .select()
+      .from(cmsMetadataTable)
+      .where(eq(cmsMetadataTable.key, "gallery_clusters"))
+      .limit(1);
+    return row[0] ? (JSON.parse(row[0].valueJson) as GalleryClusterConfig[]) : undefined;
+  }
+
+  async updateGalleryClusters(
+    clusters: GalleryClusterConfig[]
+  ): Promise<GalleryClusterConfig[]> {
+    const now = new Date().toISOString();
+    await this.client
+      .insert(cmsMetadataTable)
+      .values({
+        key: "gallery_clusters",
+        valueJson: JSON.stringify(clusters),
+        updatedAt: now,
+      })
+      .onConflictDoUpdate({
+        target: cmsMetadataTable.key,
+        set: { valueJson: JSON.stringify(clusters), updatedAt: now },
+      });
+    return clusters;
   }
 }
