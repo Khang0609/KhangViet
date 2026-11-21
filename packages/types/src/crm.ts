@@ -26,12 +26,15 @@ export const ContactLeadSchema = z.object({
 export type ContactLead = z.infer<typeof ContactLeadSchema>;
 
 export const CreateLeadDtoSchema = z.object({
-  fullName: z.string().min(1, "Họ tên không được để trống"),
-  phone: z.string().min(1, "Số điện thoại không được để trống"),
-  email: z.string().optional(),
-  serviceCategory: z.string().optional(),
-  projectScale: z.string().optional(),
-  message: z.string().optional(),
+  fullName: z.string().trim().min(1, "Họ tên không được để trống").max(120),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+\-\s()]{8,20}$/, "Số điện thoại không hợp lệ"),
+  email: z.string().trim().email("Email không hợp lệ").max(160).optional().or(z.literal("")),
+  serviceCategory: z.string().trim().max(120).optional(),
+  projectScale: z.string().trim().max(120).optional(),
+  message: z.string().trim().max(2000).optional(),
 });
 export type CreateLeadDto = z.infer<typeof CreateLeadDtoSchema>;
 

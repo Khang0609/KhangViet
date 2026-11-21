@@ -16,11 +16,12 @@ export type AppEnv = {
   Variables: AuthVariables;
   Bindings?: {
     DB?: D1DatabaseBinding;
-    ASSETS?: Fetcher;
+    ASSETS?: { fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> };
     JWT_SECRET?: string;
     ENVIRONMENT?: string;
     NODE_ENV?: string;
     WEB_APP_URL?: string;
+    REVALIDATE_SECRET?: string;
     TELEGRAM_BOT_TOKEN?: string;
     TELEGRAM_CHAT_ID?: string | null;
   };
@@ -29,7 +30,16 @@ export type AppEnv = {
 const DEFAULT_SECRET = "khangviet-dev-jwt-secret-2026";
 
 export const getJwtSecret = (c: Context<AppEnv>): string => {
-  return c.env?.JWT_SECRET || DEFAULT_SECRET;
+  const secret = c.env?.JWT_SECRET;
+  const isProd =
+    c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
+  if (!secret) {
+    if (isProd) {
+      throw new Error("FATAL: JWT_SECRET is not configured in production");
+    }
+    return DEFAULT_SECRET;
+  }
+  return secret;
 };
 
 export const authMiddleware = async (c: Context<AppEnv>, next: Next) => {
@@ -86,7 +96,7 @@ export const authMiddleware = async (c: Context<AppEnv>, next: Next) => {
 
 export const requireAdmin = async (c: Context<AppEnv>, next: Next) => {
   const user = c.get("authUser");
-  if (!user || user.role !== "ADMIN") {
+  if (!user || (user.role !== "ADMIN" && user.role !== "STAFF")) {
     return c.json(
       { success: false as const, error: "Forbidden: Admin access required" },
       403,

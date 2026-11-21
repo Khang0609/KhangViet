@@ -13,9 +13,9 @@ import {
 } from "lucide-react";
 import KhangVietLogo from "@/ui/KhangVietLogo";
 import {
-  clearAdminSession,
-  getStoredAdminSession,
+  getAdminMe,
   loginAdmin,
+  logoutAdmin,
   type AdminSession,
 } from "@/lib/adminApi";
 
@@ -40,36 +40,60 @@ export const AdminShell: React.FC<AdminShellProps> = ({
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    setSession(getStoredAdminSession());
-    setChecking(false);
+    let active = true;
+    getAdminMe()
+      .then((res) => {
+        if (!active) return;
+        if (
+          res.success &&
+          (res.data.role === "ADMIN" || res.data.role === "STAFF")
+        ) {
+          setSession({ user: res.data });
+        } else {
+          setSession(null);
+        }
+      })
+      .catch(() => {
+        if (active) setSession(null);
+      })
+      .finally(() => {
+        if (active) setChecking(false);
+      });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError(null);
     setSubmitting(true);
-    const res = await loginAdmin({ email: email.trim(), password });
-    setSubmitting(false);
+    try {
+      const res = await loginAdmin({ email: email.trim(), password });
 
-    if (!res.success) {
-      setLoginError(res.error || "Email hoặc mật khẩu không đúng");
-      return;
+      if (!res.success) {
+        setLoginError(res.error || "Email hoặc mật khẩu không đúng");
+        return;
+      }
+
+      if (res.data.user.role !== "ADMIN" && res.data.user.role !== "STAFF") {
+        await logoutAdmin();
+        setLoginError("Tài khoản này không có quyền truy cập trang Quản trị.");
+        return;
+      }
+
+      setSession({
+        user: res.data.user,
+      });
+    } catch {
+      setLoginError("Không thể kết nối máy chủ xác thực.");
+    } finally {
+      setSubmitting(false);
     }
-
-    if (res.data.user.role !== "ADMIN" && res.data.user.role !== "STAFF") {
-      clearAdminSession();
-      setLoginError("Tài khoản này không có quyền truy cập trang Quản trị.");
-      return;
-    }
-
-    setSession({
-      accessToken: res.data.accessToken,
-      user: res.data.user,
-    });
   };
 
-  const handleLogout = () => {
-    clearAdminSession();
+  const handleLogout = async () => {
+    await logoutAdmin();
     setSession(null);
     setPassword("");
   };

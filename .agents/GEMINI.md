@@ -17,3 +17,6 @@
 4. **Git Branch Discipline:** Follow `.agents/skills/git-branch-workflow.md`; verify the active branch before staging/committing.
 5. **Graphify-First:** When `graphify-out/` exists, query Graphify before broad grep/file-reading sweeps.
 6. **No Prompt-Reference Leakage in UI:** Never copy reference/analogy keywords from user prompts (e.g., "YouTube Studio", "Notion-like", "Figma-style") into production UI labels, buttons, headings, or copy. Use domain-appropriate Khang Việt copy only.
+7. **Cookie-Only Auth (No `localStorage` Tokens):** Never store JWT/session tokens in `localStorage` or send `Authorization: Bearer` from browser clients. Use `HttpOnly` `session_id` cookies with `credentials: "include"` and verify/clear sessions via `GET /api/auth/me` and `POST /api/auth/logout`.
+8. **Fail-Closed Production Secrets:** Never fall back to dev default secrets (`JWT_SECRET`, `REVALIDATE_SECRET`) when `NODE_ENV === "production"` or `ENVIRONMENT === "production"` — throw immediately. Never pass secrets in URL query strings.
+9. **Single-Unwrap `apiClient`:** `apiClient` already unwraps `json.data`; never read `res.data.data` in `apps/web/lib/*Api.ts`.

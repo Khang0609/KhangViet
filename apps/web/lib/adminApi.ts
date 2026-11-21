@@ -8,63 +8,25 @@ import type {
 } from "@khangviet/types";
 import { apiClient, type ApiResult } from "./apiClient";
 
-const TOKEN_STORAGE_KEY = "kv_admin_access_token";
-const USER_STORAGE_KEY = "kv_admin_user";
-
 export interface AdminSession {
-  accessToken: string;
   user: SafeUser;
 }
 
-export function getStoredAdminSession(): AdminSession | null {
-  if (typeof window === "undefined") return null;
-  const accessToken = window.localStorage.getItem(TOKEN_STORAGE_KEY);
-  const rawUser = window.localStorage.getItem(USER_STORAGE_KEY);
-  if (!accessToken || !rawUser) return null;
-  try {
-    const user = JSON.parse(rawUser) as SafeUser;
-    return { accessToken, user };
-  } catch {
-    return null;
-  }
+export async function getAdminMe(): Promise<ApiResult<SafeUser, string>> {
+  return await apiClient<SafeUser>("/api/auth/me", { method: "GET" });
 }
 
-export function saveAdminSession(session: AdminSession): void {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(TOKEN_STORAGE_KEY, session.accessToken);
-  window.localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(session.user));
-}
-
-export function clearAdminSession(): void {
-  if (typeof window === "undefined") return;
-  window.localStorage.removeItem(TOKEN_STORAGE_KEY);
-  window.localStorage.removeItem(USER_STORAGE_KEY);
-}
-
-function getAuthHeaders(): Record<string, string> {
-  const session = getStoredAdminSession();
-  return session?.accessToken
-    ? { Authorization: `Bearer ${session.accessToken}` }
-    : {};
+export async function logoutAdmin(): Promise<ApiResult<unknown, string>> {
+  return await apiClient<unknown>("/api/auth/logout", { method: "POST" });
 }
 
 export async function loginAdmin(
   credentials: LoginCredentials
 ): Promise<ApiResult<LoginResponseData, string>> {
-  const res = await apiClient<LoginResponseData>(
-    "/api/auth/login",
-    {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    }
-  );
-  if (!res.success) return res;
-  const payload = res.data;
-  saveAdminSession({
-    accessToken: payload.accessToken,
-    user: payload.user,
+  return await apiClient<LoginResponseData>("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify(credentials),
   });
-  return { success: true, data: payload };
 }
 
 /**
@@ -121,17 +83,10 @@ export async function createAdminProject(
   input: CreateGalleryProjectInput
 ): Promise<ApiResult<FeaturedProject, string>> {
   const payload = mapGalleryInputToFeaturedPayload(input);
-  const res = await apiClient<{
-    success: true;
-    pending: boolean;
-    data: FeaturedProject;
-  }>("/api/v1/admin/cms/projects", {
+  return await apiClient<FeaturedProject>("/api/v1/admin/cms/projects", {
     method: "POST",
-    headers: getAuthHeaders(),
     body: JSON.stringify(payload),
   });
-  if (!res.success) return res;
-  return { success: true, data: res.data.data };
 }
 
 export async function updateAdminProject(
@@ -139,26 +94,24 @@ export async function updateAdminProject(
   input: CreateGalleryProjectInput
 ): Promise<ApiResult<FeaturedProject, string>> {
   const payload = mapGalleryInputToFeaturedPayload({ ...input, id });
-  const res = await apiClient<{
-    success: true;
-    pending: boolean;
-    data: FeaturedProject;
-  }>(`/api/v1/admin/cms/projects/${encodeURIComponent(id)}`, {
-    method: "PUT",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(payload),
-  });
-  if (!res.success) return res;
-  return { success: true, data: res.data.data };
+  return await apiClient<FeaturedProject>(
+    `/api/v1/admin/cms/projects/${encodeURIComponent(id)}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }
+  );
 }
 
 export async function deleteAdminProject(
   id: string
 ): Promise<ApiResult<boolean, string>> {
-  const res = await apiClient<{ success: true }>(`/api/v1/admin/cms/projects/${encodeURIComponent(id)}`, {
-    method: "DELETE",
-    headers: getAuthHeaders(),
-  });
+  const res = await apiClient<unknown>(
+    `/api/v1/admin/cms/projects/${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+    }
+  );
   if (!res.success) return res;
   return { success: true, data: true };
 }
@@ -166,14 +119,11 @@ export async function deleteAdminProject(
 export async function updateAdminGalleryClusters(
   clusters: GalleryClusterConfig[]
 ): Promise<ApiResult<GalleryClusterConfig[], string>> {
-  const res = await apiClient<{
-    success: true;
-    data: GalleryClusterConfig[];
-  }>("/api/v1/admin/cms/gallery-clusters", {
-    method: "PUT",
-    headers: getAuthHeaders(),
-    body: JSON.stringify({ clusters }),
-  });
-  if (!res.success) return res;
-  return { success: true, data: res.data.data };
+  return await apiClient<GalleryClusterConfig[]>(
+    "/api/v1/admin/cms/gallery-clusters",
+    {
+      method: "PUT",
+      body: JSON.stringify({ clusters }),
+    }
+  );
 }

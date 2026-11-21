@@ -49,7 +49,7 @@ export class PasswordService {
       ["deriveBits"]
     );
     return crypto.subtle.deriveBits(
-      { name: "PBKDF2", salt, iterations, hash: "SHA-256" },
+      { name: "PBKDF2", salt: new Uint8Array(salt), iterations, hash: "SHA-256" },
       key,
       this.KEY_LEN * 8
     );

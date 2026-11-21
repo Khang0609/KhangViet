@@ -26,13 +26,24 @@ export async function triggerWebRevalidation(
     (typeof process !== "undefined" && process.env?.WEB_APP_URL) ||
     DEFAULT_WEB_URL;
 
+  const isProduction =
+    env?.NODE_ENV === "production" ||
+    env?.ENVIRONMENT === "production" ||
+    (typeof process !== "undefined" && process.env?.NODE_ENV === "production");
+
   const secret =
     (typeof env?.REVALIDATE_SECRET === "string" && env.REVALIDATE_SECRET) ||
     (typeof process !== "undefined" && process.env?.REVALIDATE_SECRET) ||
-    DEFAULT_SECRET;
+    (isProduction ? "" : DEFAULT_SECRET);
 
-  const tagParam = options.tag ? `&tag=${encodeURIComponent(options.tag)}` : "";
-  const pathParam = options.path ? `&path=${encodeURIComponent(options.path)}` : "";
+  if (!secret) {
+    throw new Error("FATAL: REVALIDATE_SECRET is not configured in production");
+  }
+
+  const params = new URLSearchParams();
+  if (options.tag) params.set("tag", options.tag);
+  if (options.path) params.set("path", options.path);
+  const query = params.toString();
 
   // Danh sách các URL sẽ thử gửi webhook
   const targetUrls = [configuredUrl];
@@ -41,7 +52,7 @@ export async function triggerWebRevalidation(
   }
 
   for (const baseUrl of targetUrls) {
-    const endpoint = `${baseUrl}/api/revalidate?secret=${encodeURIComponent(secret)}${tagParam}${pathParam}`;
+    const endpoint = `${baseUrl}/api/revalidate${query ? `?${query}` : ""}`;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 1500);
 
@@ -50,6 +61,7 @@ export async function triggerWebRevalidation(
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-revalidate-secret": secret,
         },
         signal: controller.signal,
       });

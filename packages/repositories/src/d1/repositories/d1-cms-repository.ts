@@ -270,9 +270,7 @@ export class D1CmsRepository implements ICmsRepository {
       code: p.code,
       title: p.title,
       client: p.client,
-      keyAccount: p.keyAccountId
-        ? (keyAccountNameMap.get(p.keyAccountId) ?? p.keyAccountId)
-        : null,
+      keyAccount: p.keyAccountId ?? null,
       segment: p.segment ?? "B2B",
       stage: p.stage ?? "COMPLETED",
       category: p.categoryTag,
@@ -472,6 +470,27 @@ export class D1CmsRepository implements ICmsRepository {
       })
       .where(eq(projectsTable.id, id));
 
+    if (data.gallery !== undefined) {
+      await this.client
+        .delete(projectMediaTable)
+        .where(eq(projectMediaTable.projectId, id));
+      for (let i = 0; i < data.gallery.length; i++) {
+        const g = data.gallery[i];
+        await this.client.insert(projectMediaTable).values({
+          id: g.id || generateUuidV7(),
+          projectId: id,
+          mediaType: "ACTUAL",
+          publicUrl: g.src,
+          caption: g.caption,
+          location: g.location,
+          spec: g.spec,
+          aspectRatio: g.aspect,
+          sortOrder: i,
+          createdAt: now,
+        });
+      }
+    }
+
     return await this.getProjectById(id);
   }
 
@@ -600,7 +619,20 @@ export class D1CmsRepository implements ICmsRepository {
       throw err;
     }
 
-    const id = input.id || generateUuidV7();
+    let id = input.id;
+    if (!id) {
+      const existing = await this.client
+        .select({ id: landingPlacementsTable.id })
+        .from(landingPlacementsTable)
+        .where(
+          and(
+            eq(landingPlacementsTable.slotType, input.slotType),
+            eq(landingPlacementsTable.projectId, input.projectId)
+          )
+        )
+        .limit(1);
+      id = existing[0]?.id || generateUuidV7();
+    }
     const now = new Date().toISOString();
     const customMeta = (input.customMeta ?? null) as LandingPlacementMeta | null;
 

@@ -43,9 +43,9 @@ export async function apiClient<T>(
       ...(options.headers || {}),
     };
 
-    // Chỉ đính kèm credentials nếu request thuộc domain nội bộ
+    // Đính kèm HttpOnly session cookie cho request thuộc API nội bộ
     const credentials = isInternalApiTarget(url, baseUrl)
-      ? "same-origin"
+      ? "include"
       : undefined;
 
     const res = await fetch(url, {

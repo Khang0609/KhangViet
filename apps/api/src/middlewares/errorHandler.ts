@@ -63,19 +63,22 @@ export const errorHandler = async (err: Error, c: Context) => {
     );
   }
 
+  const isProduction =
+    c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
+
   // Bắt lỗi không tìm thấy tài nguyên từ repository
   if (err.message.toLowerCase().includes("not found")) {
     return c.json(
-      { success: false as const, error: err.message },
+      {
+        success: false as const,
+        error: isProduction ? "Không tìm thấy tài nguyên yêu cầu" : err.message,
+      },
       404
     );
   }
 
   const traceId = crypto.randomUUID();
   console.error(`[CRITICAL ERROR][${traceId}] ${c.req.method} ${c.req.url}:`, err);
-
-  const isProduction =
-    c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
 
   return c.json(
     {

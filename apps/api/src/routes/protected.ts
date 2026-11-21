@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { getRepositories } from "@khangviet/repositories";
 import { protectedRoute } from "../contracts/protectedContracts";
 import { authMiddleware, AppEnv } from "../middlewares/authMiddleware";
+import { getContextRepos } from "../helpers/repoResolver";
 
 export const protectedRouter = new OpenAPIHono<AppEnv>();
 
@@ -9,8 +9,8 @@ protectedRouter.use("/protected", authMiddleware);
 
 protectedRouter.openapi(protectedRoute, async (c) => {
   const authPayload = c.get("authUser");
-  const userRepo = getRepositories().user;
-  const user = await userRepo.findSafeById(authPayload.sub);
+  const userRepo = getContextRepos(c).user;
+  const user = await userRepo.findSafeById(authPayload.userId);
 
   if (!user) {
     return c.json(
