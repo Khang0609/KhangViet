@@ -163,7 +163,7 @@ export const AdminShell: React.FC<AdminShellProps> = ({
   const navItems = [
     {
       href: "/admin/projects",
-      label: "Dự án (YouTube Studio)",
+      label: "Dự án",
       icon: FolderKanban,
       active: pathname?.startsWith("/admin/projects"),
     },

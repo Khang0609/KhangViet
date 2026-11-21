@@ -123,7 +123,7 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
   return (
     <AdminShell
       title="Quản lý Dự án"
-      subtitle="Danh sách dự án kiểu YouTube Studio — bấm vào từng dòng để xem & sửa nhanh, hoặc thêm hàng loạt qua Wizard 3 bước."
+      subtitle="Danh sách dự án — bấm vào từng dòng để xem & sửa nhanh, hoặc thêm hàng loạt qua Wizard 3 bước."
     >
       {/* Action Toolbar */}
       <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">

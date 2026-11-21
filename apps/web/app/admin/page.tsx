@@ -27,7 +27,7 @@ export default function AdminHomePage() {
               1. Quản lý &amp; Thêm Dự án hàng loạt
             </h2>
             <p className="mt-1.5 text-sm leading-relaxed text-[#625f5a]">
-              Danh sách trực quan kiểu YouTube Studio kèm Wizard 3 bước để tải
+              Danh sách trực quan kèm Wizard 3 bước để tải
               ảnh, chấm điểm lấy nét và nhập nhiều dự án nối tiếp nhau.
             </p>
           </div>

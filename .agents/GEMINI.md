@@ -16,3 +16,4 @@
 3. **Tailwind CSS v4:** Follow `.agents/rules/tailwindcss-v4.md` (no v3 syntax like `bg-[var(--*)]`, `bg-gradient-*`, `flex-shrink-*`, `ring-offset-*`).
 4. **Git Branch Discipline:** Follow `.agents/skills/git-branch-workflow.md`; verify the active branch before staging/committing.
 5. **Graphify-First:** When `graphify-out/` exists, query Graphify before broad grep/file-reading sweeps.
+6. **No Prompt-Reference Leakage in UI:** Never copy reference/analogy keywords from user prompts (e.g., "YouTube Studio", "Notion-like", "Figma-style") into production UI labels, buttons, headings, or copy. Use domain-appropriate Khang Việt copy only.

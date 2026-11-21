@@ -51,7 +51,7 @@ function getAuthHeaders(): Record<string, string> {
 export async function loginAdmin(
   credentials: LoginCredentials
 ): Promise<ApiResult<LoginResponseData, string>> {
-  const res = await apiClient<{ success: true; data: LoginResponseData }>(
+  const res = await apiClient<LoginResponseData>(
     "/api/auth/login",
     {
       method: "POST",
@@ -59,7 +59,7 @@ export async function loginAdmin(
     }
   );
   if (!res.success) return res;
-  const payload = res.data.data;
+  const payload = res.data;
   saveAdminSession({
     accessToken: payload.accessToken,
     user: payload.user,
