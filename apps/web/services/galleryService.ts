@@ -52,5 +52,6 @@ export async function getProjectGalleryData(
     keyAccounts: res.data.keyAccounts,
     categories: res.data.categories,
     stats: res.data.stats ?? initialProjectGallery.stats,
+    clusters: res.data.clusters ?? initialProjectGallery.clusters,
   };
 }

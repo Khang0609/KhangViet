@@ -5,8 +5,6 @@
 .dev.vars
 .dev.vars.*
 
-.agents/docs/
-.agents/error/
 .agents/skills/design-taste-frontend/assets/
 .agents/*.private.md
 .agents/**/*.private.md

@@ -113,6 +113,12 @@ export const FeaturedProjectSchema = z.object({
   engineeringNotes: z.array(z.string()),
   summary: z.string(),
   coverImage: z.string(),
+  focalPoint: z
+    .object({
+      x: z.number().min(0).max(100),
+      y: z.number().min(0).max(100),
+    })
+    .optional(),
   segment: ProjectSegmentSchema.optional(),
   stage: ProjectStageSchema.optional(),
   keyAccountId: z.string().optional().nullable(),

@@ -11,6 +11,7 @@ import type {
   GalleryProject,
   GalleryKeyAccount,
   GalleryStats,
+  GalleryClusterConfig,
   ProjectMedia,
   ProjectComparisonPair,
   LandingPlacement,
@@ -133,6 +134,9 @@ class MockMemoryStore {
   public galleryCategories: string[] = [...initialProjectGallery.categories];
   public galleryStats: GalleryStats | undefined = initialProjectGallery.stats
     ? { ...initialProjectGallery.stats }
+    : undefined;
+  public galleryClusters: GalleryClusterConfig[] | undefined = initialProjectGallery.clusters
+    ? JSON.parse(JSON.stringify(initialProjectGallery.clusters))
     : undefined;
 
   public projectMedia: ProjectMedia[] = [];

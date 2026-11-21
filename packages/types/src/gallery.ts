@@ -36,6 +36,51 @@ export const GalleryKeyAccountSchema = z.object({
 export type GalleryKeyAccount = z.infer<typeof GalleryKeyAccountSchema>;
 
 /**
+ * Mẫu bố cục Bento Grid chuẩn (dùng chung cho Frontend Gallery & Admin Slot Picker)
+ */
+export const BentoLayoutPresetSchema = z.enum([
+  "hero-left",
+  "asymmetric-mosaic",
+  "panoramic-trio",
+  "editorial-split",
+]);
+export type BentoLayoutPreset = z.infer<typeof BentoLayoutPresetSchema>;
+
+/**
+ * Biến thể nền bề mặt cho từng cụm Bento theo quy tắc 60-30-10
+ */
+export const ClusterSurfaceToneSchema = z.enum(["ivory", "stone", "charcoal"]);
+export type ClusterSurfaceTone = z.infer<typeof ClusterSurfaceToneSchema>;
+
+/**
+ * Điểm lấy nét ảnh bìa (tọa độ phần trăm 0-100) để object-cover không cắt lệch chủ thể
+ */
+export const GalleryFocalPointSchema = z.object({
+  x: z.number().min(0).max(100).default(50),
+  y: z.number().min(0).max(100).default(50),
+});
+export type GalleryFocalPoint = z.infer<typeof GalleryFocalPointSchema>;
+
+/**
+ * Cấu hình hiển thị một cụm Bento trên Tầng 1 Gallery (tương thích Admin CMS)
+ */
+export const GalleryClusterConfigSchema = z.object({
+  id: z.string(),
+  groupType: z.enum(["partner", "solution"]),
+  groupKey: z.string(),
+  slug: z.string(),
+  title: z.string(),
+  subtitle: z.string().optional(),
+  description: z.string().optional(),
+  layoutPreset: BentoLayoutPresetSchema.default("hero-left"),
+  surfaceTone: ClusterSurfaceToneSchema.default("ivory"),
+  accentColor: z.string().optional(),
+  slotProjectIds: z.array(z.string()).default([]),
+  sortOrder: z.number().default(0),
+});
+export type GalleryClusterConfig = z.infer<typeof GalleryClusterConfigSchema>;
+
+/**
  * Contract chuẩn cho một dự án hiển thị trên Project Gallery
  */
 export const GalleryProjectSchema = z.object({
@@ -52,6 +97,7 @@ export const GalleryProjectSchema = z.object({
   team: z.string(),
   imgActual: z.string(),
   img3D: z.string().optional().nullable(),
+  focalPoint: GalleryFocalPointSchema.optional(),
   desc: z.string(),
   year: z
     .union([z.string(), z.number()])
@@ -91,6 +137,7 @@ export const ProjectGalleryResponseSchema = z.object({
   keyAccounts: z.array(GalleryKeyAccountSchema),
   categories: z.array(z.string()),
   stats: GalleryStatsSchema.optional(),
+  clusters: z.array(GalleryClusterConfigSchema).optional(),
 });
 export type ProjectGalleryResponse = z.infer<
   typeof ProjectGalleryResponseSchema
@@ -105,5 +152,34 @@ export const GalleryApiResponseSchema = z.object({
   keyAccounts: z.array(GalleryKeyAccountSchema),
   categories: z.array(z.string()),
   stats: GalleryStatsSchema.optional(),
+  clusters: z.array(GalleryClusterConfigSchema).optional(),
 });
 export type GalleryApiResponse = z.infer<typeof GalleryApiResponseSchema>;
+
+/**
+ * Contract Freeze: Payload cập nhật danh sách cấu hình cụm Bento từ Admin Studio
+ */
+export const UpdateGalleryClustersRequestSchema = z.object({
+  clusters: z.array(GalleryClusterConfigSchema),
+});
+export type UpdateGalleryClustersRequest = z.infer<
+  typeof UpdateGalleryClustersRequestSchema
+>;
+
+/**
+ * Contract Freeze: Payload tạo / cập nhật dự án trong Admin Studio
+ */
+export const CreateGalleryProjectInputSchema = GalleryProjectSchema.omit({
+  id: true,
+}).extend({
+  id: z.string().optional(),
+});
+export type CreateGalleryProjectInput = z.infer<
+  typeof CreateGalleryProjectInputSchema
+>;
+
+export const UpdateGalleryProjectInputSchema =
+  CreateGalleryProjectInputSchema.partial();
+export type UpdateGalleryProjectInput = z.infer<
+  typeof UpdateGalleryProjectInputSchema
+>;
