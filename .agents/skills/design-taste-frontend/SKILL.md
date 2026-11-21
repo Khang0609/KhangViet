@@ -375,3 +375,33 @@ Each line names its checks: `consistency.mjs` ids in brackets, `check.mjs` findi
 ## References
 
 All in `references/`; section 3 names the one each asset needs.
+
+## Anti-Slop UI Polish Checklist (Extension)
+
+Apply these four checks before shipping or restyling any page:
+
+### 1. De-cluttering & Anti-Slop
+- **Delete filler badges:** Remove decorative eyebrow pills (`NEW`, `BETA`, `01 //`) above headlines.
+- **Drop redundant labels:** Remove obvious section labels (e.g., `FAQ` directly above `Questions, answered.`).
+- **Remove unnecessary embellishments:** Strip decorative borders, glows, gradients, or boxes that serve no function.
+- **Mono only where needed:** Reserve monospace fonts strictly for code, technical IDs, or tabular data.
+
+### 2. Typography & Editorial Clarity
+- **Unitalicize random words:** Do not italicize arbitrary words in headlines for decoration.
+- **Make headlines specific:** State concrete value instead of generic AI phrasing.
+- **Wrap headlines properly:** Break lines intentionally; never leave a key phrase split awkwardly or a single orphan word.
+- **Improve text contrast:** Ensure body and secondary text meet comfortable reading contrast.
+- **Use tabular nums (`tabular-nums`):** Apply `tabular-nums` on metrics, pricing, and counters.
+
+### 3. Layout, Hierarchy & System
+- **Use a design system:** Keep colors, spacing, typography, and radii consistent via tokens.
+- **Group with spacing:** Use whitespace to group related elements instead of wrapping everything in bordered cards.
+- **Show the actual product & enlarge the main feature:** Lead with real photographs/product UI at large scale.
+- **Emphasize the CTA & add an accent color:** Reserve the primary accent color for main CTAs and key highlights.
+- **Inner radius = outer - padding:** Match nested border radii (`inner = outer - padding`) for concentric curves.
+- **Align by eye, not pixels:** Apply optical alignment (e.g., shifting a play triangle slightly right inside a circle).
+- **Keep icons consistent:** Use one icon family with uniform stroke weight and sizing.
+
+### 4. States & Micro-feedback
+- **Add loading states:** Always provide skeleton or loading indicators during async fetches.
+- **Animate useful feedback:** Animate meaningful state transitions (e.g., `Add to cart` -> `Added ✓`), not decorative motion.
