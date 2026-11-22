@@ -34,14 +34,14 @@ const UrlInputField: React.FC<{
   allowManualInput?: boolean;
 }> = ({ value, onChange, onKeyDown, allowManualInput }) => (
   <div className="relative flex-1">
-    <LinkIcon className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-white/40" />
+    <LinkIcon className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-[#625f5a]" />
     <input
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={onKeyDown}
       placeholder={allowManualInput ? "https://... hoặc /image/..." : "https://..."}
-      className="w-full rounded border border-white/10 bg-white/4 py-1.5 pr-3 pl-8.5 font-mono-tech text-xs text-white placeholder:text-white/20 focus:border-(--accent-bronze) focus:outline-hidden"
+      className="w-full rounded border border-black/15 bg-[#faf9f6] py-1.5 pr-3 pl-8.5 font-mono-tech text-xs text-[#1a1918] placeholder:text-[#625f5a]/60 focus:border-(--accent-bronze) focus:outline-hidden"
     />
   </div>
 );
