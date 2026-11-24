@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { Calendar, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Plus, Search, Settings, Trash2 } from "lucide-react";
 import type {
   CreateProjectDto,
   GalleryProject,
+  Organization,
   Project,
   ProjectGalleryResponse,
 } from "@khangviet/types";
@@ -44,10 +46,18 @@ function projectToGalleryProject(p: Project): GalleryProject {
 export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
   initialData,
 }) => {
+  const router = useRouter();
   const [projects, setProjects] = useState<GalleryProject[]>(
     initialData.projects
   );
+  const [organizations, setOrganizations] = useState<Organization[]>(
+    initialData.organizations
+  );
   const [search, setSearch] = useState("");
+  const [partnerFilter, setPartnerFilter] = useState<"ALL" | "WITH_PARTNER">(
+    "ALL"
+  );
+  const [serviceFilter, setServiceFilter] = useState<string>("ALL");
   const [wizardOpen, setWizardOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<GalleryProject | null>(
     null
@@ -59,18 +69,25 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return projects;
-    return projects.filter((p) =>
-      [
+    return projects.filter((p) => {
+      if (partnerFilter === "WITH_PARTNER" && !p.organization) return false;
+      if (
+        serviceFilter !== "ALL" &&
+        !p.services.some((s) => s.id === serviceFilter)
+      ) {
+        return false;
+      }
+      if (!q) return true;
+      return [
         p.title,
         p.slug,
         p.organization?.name,
         ...p.services.map((s) => s.name),
       ]
         .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q))
-    );
-  }, [projects, search]);
+        .some((v) => String(v).toLowerCase().includes(q));
+    });
+  }, [projects, search, partnerFilter, serviceFilter]);
 
   const handleOpenCreate = () => {
     setEditingProject(null);
@@ -82,13 +99,34 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
     setWizardOpen(true);
   };
 
+  const handleRowNavigate = (project: GalleryProject) => {
+    const targetSlug =
+      project.organization?.slug ||
+      project.services[0]?.slug ||
+      initialData.services[0]?.slug ||
+      "khang-viet";
+    router.push(`/admin/projects/${targetSlug}`);
+  };
+
   const handleSubmitProject = async (
-    input: CreateProjectDto & { coverUrl?: string; renderUrl?: string },
+    input: CreateProjectDto & {
+      coverUrl?: string;
+      renderUrl?: string;
+      createdOrganization?: Organization;
+    },
     editingId?: string
   ): Promise<
     { success: true; project: GalleryProject } | { success: false; error: string }
   > => {
-    const { coverUrl, renderUrl, ...dto } = input;
+    const { coverUrl, renderUrl, createdOrganization, ...dto } = input;
+
+    if (createdOrganization) {
+      setOrganizations((prev) =>
+        prev.some((o) => o.id === createdOrganization.id)
+          ? prev
+          : [...prev, createdOrganization]
+      );
+    }
 
     if (editingId) {
       const res = await updateAdminProject(editingId, dto);
@@ -120,7 +158,10 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
         sortOrder: 0,
       });
       if (mediaRes.success) {
-        created = { ...created, media: [...(created.media ?? []), mediaRes.data] };
+        created = {
+          ...created,
+          media: [...(created.media ?? []), mediaRes.data],
+        };
       }
     }
     if (renderUrl) {
@@ -131,7 +172,10 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
         sortOrder: 1,
       });
       if (renderRes.success) {
-        created = { ...created, media: [...(created.media ?? []), renderRes.data] };
+        created = {
+          ...created,
+          media: [...(created.media ?? []), renderRes.data],
+        };
       }
     }
 
@@ -159,20 +203,57 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
   };
 
   return (
-    <AdminShell
-      title="Quản lý Dự án"
-      subtitle="Thêm, chỉnh sửa hồ sơ dự án và đồng bộ danh mục hiển thị."
-    >
-      <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="relative flex-1 sm:max-w-sm">
-          <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#625f5a]" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm theo tên dự án, đối tác, dịch vụ..."
-            className="w-full rounded-full border border-black/12 bg-white py-2.5 pr-4 pl-10 text-sm outline-hidden focus:border-(--accent-bronze)"
-          />
+    <AdminShell>
+      <div className="mb-5 flex flex-col justify-between gap-3 lg:flex-row lg:items-center">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="relative min-w-56 flex-1 sm:flex-initial">
+            <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#625f5a]" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Tìm dự án, đối tác..."
+              className="w-full rounded-full border border-black/12 bg-white py-2 pr-4 pl-9 text-xs outline-hidden focus:border-(--accent-bronze)"
+            />
+          </div>
+
+          <div className="inline-flex rounded-full border border-black/10 bg-white p-0.5">
+            <button
+              type="button"
+              onClick={() => setPartnerFilter("ALL")}
+              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                partnerFilter === "ALL"
+                  ? "bg-[#181715] text-white"
+                  : "text-[#625f5a] hover:text-[#1a1918]"
+              }`}
+            >
+              Tất cả
+            </button>
+            <button
+              type="button"
+              onClick={() => setPartnerFilter("WITH_PARTNER")}
+              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                partnerFilter === "WITH_PARTNER"
+                  ? "bg-[#181715] text-white"
+                  : "text-[#625f5a] hover:text-[#1a1918]"
+              }`}
+            >
+              Đối tác
+            </button>
+          </div>
+
+          <select
+            value={serviceFilter}
+            onChange={(e) => setServiceFilter(e.target.value)}
+            className="rounded-full border border-black/12 bg-white px-3.5 py-1.5 text-xs font-medium text-[#1a1918] outline-hidden focus:border-(--accent-bronze)"
+          >
+            <option value="ALL">Tất cả dịch vụ</option>
+            {initialData.services.map((svc) => (
+              <option key={svc.id} value={svc.id}>
+                {svc.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <button
@@ -187,7 +268,7 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
 
       {feedback && (
         <div
-          className={`mb-5 rounded-xl border px-4 py-3 text-xs font-medium ${
+          className={`mb-4 rounded-xl border px-4 py-2.5 text-xs font-medium ${
             feedback.type === "success"
               ? "border-emerald-500/25 bg-emerald-50 text-emerald-700"
               : "border-red-500/25 bg-red-50 text-red-700"
@@ -197,64 +278,111 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
         </div>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((project) => (
-          <div
-            key={project.id}
-            className="flex flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xs"
-          >
-            <div className="relative aspect-4/3 bg-[#eae5dc]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={getProjectCoverUrl(project)}
-                alt={project.title}
-                className="h-full w-full object-cover"
-              />
-              <span className="absolute top-3 left-3 rounded-full bg-[#181715]/85 px-2.5 py-0.5 text-[11px] font-medium text-white">
-                {project.publishStatus}
-              </span>
-            </div>
-
-            <div className="flex flex-1 flex-col p-4">
-              <div className="text-xs font-medium text-(--accent-bronze)">
-                {project.organization?.name || "Khách hàng Khang Việt"}
-              </div>
-              <h3 className="mt-1 line-clamp-2 text-sm font-semibold text-[#1a1918]">
-                {project.title}
-              </h3>
-              <div className="mt-2 flex items-center gap-1.5 text-xs text-[#625f5a]">
-                <Calendar className="h-3.5 w-3.5" />
-                <span>{project.year || 2025}</span>
-              </div>
-
-              <div className="mt-4 flex items-center justify-end gap-2 border-t border-black/8 pt-3">
-                <button
-                  type="button"
-                  onClick={() => handleOpenEdit(project)}
-                  className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-black/12 px-3 py-1.5 text-xs font-medium text-[#1a1918] hover:bg-[#faf9f6]"
+      <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xs">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-black/8 bg-[#faf9f6] text-[11px] font-semibold tracking-wider text-[#625f5a] uppercase">
+                <th className="px-4 py-3">Dự án</th>
+                <th className="px-4 py-3">Đối tác</th>
+                <th className="px-4 py-3">Hạng mục</th>
+                <th className="px-4 py-3">Năm</th>
+                <th className="px-4 py-3">Trạng thái</th>
+                <th className="px-4 py-3 text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-black/8">
+              {filtered.map((project) => (
+                <tr
+                  key={project.id}
+                  onClick={() => handleRowNavigate(project)}
+                  className="cursor-pointer transition-colors hover:bg-[#faf9f6]"
                 >
-                  <Pencil className="h-3 w-3" />
-                  Sửa
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDelete(project)}
-                  className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-red-500/20 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
-                >
-                  <Trash2 className="h-3 w-3" />
-                  Xóa
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-11 w-16 shrink-0 overflow-hidden rounded-lg bg-[#eae5dc]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={getProjectCoverUrl(project)}
+                          alt={project.title}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="truncate font-semibold text-[#1a1918]">
+                          {project.title}
+                        </div>
+                        <div className="truncate font-mono text-[11px] text-[#625f5a]">
+                          /{project.slug}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-xs font-medium text-(--accent-bronze)">
+                    {project.organization?.name || "Khách lẻ"}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-[#625f5a]">
+                    {project.services.map((s) => s.name).join(" • ") || "—"}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-[#625f5a] tabular-nums">
+                    {project.year || "—"}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
+                        project.publishStatus === "PUBLISHED"
+                          ? "bg-emerald-50 text-emerald-700"
+                          : "bg-black/5 text-[#625f5a]"
+                      }`}
+                    >
+                      {project.publishStatus}
+                    </span>
+                  </td>
+                  <td
+                    className="px-4 py-3 text-right"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="inline-flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(project)}
+                        title="Chỉnh sửa thông tin dự án"
+                        className="cursor-pointer rounded-lg p-1.5 text-[#625f5a] transition-colors hover:bg-black/5 hover:text-[#1a1918]"
+                      >
+                        <Settings className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(project)}
+                        title="Xóa dự án"
+                        className="cursor-pointer rounded-lg p-1.5 text-[#625f5a] transition-colors hover:bg-red-50 hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-4 py-10 text-center text-xs text-[#625f5a]"
+                  >
+                    Không có dự án nào phù hợp bộ lọc.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <ProjectWizardModal
         isOpen={wizardOpen}
         onClose={() => setWizardOpen(false)}
         editingProject={editingProject}
-        organizations={initialData.organizations}
+        organizations={organizations}
         services={initialData.services}
         onSubmitProject={handleSubmitProject}
       />

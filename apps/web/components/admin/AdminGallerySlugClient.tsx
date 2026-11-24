@@ -10,11 +10,13 @@ import { AdminShell } from "./AdminShell";
 interface AdminGallerySlugClientProps {
   initialData: ProjectGalleryResponse;
   slug: string;
+  backHref?: string;
 }
 
 export const AdminGallerySlugClient: React.FC<AdminGallerySlugClientProps> = ({
   initialData,
   slug,
+  backHref = "/admin/gallery",
 }) => {
   const cluster = useMemo(() => {
     const { partnerClusters, solutionClusters } =
@@ -33,11 +35,11 @@ export const AdminGallerySlugClient: React.FC<AdminGallerySlugClientProps> = ({
     >
       <div className="mb-6">
         <Link
-          href="/admin/gallery"
+          href={backHref}
           className="inline-flex items-center gap-2 rounded-full border border-black/12 bg-white px-4 py-2 text-xs font-semibold text-[#1a1918]"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Quay lại Bố cục Gallery
+          Quay lại
         </Link>
       </div>
 

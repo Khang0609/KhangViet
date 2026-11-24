@@ -4,9 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Building2,
   ExternalLink,
   FolderKanban,
   LayoutGrid,
+  MessageSquareText,
   ShieldAlert,
   ShieldCheck,
 } from "lucide-react";
@@ -95,6 +97,18 @@ export const AdminShell: React.FC<AdminShellProps> = ({
       label: "Dự án",
       icon: FolderKanban,
       active: pathname?.startsWith("/admin/projects"),
+    },
+    {
+      href: "/admin/partners",
+      label: "Đối tác",
+      icon: Building2,
+      active: pathname?.startsWith("/admin/partners"),
+    },
+    {
+      href: "/admin/leads",
+      label: "Khách hàng",
+      icon: MessageSquareText,
+      active: pathname?.startsWith("/admin/leads"),
     },
     {
       href: "/admin/gallery",

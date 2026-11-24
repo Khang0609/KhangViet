@@ -9,6 +9,7 @@ import type {
   PublishStatus,
   Service,
 } from "@khangviet/types";
+import { createAdminOrganization } from "@/lib/adminApi";
 import { BaseModal } from "@/components/ui/BaseModal";
 import { UniversalMediaUpload } from "@/components/ui/media-upload";
 import {
@@ -24,18 +25,26 @@ interface ProjectWizardModalProps {
   organizations: Organization[];
   services: Service[];
   onSubmitProject: (
-    input: CreateProjectDto & { coverUrl?: string; renderUrl?: string },
+    input: CreateProjectDto & {
+      coverUrl?: string;
+      renderUrl?: string;
+      createdOrganization?: Organization;
+    },
     editingId?: string
   ) => Promise<
     { success: true; project: GalleryProject } | { success: false; error: string }
   >;
 }
 
+type PartnerSourceMode = "none" | "existing" | "new";
+
 interface WizardDraft {
   title: string;
   slug: string;
   summary: string;
+  partnerMode: PartnerSourceMode;
   organizationId: string;
+  newPartnerName: string;
   serviceIds: string[];
   year: string;
   publishStatus: PublishStatus;
@@ -50,7 +59,9 @@ function createEmptyDraft(defaultServiceId?: string): WizardDraft {
     title: "",
     slug: "",
     summary: "",
+    partnerMode: "none",
     organizationId: "",
+    newPartnerName: "",
     serviceIds: defaultServiceId ? [defaultServiceId] : [],
     year: String(new Date().getFullYear()),
     publishStatus: "PUBLISHED",
@@ -67,7 +78,9 @@ function projectToDraft(p: GalleryProject): WizardDraft {
     title: p.title,
     slug: p.slug,
     summary: p.summary ?? "",
+    partnerMode: p.organization ? "existing" : "none",
     organizationId: p.organization?.id ?? "",
+    newPartnerName: "",
     serviceIds: p.services.map((s) => s.id),
     year: p.year ? String(p.year) : String(new Date().getFullYear()),
     publishStatus: p.publishStatus,
@@ -133,8 +146,32 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
       setError("Vui lòng nhập tên dự án.");
       return;
     }
+    if (draft.partnerMode === "new" && !draft.newPartnerName.trim()) {
+      setError("Vui lòng nhập tên đối tác mới.");
+      return;
+    }
 
     setSaving(true);
+    let resolvedOrgId: string | null = null;
+    let createdOrganization: Organization | undefined;
+
+    if (draft.partnerMode === "existing") {
+      resolvedOrgId = draft.organizationId || null;
+    } else if (draft.partnerMode === "new") {
+      const orgRes = await createAdminOrganization({
+        name: draft.newPartnerName.trim(),
+        isFeatured: false,
+        featuredOrder: 0,
+      });
+      if (!orgRes.success) {
+        setSaving(false);
+        setError(orgRes.error);
+        return;
+      }
+      resolvedOrgId = orgRes.data.id;
+      createdOrganization = orgRes.data;
+    }
+
     const computedSlug =
       draft.slug.trim() || toGallerySlug(draft.title) || `du-an-${Date.now()}`;
 
@@ -143,7 +180,7 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
         title: draft.title.trim(),
         slug: computedSlug,
         summary: draft.summary.trim() || null,
-        organizationId: draft.organizationId || null,
+        organizationId: resolvedOrgId,
         serviceIds: draft.serviceIds,
         year: Number(draft.year) || new Date().getFullYear(),
         publishStatus: draft.publishStatus,
@@ -151,6 +188,7 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
         featuredOrder: Number(draft.featuredOrder) || 0,
         coverUrl: draft.coverUrl.trim() || undefined,
         renderUrl: draft.renderUrl.trim() || undefined,
+        createdOrganization,
       },
       editingProject?.id
     );
@@ -256,11 +294,36 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
             </>
           ) : (
             <>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-xs font-semibold">
-                    Đối tác / Thương hiệu
-                  </label>
+              <div className="space-y-3 rounded-2xl border border-black/10 bg-[#faf9f6] p-4">
+                <label className="block text-xs font-semibold">
+                  Thông tin Đối tác / Khách hàng
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {(
+                    [
+                      { id: "none", label: "Khách lẻ / Không gắn đối tác" },
+                      { id: "existing", label: "Chọn đối tác có sẵn" },
+                      { id: "new", label: "Tạo đối tác mới nhanh" },
+                    ] as const
+                  ).map((mode) => (
+                    <button
+                      key={mode.id}
+                      type="button"
+                      onClick={() =>
+                        setDraft((d) => ({ ...d, partnerMode: mode.id }))
+                      }
+                      className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                        draft.partnerMode === mode.id
+                          ? "border-[#181715] bg-[#181715] text-white"
+                          : "border-black/12 bg-white text-[#625f5a] hover:text-[#1a1918]"
+                      }`}
+                    >
+                      {mode.label}
+                    </button>
+                  ))}
+                </div>
+
+                {draft.partnerMode === "existing" && (
                   <select
                     value={draft.organizationId}
                     onChange={(e) =>
@@ -271,15 +334,32 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
                     }
                     className="w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
                   >
-                    <option value="">-- Khách hàng lẻ / Khác --</option>
+                    <option value="">-- Chọn đối tác --</option>
                     {organizations.map((org) => (
                       <option key={org.id} value={org.id}>
                         {org.name}
                       </option>
                     ))}
                   </select>
-                </div>
+                )}
 
+                {draft.partnerMode === "new" && (
+                  <input
+                    type="text"
+                    value={draft.newPartnerName}
+                    onChange={(e) =>
+                      setDraft((d) => ({
+                        ...d,
+                        newPartnerName: e.target.value,
+                      }))
+                    }
+                    placeholder="Nhập tên đối tác mới..."
+                    className="w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                  />
+                )}
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-1 block text-xs font-semibold">
                     Năm hoàn thành
@@ -294,6 +374,26 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
                     }
                     className="w-full rounded-xl border border-black/15 px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
                   />
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-xs font-semibold">
+                    Trạng thái xuất bản
+                  </label>
+                  <select
+                    value={draft.publishStatus}
+                    onChange={(e) =>
+                      setDraft((d) => ({
+                        ...d,
+                        publishStatus: e.target.value as PublishStatus,
+                      }))
+                    }
+                    className="w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                  >
+                    <option value="PUBLISHED">Công khai (Published)</option>
+                    <option value="DRAFT">Bản nháp (Draft)</option>
+                    <option value="ARCHIVED">Lưu trữ (Archived)</option>
+                  </select>
                 </div>
               </div>
 
@@ -337,39 +437,17 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
                 />
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-xs font-semibold">
-                    Trạng thái xuất bản
-                  </label>
-                  <select
-                    value={draft.publishStatus}
-                    onChange={(e) =>
-                      setDraft((d) => ({
-                        ...d,
-                        publishStatus: e.target.value as PublishStatus,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
-                  >
-                    <option value="PUBLISHED">Công khai (Published)</option>
-                    <option value="DRAFT">Bản nháp (Draft)</option>
-                    <option value="ARCHIVED">Lưu trữ (Archived)</option>
-                  </select>
-                </div>
-
-                <label className="flex cursor-pointer items-center gap-2.5 self-end rounded-xl border border-black/12 px-3.5 py-2.5 text-sm">
-                  <input
-                    type="checkbox"
-                    checked={draft.isFeatured}
-                    onChange={(e) =>
-                      setDraft((d) => ({ ...d, isFeatured: e.target.checked }))
-                    }
-                    className="h-4 w-4 accent-[#181715]"
-                  />
-                  <span>Hiển thị nổi bật trên Trang chủ</span>
-                </label>
-              </div>
+              <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-black/12 px-3.5 py-2.5 text-sm">
+                <input
+                  type="checkbox"
+                  checked={draft.isFeatured}
+                  onChange={(e) =>
+                    setDraft((d) => ({ ...d, isFeatured: e.target.checked }))
+                  }
+                  className="h-4 w-4 accent-[#181715]"
+                />
+                <span>Hiển thị nổi bật trên Trang chủ</span>
+              </label>
             </>
           )}
 

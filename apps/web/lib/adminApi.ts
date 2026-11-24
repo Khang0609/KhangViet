@@ -1,8 +1,12 @@
 import type {
+  CreateLeadActivityDto,
   CreateOrganizationDto,
   CreateProjectDto,
   CreateProjectMediaDto,
   GalleryClusterConfig,
+  Lead,
+  LeadActivity,
+  LeadStatus,
   Organization,
   Project,
   ProjectMedia,
@@ -137,5 +141,64 @@ export async function updateAdminGalleryClusters(
       method: "PUT",
       body: JSON.stringify({ clusters }),
     }
+  );
+}
+
+export async function getAdminLeads(params?: {
+  status?: LeadStatus;
+  search?: string;
+}): Promise<ApiResult<Lead[], string>> {
+  const sp = new URLSearchParams();
+  if (params?.status) sp.set("status", params.status);
+  if (params?.search) sp.set("search", params.search);
+  const qs = sp.toString();
+  return await apiClient<Lead[]>(
+    qs ? `/api/v1/admin/leads?${qs}` : "/api/v1/admin/leads",
+    { method: "GET" }
+  );
+}
+
+export async function getAdminLeadById(
+  id: string
+): Promise<ApiResult<Lead & { activities?: LeadActivity[] }, string>> {
+  return await apiClient<Lead & { activities?: LeadActivity[] }>(
+    `/api/v1/admin/leads/${encodeURIComponent(id)}`,
+    { method: "GET" }
+  );
+}
+
+export async function updateAdminLeadStatus(
+  id: string,
+  status: LeadStatus,
+  note?: string
+): Promise<ApiResult<Lead, string>> {
+  return await apiClient<Lead>(
+    `/api/v1/admin/leads/${encodeURIComponent(id)}/status`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ status, note }),
+    }
+  );
+}
+
+export async function addAdminLeadActivity(
+  id: string,
+  input: CreateLeadActivityDto
+): Promise<ApiResult<LeadActivity, string>> {
+  return await apiClient<LeadActivity>(
+    `/api/v1/admin/leads/${encodeURIComponent(id)}/activities`,
+    {
+      method: "POST",
+      body: JSON.stringify(input),
+    }
+  );
+}
+
+export async function deleteAdminLead(
+  id: string
+): Promise<ApiResult<{ success: boolean }, string>> {
+  return await apiClient<{ success: boolean }>(
+    `/api/v1/admin/leads/${encodeURIComponent(id)}`,
+    { method: "DELETE" }
   );
 }
