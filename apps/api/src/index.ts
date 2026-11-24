@@ -9,6 +9,7 @@ import { publicContentRouter } from "./routes/publicContent";
 import { publicLeadsRouter } from "./routes/publicLeads";
 import { adminCmsRouter } from "./routes/adminCms";
 import { adminLeadsRouter } from "./routes/adminLeads";
+import { adminOrganizationsRouter } from "./routes/adminOrganizations";
 import { protectedRouter } from "./routes/protected";
 import { AppEnv } from "./middlewares/authMiddleware";
 import { resolveAllowedOrigin } from "./config/cors";
@@ -47,6 +48,7 @@ app.route("/api/v1/leads", publicLeadsRouter);
 
 app.use("/api/v1/admin/*", adminAuthMiddleware);
 app.route("/api/v1/admin/cms", adminCmsRouter);
+app.route("/api/v1/admin/organizations", adminOrganizationsRouter);
 app.route("/api/v1/admin/leads", adminLeadsRouter);
 
 // Fallback phục vụ Static Assets của Frontend cho tất cả các đường dẫn giao diện

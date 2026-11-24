@@ -1,14 +1,12 @@
-import type { ContactLead } from "@khangviet/types";
+import type { Lead } from "@khangviet/types";
 
 export interface TelegramEnvBindings {
   TELEGRAM_BOT_TOKEN?: string;
   TELEGRAM_CHAT_ID?: string | null;
 }
 
-/**
- * Định dạng tin nhắn thông báo khách hàng mới theo chuẩn dễ đọc trên điện thoại.
- */
-function formatLeadMessage(lead: ContactLead): string {
+function formatLeadMessage(lead: Lead): string {
+  const timestampMs = lead.createdAt ? lead.createdAt * 1000 : Date.now();
   const vnTime = new Intl.DateTimeFormat("vi-VN", {
     timeZone: "Asia/Ho_Chi_Minh",
     hour: "2-digit",
@@ -16,15 +14,15 @@ function formatLeadMessage(lead: ContactLead): string {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-  }).format(new Date(lead.createdAt || Date.now()));
+  }).format(new Date(timestampMs));
 
   return [
     "🔔 KHÁCH HÀNG MỚI ĐĂNG KÝ TƯ VẤN (KHANG VIỆT WEB)",
-    `👤 Họ tên: ${lead.fullName}`,
+    `👤 Họ tên: ${lead.name}`,
     `📞 Số điện thoại: ${lead.phone}`,
     lead.email ? `📧 Email: ${lead.email}` : null,
-    lead.serviceCategory ? `🏢 Hạng mục: ${lead.serviceCategory}` : null,
-    lead.projectScale ? `📐 Quy mô: ${lead.projectScale}` : null,
+    lead.companyName ? `🏢 Doanh nghiệp: ${lead.companyName}` : null,
+    lead.budgetRange ? `💰 Ngân sách: ${lead.budgetRange}` : null,
     lead.message ? `📝 Nội dung: ${lead.message}` : null,
     `🕒 Thời gian: ${vnTime}`,
   ]
@@ -32,12 +30,8 @@ function formatLeadMessage(lead: ContactLead): string {
     .join("\n");
 }
 
-/**
- * Gửi thông báo tức thì tới Telegram của Giám đốc khi có khách điền form.
- * Fallback: Nếu TELEGRAM_CHAT_ID đang là null / chưa cấu hình, in thẳng lên Terminal để kiểm thử.
- */
 export async function notifyNewLead(
-  lead: ContactLead,
+  lead: Lead,
   env?: TelegramEnvBindings
 ): Promise<void> {
   const message = formatLeadMessage(lead);
@@ -66,9 +60,9 @@ export async function notifyNewLead(
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("[LEAD-ALERT][TELEGRAM-ERROR]", res.status, errText);
+      console.error("[TELEGRAM-ERROR]", res.status, errText);
     }
-  } catch (err) {
-    console.error("[LEAD-ALERT][NETWORK-ERROR]", err);
+  } catch (error) {
+    console.error("[TELEGRAM-EXCEPTION]", error);
   }
 }
