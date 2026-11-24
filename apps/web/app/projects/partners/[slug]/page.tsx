@@ -12,7 +12,13 @@ interface PartnerPageProps {
 export async function generateStaticParams() {
   const data = await getProjectGalleryData();
   const { partnerClusters } = resolveGalleryClusters(data);
-  return partnerClusters.map((c) => ({ slug: c.config.slug }));
+  if (partnerClusters.length > 0) {
+    return partnerClusters.map((c) => ({ slug: c.config.slug }));
+  }
+  if (data.organizations.length > 0) {
+    return data.organizations.map((o) => ({ slug: o.slug }));
+  }
+  return [{ slug: "khang-viet" }];
 }
 
 export async function generateMetadata({
@@ -29,7 +35,7 @@ export async function generateMetadata({
       : "Hồ Sơ Đối Tác | Khang Việt Design",
     description:
       cluster?.config.description ??
-      "Hồ sơ công trình thi công thực tế và phối cảnh 2D/3D dành cho đối tác chiến lược của Khang Việt Design.",
+      "Hồ sơ công trình thi công thực tế và phối cảnh 2D/3D dành cho đối tác của Khang Việt Design.",
   };
 }
 

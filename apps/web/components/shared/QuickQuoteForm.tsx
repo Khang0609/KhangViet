@@ -30,15 +30,17 @@ export const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({
     setErrorMessage(null);
 
     const formData = new FormData(event.currentTarget);
-    const fullName = String(formData.get("name") || "").trim();
+    const name = String(formData.get("name") || "").trim();
     const phone = String(formData.get("phone") || "").trim();
-    const message = String(formData.get("request") || "").trim();
+    const requestText = String(formData.get("request") || "").trim();
 
     const res = await createLead({
-      fullName,
+      name,
       phone,
-      message,
-      serviceCategory,
+      message: serviceCategory
+        ? `[${serviceCategory}] ${requestText}`
+        : requestText,
+      source: "website-quick-quote",
     });
 
     setIsSubmitting(false);

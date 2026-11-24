@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { MapPin } from "lucide-react";
+import { Calendar } from "lucide-react";
 import type { GalleryProject } from "@khangviet/types";
+import { getProjectCoverUrl } from "@/lib/galleryClusters";
 
 interface ProjectCardProps {
   project: GalleryProject;
@@ -13,10 +14,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   onSelect,
 }) => {
-  const isTender3D = project.stage === "TENDER_3D";
-  const displayImg = isTender3D
-    ? project.img3D || project.imgActual
-    : project.imgActual;
+  const displayImg = getProjectCoverUrl(project);
+  const serviceLabel = project.services.map((s) => s.name).join(" • ");
 
   return (
     <article
@@ -36,19 +35,23 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className="mt-3.5 flex flex-1 flex-col">
         <div className="flex items-center justify-between gap-2 text-xs">
           <span className="truncate font-medium text-(--accent-bronze)">
-            {project.client}
+            {project.organization?.name || "Khách hàng Khang Việt"}
           </span>
-          <span className="shrink-0 text-[#625f5a]">
-            {isTender3D ? "Phối cảnh 2D/3D" : "Thực tế"}
-          </span>
+          {serviceLabel && (
+            <span className="shrink-0 truncate text-[#625f5a]">
+              {serviceLabel}
+            </span>
+          )}
         </div>
         <h3 className="mt-1 line-clamp-2 text-base leading-snug font-semibold text-[#1a1918] transition-colors group-hover:text-(--accent-bronze)">
           {project.title}
         </h3>
-        <div className="mt-1.5 flex items-center gap-1.5 text-xs text-[#625f5a]">
-          <MapPin className="h-3.5 w-3.5 shrink-0" />
-          <span className="truncate">{project.location}</span>
-        </div>
+        {project.year && (
+          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-[#625f5a]">
+            <Calendar className="h-3.5 w-3.5 shrink-0" />
+            <span>{project.year}</span>
+          </div>
+        )}
       </div>
     </article>
   );

@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import type { PartnerBrand } from "@khangviet/types";
-import { usePartnerBrands } from "@/components/contexts/LandingContext";
+import type { Organization } from "@khangviet/types";
+import { useFeaturedOrganizations } from "@/components/contexts/LandingContext";
 
 export interface TrustMarqueeProps {
-  brands?: PartnerBrand[];
+  brands?: Organization[];
 }
 
 export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands }) => {
-  const contextBrands = usePartnerBrands();
+  const contextBrands = useFeaturedOrganizations();
   const activeBrands = brands && brands.length > 0 ? brands : contextBrands;
 
   return (
@@ -25,15 +25,17 @@ export const TrustMarquee: React.FC<TrustMarqueeProps> = ({ brands }) => {
       <div className="animate-marquee">
         {[...activeBrands, ...activeBrands].map((partner, index) => (
           <div
-            key={`${partner.name}-${index}`}
+            key={`${partner.id}-${index}`}
             className="mx-6 flex items-baseline gap-2.5 py-1"
           >
             <span className="text-base font-semibold tracking-tight text-[#1a1918]">
               {partner.name}
             </span>
-            <span className="text-xs text-[#625f5a]">
-              {partner.category}
-            </span>
+            {partner.description && (
+              <span className="text-xs text-[#625f5a]">
+                {partner.description}
+              </span>
+            )}
           </div>
         ))}
       </div>

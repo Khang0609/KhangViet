@@ -4,20 +4,20 @@ import React, { createContext, useContext, ReactNode } from "react";
 import type {
   LandingContent,
   CompanyLegalInfo,
-  PartnerBrand,
+  Organization,
   HeroSlide,
   CoreDiscipline,
-  FeaturedProject,
+  Project,
   ProductionDivision,
 } from "@khangviet/types";
-import { initialLandingContent } from "@khangviet/data";
+import { getFallbackLandingContent } from "@/lib/fallbackV2";
 
 export interface LandingContextValue {
   landing: LandingContent;
   heroSlides: HeroSlide[];
-  partnerBrands: PartnerBrand[];
+  featuredOrganizations: Organization[];
   coreDisciplines: CoreDiscipline[];
-  featuredProjects: FeaturedProject[];
+  featuredProjects: Project[];
   productionDivisions: ProductionDivision[];
   legalInfo: CompanyLegalInfo;
 }
@@ -28,30 +28,31 @@ export const LandingProvider: React.FC<{
   content: LandingContent;
   children: ReactNode;
 }> = ({ content, children }) => {
+  const fallback = getFallbackLandingContent();
 
   const value: LandingContextValue = {
     landing: content,
     heroSlides:
       content?.heroSlides && content.heroSlides.length > 0
         ? content.heroSlides
-        : initialLandingContent.heroSlides,
-    partnerBrands:
-      content?.partnerBrands && content.partnerBrands.length > 0
-        ? content.partnerBrands
-        : initialLandingContent.partnerBrands,
+        : fallback.heroSlides,
+    featuredOrganizations:
+      content?.featuredOrganizations && content.featuredOrganizations.length > 0
+        ? content.featuredOrganizations
+        : fallback.featuredOrganizations,
     coreDisciplines:
       content?.coreDisciplines && content.coreDisciplines.length > 0
         ? content.coreDisciplines
-        : initialLandingContent.coreDisciplines,
+        : fallback.coreDisciplines,
     featuredProjects:
       content?.featuredProjects && content.featuredProjects.length > 0
         ? content.featuredProjects
-        : initialLandingContent.featuredProjects,
+        : fallback.featuredProjects,
     productionDivisions:
       content?.productionDivisions && content.productionDivisions.length > 0
         ? content.productionDivisions
-        : initialLandingContent.productionDivisions,
-    legalInfo: content?.companyLegalInfo || initialLandingContent.companyLegalInfo,
+        : fallback.productionDivisions,
+    legalInfo: content?.companyLegalInfo || fallback.companyLegalInfo,
   };
 
   return (
@@ -62,14 +63,15 @@ export const LandingProvider: React.FC<{
 export function useLandingContext(): LandingContextValue {
   const context = useContext(LandingContext);
   if (!context) {
+    const fallback = getFallbackLandingContent();
     return {
-      landing: initialLandingContent,
-      heroSlides: initialLandingContent.heroSlides,
-      partnerBrands: initialLandingContent.partnerBrands,
-      coreDisciplines: initialLandingContent.coreDisciplines,
-      featuredProjects: initialLandingContent.featuredProjects,
-      productionDivisions: initialLandingContent.productionDivisions,
-      legalInfo: initialLandingContent.companyLegalInfo,
+      landing: fallback,
+      heroSlides: fallback.heroSlides,
+      featuredOrganizations: fallback.featuredOrganizations,
+      coreDisciplines: fallback.coreDisciplines,
+      featuredProjects: fallback.featuredProjects,
+      productionDivisions: fallback.productionDivisions,
+      legalInfo: fallback.companyLegalInfo,
     };
   }
   return context;
@@ -83,18 +85,18 @@ export function useProductionDivisions(): ProductionDivision[] {
   return useLandingContext().productionDivisions;
 }
 
-export function usePartnerBrands(): PartnerBrand[] {
-  return useLandingContext().partnerBrands;
+export function useFeaturedOrganizations(): Organization[] {
+  return useLandingContext().featuredOrganizations;
 }
 
 export function useHeroSlides(): HeroSlide[] {
   return useLandingContext().heroSlides;
 }
 
-export function useFeaturedProjects(): FeaturedProject[] {
-  return useLandingContext().featuredProjects;
-}
-
 export function useCoreDisciplines(): CoreDiscipline[] {
   return useLandingContext().coreDisciplines;
+}
+
+export function useFeaturedProjects(): Project[] {
+  return useLandingContext().featuredProjects;
 }

@@ -1,7 +1,13 @@
 import type {
-  CreateGalleryProjectInput,
-  FeaturedProject,
+  CreateOrganizationDto,
+  CreateProjectDto,
+  CreateProjectMediaDto,
   GalleryClusterConfig,
+  Organization,
+  Project,
+  ProjectMedia,
+  UpdateOrganizationDto,
+  UpdateProjectDto,
   User,
 } from "@khangviet/types";
 import { apiClient, type ApiResult } from "./apiClient";
@@ -18,91 +24,108 @@ export async function getAdminMe(): Promise<
   });
 }
 
-/**
- * Chuyển đổi dữ liệu từ Wizard GalleryProject sang FeaturedProjectSchema cho API /projects
- */
-export function mapGalleryInputToFeaturedPayload(
-  input: CreateGalleryProjectInput
-): Omit<FeaturedProject, "id"> & { id?: string } {
-  const code =
-    input.code?.trim() ||
-    `KV-${String(Date.now()).slice(-4)}`;
-  const locations = input.location
-    .split("•")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const materials = input.material
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-
-  return {
-    id: input.id,
-    code,
-    title: input.title.trim(),
-    subtitle: `${input.category} • ${input.client}`,
-    client: input.client.trim(),
-    locations: locations.length > 0 ? locations : ["TP. Hồ Chí Minh"],
-    year: input.year?.trim() || String(new Date().getFullYear()),
-    categoryTag: input.category,
-    scaleMetric: input.segment === "B2B" ? "Chuỗi đối tác B2B" : "Khách lẻ C2B",
-    materials: materials.length > 0 ? materials : ["Vật liệu tiêu chuẩn Khang Việt"],
-    engineeringNotes: [input.team.trim() || "Đội ngũ Khang Việt"],
-    summary: input.desc.trim() || input.title.trim(),
-    coverImage: input.imgActual,
-    focalPoint: input.focalPoint,
-    segment: input.segment,
-    stage: input.stage,
-    keyAccountId: input.keyAccount || null,
-    teamAndTimeline: input.team.trim() || "Đội ngũ Khang Việt",
-    gallery: [
-      {
-        id: `${code}-gal-1`,
-        src: input.img3D || input.imgActual,
-        caption: input.img3D ? "Phối cảnh kỹ thuật 2D/3D" : "Ảnh thực tế công trình",
-        location: locations[0] || "TP. Hồ Chí Minh",
-        spec: materials[0] || "Tiêu chuẩn Khang Việt",
-        aspect: "landscape",
-      },
-    ],
-  };
+export async function getAdminProjects(): Promise<ApiResult<Project[], string>> {
+  return await apiClient<Project[]>("/api/v1/admin/cms/projects", {
+    method: "GET",
+  });
 }
 
 export async function createAdminProject(
-  input: CreateGalleryProjectInput
-): Promise<ApiResult<FeaturedProject, string>> {
-  const payload = mapGalleryInputToFeaturedPayload(input);
-  return await apiClient<FeaturedProject>("/api/v1/admin/cms/projects", {
+  input: CreateProjectDto
+): Promise<ApiResult<Project, string>> {
+  return await apiClient<Project>("/api/v1/admin/cms/projects", {
     method: "POST",
-    body: JSON.stringify(payload),
+    body: JSON.stringify(input),
   });
 }
 
 export async function updateAdminProject(
   id: string,
-  input: CreateGalleryProjectInput
-): Promise<ApiResult<FeaturedProject, string>> {
-  const payload = mapGalleryInputToFeaturedPayload({ ...input, id });
-  return await apiClient<FeaturedProject>(
+  input: UpdateProjectDto
+): Promise<ApiResult<Project, string>> {
+  return await apiClient<Project>(
     `/api/v1/admin/cms/projects/${encodeURIComponent(id)}`,
     {
       method: "PUT",
-      body: JSON.stringify(payload),
+      body: JSON.stringify(input),
     }
   );
 }
 
 export async function deleteAdminProject(
   id: string
-): Promise<ApiResult<boolean, string>> {
-  const res = await apiClient<unknown>(
+): Promise<ApiResult<{ deleted: true; id: string }, string>> {
+  return await apiClient<{ deleted: true; id: string }>(
     `/api/v1/admin/cms/projects/${encodeURIComponent(id)}`,
     {
       method: "DELETE",
     }
   );
-  if (!res.success) return res;
-  return { success: true, data: true };
+}
+
+export async function addAdminProjectMedia(
+  projectId: string,
+  input: CreateProjectMediaDto
+): Promise<ApiResult<ProjectMedia, string>> {
+  return await apiClient<ProjectMedia>(
+    `/api/v1/admin/cms/projects/${encodeURIComponent(projectId)}/media`,
+    {
+      method: "POST",
+      body: JSON.stringify(input),
+    }
+  );
+}
+
+export async function deleteAdminProjectMedia(
+  mediaId: string
+): Promise<ApiResult<{ deleted: true; mediaId: string }, string>> {
+  return await apiClient<{ deleted: true; mediaId: string }>(
+    `/api/v1/admin/cms/media/${encodeURIComponent(mediaId)}`,
+    {
+      method: "DELETE",
+    }
+  );
+}
+
+export async function getAdminOrganizations(): Promise<
+  ApiResult<Organization[], string>
+> {
+  return await apiClient<Organization[]>("/api/v1/admin/organizations", {
+    method: "GET",
+  });
+}
+
+export async function createAdminOrganization(
+  input: CreateOrganizationDto
+): Promise<ApiResult<Organization, string>> {
+  return await apiClient<Organization>("/api/v1/admin/organizations", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function updateAdminOrganization(
+  id: string,
+  input: UpdateOrganizationDto
+): Promise<ApiResult<Organization, string>> {
+  return await apiClient<Organization>(
+    `/api/v1/admin/organizations/${encodeURIComponent(id)}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(input),
+    }
+  );
+}
+
+export async function deleteAdminOrganization(
+  id: string
+): Promise<ApiResult<{ deleted: true; id: string }, string>> {
+  return await apiClient<{ deleted: true; id: string }>(
+    `/api/v1/admin/organizations/${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+    }
+  );
 }
 
 export async function updateAdminGalleryClusters(

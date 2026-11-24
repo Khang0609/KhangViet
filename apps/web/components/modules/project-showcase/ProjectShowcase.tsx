@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import type { FeaturedProject } from "@khangviet/types";
+import type { Project } from "@khangviet/types";
 import { useFeaturedProjects } from "@/components/contexts/LandingContext";
 import { SectionHeading } from "../../ui/SectionHeading";
 import { ProjectShowcaseGallery } from "./ProjectShowcaseGallery";
 import { ProjectShowcaseDetails } from "./ProjectShowcaseDetails";
 
 export interface ProjectShowcaseProps {
-  projects?: FeaturedProject[];
-  onSelectProject?: (project: FeaturedProject, imageIndex?: number) => void;
+  projects?: Project[];
+  onSelectProject?: (project: Project, imageIndex?: number) => void;
 }
 
 export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({

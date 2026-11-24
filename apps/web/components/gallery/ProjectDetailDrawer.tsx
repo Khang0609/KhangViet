@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { MapPin, X } from "lucide-react";
+import { Calendar, X } from "lucide-react";
 import type { GalleryProject } from "@khangviet/types";
+import { getProjectCoverUrl, getProjectRenderUrl } from "@/lib/galleryClusters";
 
 interface ProjectDetailDrawerProps {
   project: GalleryProject | null;
@@ -22,7 +23,7 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
 
   useEffect(() => {
     if (!project) return;
-    setActiveTab(project.stage === "TENDER_3D" ? "render3d" : "actual");
+    setActiveTab("actual");
     setSliderValue(50);
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -34,9 +35,10 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
 
   if (!project) return null;
 
-  const isTender3D = project.stage === "TENDER_3D";
-  const img3D = project.img3D || project.imgActual;
-  const imgActual = project.imgActual;
+  const imgActual = getProjectCoverUrl(project);
+  const img3D = getProjectRenderUrl(project) || imgActual;
+  const serviceLabel =
+    project.services.map((s) => s.name).join(" • ") || "Thiết kế & Thi công";
 
   const singleImgSrc = activeTab === "render3d" ? img3D : imgActual;
   const singleCaption =
@@ -61,19 +63,8 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
         {/* Drawer Header */}
         <div className="flex shrink-0 items-center justify-between border-b border-black/8 bg-white/80 px-5 py-4 backdrop-blur-md">
           <div className="flex min-w-0 items-center gap-2">
-            <span
-              className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
-                isTender3D
-                  ? "bg-(--accent-bronze)/15 text-(--accent-bronze)"
-                  : "bg-emerald-500/15 text-emerald-700"
-              }`}
-            >
-              {isTender3D ? "Hồ sơ 2D/3D Trúng thầu" : "Đã nghiệm thu thực tế"}
-            </span>
-            <span className="shrink-0 rounded-full border border-black/10 bg-[#f4f1ea] px-2.5 py-0.5 text-[11px] font-medium text-[#625f5a]">
-              {project.segment === "B2B"
-                ? "Chuỗi đối tác B2B"
-                : "Khách lẻ C2B"}
+            <span className="shrink-0 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700">
+              {project.organization?.name || "Hồ sơ công trình"}
             </span>
           </div>
           <button
@@ -90,15 +81,17 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
         <div className="flex-1 space-y-6 overflow-y-auto p-5 sm:p-6">
           <div>
             <div className="text-xs font-semibold tracking-wider text-(--accent-bronze) uppercase">
-              {project.client}
+              {project.organization?.name || "Khách hàng Khang Việt"}
             </div>
             <h2 className="mt-1 text-xl leading-snug font-semibold text-[#1a1918] sm:text-2xl">
               {project.title}
             </h2>
-            <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#625f5a]">
-              <MapPin className="h-3.5 w-3.5 shrink-0 text-(--accent-bronze)" />
-              <span>{project.location}</span>
-            </p>
+            {project.year && (
+              <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#625f5a]">
+                <Calendar className="h-3.5 w-3.5 shrink-0 text-(--accent-bronze)" />
+                <span>Năm thực hiện: {project.year}</span>
+              </p>
+            )}
           </div>
 
           {/* Image Stage Switcher */}
@@ -148,7 +141,7 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
                 <div className="absolute right-3 bottom-3 left-3 flex items-center justify-between rounded-lg border border-white/10 bg-black/80 px-3 py-2 text-xs text-zinc-200 backdrop-blur-xs">
                   <span>{singleCaption}</span>
                   <span className="text-[10px] font-bold text-brand uppercase">
-                    {project.category}
+                    {serviceLabel}
                   </span>
                 </div>
               </div>
@@ -222,43 +215,43 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
             </h3>
             <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-xs sm:grid-cols-2">
               <div className="flex justify-between border-b border-black/8 pb-2 sm:block sm:border-b-0 sm:pb-0">
-                <dt className="text-[#625f5a]">Chủ đầu tư / Nhãn hàng</dt>
+                <dt className="text-[#625f5a]">Đối tác / Thương hiệu</dt>
                 <dd className="mt-0.5 font-semibold text-[#1a1918]">
-                  {project.client}
+                  {project.organization?.name || "Khách hàng Khang Việt"}
                 </dd>
               </div>
               <div className="flex justify-between border-b border-black/8 pb-2 sm:block sm:border-b-0 sm:pb-0">
-                <dt className="text-[#625f5a]">Phân khúc triển khai</dt>
+                <dt className="text-[#625f5a]">Hạng mục triển khai</dt>
                 <dd className="mt-0.5 font-semibold text-[#1a1918]">
-                  {project.segment === "B2B"
-                    ? "Chuỗi đối tác B2B"
-                    : "Khách hàng doanh nghiệp lẻ (C2B)"}
+                  {serviceLabel}
                 </dd>
               </div>
               <div className="flex justify-between border-b border-black/8 pb-2 sm:block sm:border-b-0 sm:pb-0">
-                <dt className="text-[#625f5a]">Vật liệu &amp; Kết cấu chính</dt>
+                <dt className="text-[#625f5a]">Năm thực hiện</dt>
                 <dd className="mt-0.5 font-semibold text-[#1a1918]">
-                  {project.material}
+                  {project.year || 2025}
                 </dd>
               </div>
               <div className="flex justify-between sm:block">
-                <dt className="text-[#625f5a]">Đội phụ trách &amp; Tiến độ</dt>
+                <dt className="text-[#625f5a]">Số lượng hình ảnh</dt>
                 <dd className="mt-0.5 font-semibold text-[#1a1918]">
-                  {project.team}
+                  {project.media.length} ảnh hồ sơ
                 </dd>
               </div>
             </dl>
           </div>
 
           {/* Engineering Description */}
-          <div>
-            <h3 className="mb-2 text-xs font-semibold tracking-wider text-[#625f5a] uppercase">
-              Ghi chú thi công từ xưởng Khang Việt
-            </h3>
-            <p className="text-xs leading-relaxed text-[#1a1918]/85 sm:text-sm">
-              {project.desc}
-            </p>
-          </div>
+          {project.summary && (
+            <div>
+              <h3 className="mb-2 text-xs font-semibold tracking-wider text-[#625f5a] uppercase">
+                Ghi chú thi công từ xưởng Khang Việt
+              </h3>
+              <p className="text-xs leading-relaxed text-[#1a1918]/85 sm:text-sm">
+                {project.summary}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Sticky Footer CTA */}

@@ -12,7 +12,8 @@ import {
 import type { GalleryProject, ProjectGalleryResponse } from "@khangviet/types";
 import {
   getCrossLinksForProject,
-  getProjectObjectPosition,
+  getProjectCoverUrl,
+  getProjectRenderUrl,
   resolveGalleryClusters,
 } from "@/lib/galleryClusters";
 import { ProjectDetailDrawer } from "./ProjectDetailDrawer";
@@ -87,13 +88,11 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
     );
   }, [activeProject, groupType, partnerClusters, solutionClusters]);
 
-  const has3D = Boolean(
-    activeProject?.img3D && activeProject.img3D !== activeProject.imgActual
-  );
+  const activeCoverUrl = activeProject ? getProjectCoverUrl(activeProject) : "";
+  const activeRenderUrl = activeProject ? getProjectRenderUrl(activeProject) : null;
+  const has3D = Boolean(activeRenderUrl && activeRenderUrl !== activeCoverUrl);
   const activeImageSrc =
-    previewMode === "3d" && activeProject?.img3D
-      ? activeProject.img3D
-      : activeProject?.imgActual ?? "";
+    previewMode === "3d" && activeRenderUrl ? activeRenderUrl : activeCoverUrl;
 
   if (!currentCluster) {
     return (
@@ -211,23 +210,21 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
             <div className="divide-y divide-black/8">
               {projects.map((project, index) => {
                 const isSelected = activeProject?.id === project.id;
-                const displayCode =
-                  project.code ?? `PRJ-${String(index + 1).padStart(2, "0")}`;
+                const displayIndex = String(index + 1).padStart(2, "0");
+                const serviceLabel =
+                  project.services.map((s) => s.name).join(" • ") ||
+                  "Thiết kế & Thi công";
 
                 return (
                   <div
                     key={project.id}
                     onMouseEnter={() => {
                       setSelectedId(project.id);
-                      setPreviewMode(
-                        project.stage === "TENDER_3D" ? "3d" : "actual"
-                      );
+                      setPreviewMode("actual");
                     }}
                     onClick={() => {
                       setSelectedId(project.id);
-                      setPreviewMode(
-                        project.stage === "TENDER_3D" ? "3d" : "actual"
-                      );
+                      setPreviewMode("actual");
                     }}
                     className={`group flex cursor-pointer items-center justify-between gap-4 p-4 transition-colors sm:px-6 sm:py-5 ${
                       isSelected
@@ -243,7 +240,7 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
                             color: isSelected ? accentColor : "#625f5a",
                           }}
                         >
-                          {displayCode}
+                          {displayIndex}
                         </span>
                         <div className="min-w-0 flex-1">
                           <h2 className="text-sm leading-snug font-semibold text-[#1a1918] sm:text-base">
@@ -251,19 +248,20 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
                           </h2>
                           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-[#625f5a]">
                             <span className="rounded-md border border-black/8 bg-white px-2 py-0.5 font-medium text-[#1a1918]">
-                              {project.category}
+                              {serviceLabel}
                             </span>
-                            <span>•</span>
-                            <span>
-                              {project.segment === "B2B"
-                                ? "Chuỗi / Doanh nghiệp"
-                                : "Cửa hàng / Bán lẻ"}
-                            </span>
-                            <span>•</span>
-                            <span className="inline-flex items-center gap-1">
-                              <MapPin className="h-3 w-3 shrink-0" />
-                              {project.location}
-                            </span>
+                            {project.organization && (
+                              <>
+                                <span>•</span>
+                                <span>{project.organization.name}</span>
+                              </>
+                            )}
+                            {project.year && (
+                              <>
+                                <span>•</span>
+                                <span>{project.year}</span>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -298,7 +296,7 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
                 {/* Top Preview Meta + Actual/3D Toggle */}
                 <div className="mb-3 flex items-center justify-between gap-2">
                   <span className="font-mono text-xs font-semibold text-[#625f5a]">
-                    {activeProject.code ?? activeProject.id}
+                    {activeProject.slug}
                   </span>
 
                   <div className="inline-flex items-center rounded-full border border-black/10 bg-[#f4f1ea] p-0.5">
@@ -334,9 +332,6 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
                   <img
                     src={activeImageSrc}
                     alt={activeProject.title}
-                    style={{
-                      objectPosition: getProjectObjectPosition(activeProject),
-                    }}
                     className="h-full w-full object-cover transition-all duration-300"
                   />
                 </div>
@@ -348,7 +343,11 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
                       {activeProject.title}
                     </h3>
                     <p className="mt-1 text-xs text-[#625f5a]">
-                      {activeProject.category} • {activeProject.location}
+                      {activeProject.services.map((s) => s.name).join(" • ") ||
+                        "Thiết kế & Thi công"}
+                      {activeProject.organization
+                        ? ` • ${activeProject.organization.name}`
+                        : ""}
                       {activeProject.year ? ` • ${activeProject.year}` : ""}
                     </p>
                   </div>
