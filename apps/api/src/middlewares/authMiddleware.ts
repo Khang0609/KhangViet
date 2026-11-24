@@ -180,8 +180,14 @@ export async function verifyCloudflareAccessJwt(
 }
 
 export const authMiddleware = async (c: Context<AppEnv>, next: Next) => {
+  const hostname = new URL(c.req.url).hostname;
+  const isLocalHost = hostname === "127.0.0.1" || hostname === "localhost";
+  const hasAccessConfig = Boolean(
+    c.env?.CF_ACCESS_TEAM_DOMAIN && c.env?.CF_ACCESS_AUD
+  );
   const isProd =
-    c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production";
+    (c.env?.NODE_ENV === "production" || c.env?.ENVIRONMENT === "production") &&
+    (!isLocalHost || hasAccessConfig);
   const jwt = c.req.header("Cf-Access-Jwt-Assertion");
 
   let email: string | null = null;
