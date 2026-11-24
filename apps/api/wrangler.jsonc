@@ -8,6 +8,7 @@
       "binding": "DB",
       "database_name": "khangviet-db",
       "database_id": "69947093-530c-4236-89d4-26f0c5135b24",
+      "migrations_dir": "../../packages/repositories/migrations"
     },
   ],
   "vars": {
