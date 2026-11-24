@@ -7,10 +7,9 @@ import {
   Building2,
   ExternalLink,
   FolderKanban,
-  LayoutGrid,
+  Home,
   MessageSquareText,
   ShieldAlert,
-  ShieldCheck,
 } from "lucide-react";
 import KhangVietLogo from "@/ui/KhangVietLogo";
 import { getAdminMe, type AdminSession } from "@/lib/adminApi";
@@ -93,6 +92,12 @@ export const AdminShell: React.FC<AdminShellProps> = ({
 
   const navItems = [
     {
+      href: "/admin",
+      label: "Trang chính",
+      icon: Home,
+      active: pathname === "/admin" || pathname === "/admin/",
+    },
+    {
       href: "/admin/projects",
       label: "Dự án",
       icon: FolderKanban,
@@ -109,12 +114,6 @@ export const AdminShell: React.FC<AdminShellProps> = ({
       label: "Khách hàng",
       icon: MessageSquareText,
       active: pathname?.startsWith("/admin/leads"),
-    },
-    {
-      href: "/admin/gallery",
-      label: "Bố cục Gallery",
-      icon: LayoutGrid,
-      active: pathname?.startsWith("/admin/gallery"),
     },
   ];
 
@@ -158,14 +157,9 @@ export const AdminShell: React.FC<AdminShellProps> = ({
               target="_blank"
               className="hidden items-center gap-1.5 rounded-full border border-black/12 bg-[#faf9f6] px-3 py-1.5 text-xs font-medium text-[#1a1918] transition-colors hover:border-[#1a1918] sm:inline-flex"
             >
-              <span>Xem Gallery</span>
+              <span>Xem trang</span>
               <ExternalLink className="h-3 w-3" />
             </Link>
-
-            <div className="hidden items-center gap-1.5 rounded-full border border-black/10 px-3 py-1 text-xs text-[#625f5a] md:inline-flex">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-              <span className="max-w-32 truncate">{session.user.name}</span>
-            </div>
           </div>
         </div>
       </header>
