@@ -1,11 +1,8 @@
-import { sqliteTable, text, index } from "drizzle-orm/sqlite-core";
-import { identitiesTable } from "./identities.schema";
+import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import type { LeadActivityAction } from "@khangviet/types";
 import { leadsTable } from "./leads.schema";
+import { usersTable } from "./users.schema";
 
-/**
- * Bảng lead_activities: Theo dõi nhật ký tương tác và tiến trình chăm sóc khách hàng.
- * Cascade delete theo lead_id, set null theo staff_identity_id.
- */
 export const leadActivitiesTable = sqliteTable(
   "lead_activities",
   {
@@ -13,14 +10,15 @@ export const leadActivitiesTable = sqliteTable(
     leadId: text("lead_id")
       .notNull()
       .references(() => leadsTable.id, { onDelete: "cascade" }),
-    staffIdentityId: text("staff_identity_id")
-      .references(() => identitiesTable.id, { onDelete: "set null" }),
-    actionType: text("action_type").notNull(),
-    content: text("content").notNull(),
-    createdAt: text("created_at").notNull(),
+    userId: text("user_id").references(() => usersTable.id, {
+      onDelete: "set null",
+    }),
+    action: text("action").$type<LeadActivityAction>().notNull(),
+    note: text("note").notNull(),
+    createdAt: integer("created_at").notNull(),
   },
   (table) => [
-    index("idx_lead_activities_lead_id").on(table.leadId),
+    index("idx_lead_activities_lead_created").on(table.leadId, table.createdAt),
   ]
 );
 

@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1794053562911,
-      "tag": "0000_magenta_midnight",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1794053600000,
-      "tag": "0001_enterprise_identities_and_media",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1794302397624,
-      "tag": "0002_motionless_gauntlet",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1794600000000,
-      "tag": "0003_gallery_architecture",
+      "when": 1795533859009,
+      "tag": "0000_sweet_callisto",
       "breakpoints": true
     }
   ]

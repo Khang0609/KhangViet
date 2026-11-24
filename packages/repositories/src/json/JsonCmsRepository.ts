@@ -1,398 +1,505 @@
 import type {
-  LandingContent,
-  FeaturedProject,
-  ProjectDetail,
-  ProjectListQuery,
-  PaginationMeta,
-  GalleryApiResponse,
+  CompanyLegalInfo,
+  CreateOrganizationDto,
+  CreateProjectDto,
+  CreateProjectMediaDto,
   GalleryClusterConfig,
   GalleryProject,
   HeroSlide,
-  CompanyLegalInfo,
-  LandingPlacement,
-  LandingPlacementSlot,
-  UpsertLandingPlacement,
-  ProjectComparisonPair,
+  LandingContent,
+  Organization,
+  Project,
+  ProjectComparison,
+  ProjectGalleryResponse,
+  ProjectMedia,
+  Service,
+  SiteSettingKey,
+  UpdateOrganizationDto,
+  UpdateProjectDto,
 } from "@khangviet/types";
-import { ICmsRepository } from "../interfaces/ICmsRepository";
-import { mockStore } from "./store";
-
-function paginate<T>(
-  items: T[],
-  page: number,
-  limit: number
-): { items: T[]; pagination: PaginationMeta } {
-  const total = items.length;
-  const totalPages = total === 0 ? 0 : Math.ceil(total / limit);
-  const start = (page - 1) * limit;
-  return {
-    items: items.slice(start, start + limit),
-    pagination: { page, limit, total, totalPages },
-  };
-}
-
-function matchesSearch(
-  fields: Array<string | undefined | null>,
-  keyword?: string
-): boolean {
-  if (!keyword) return true;
-  const q = keyword.trim().toLowerCase();
-  if (!q) return true;
-  return fields.some((f) => f && f.toLowerCase().includes(q));
-}
+import type {
+  GalleryQueryOptions,
+  ICmsRepository,
+  ProjectQueryOptions,
+} from "../interfaces/ICmsRepository";
+import { generateUuidV7 } from "../d1/uuid-v7";
+import { slugify } from "../utils/slugify";
+import { getStore } from "./store";
 
 export class JsonCmsRepository implements ICmsRepository {
-  async getLandingData(): Promise<LandingContent> {
-    const heroSlides = await this.getHeroSlides();
-    const featuredPlacements = await this.getPlacements("FEATURED_SHOWCASE");
-
-    const projectMap = new Map(
-      mockStore.landing.featuredProjects.map((p) => [p.id, p])
-    );
-
-    const featuredProjects =
-      featuredPlacements.length > 0
-        ? featuredPlacements
-            .map((pl) => projectMap.get(pl.projectId))
-            .filter((p): p is FeaturedProject => Boolean(p))
-        : mockStore.landing.featuredProjects;
-
-    return {
-      ...mockStore.landing,
-      heroSlides,
-      featuredProjects,
-    };
-  }
-
-  async getProjects(): Promise<FeaturedProject[]> {
-    return mockStore.landing.featuredProjects;
-  }
-
-  async queryProjects(
-    query: ProjectListQuery
-  ): Promise<{ items: FeaturedProject[]; pagination: PaginationMeta }> {
-    const filtered = mockStore.landing.featuredProjects.filter((p) => {
-      if (query.segment && query.segment !== "ALL" && p.segment !== query.segment) {
-        return false;
-      }
-      if (query.stage && query.stage !== "ALL" && p.stage !== query.stage) {
-        return false;
-      }
-      if (
-        query.categoryTag &&
-        query.categoryTag !== "ALL" &&
-        p.categoryTag.toLowerCase() !== query.categoryTag.toLowerCase()
-      ) {
-        return false;
-      }
-      if (
-        query.keyAccount &&
-        query.keyAccount !== "ALL" &&
-        p.keyAccountId !== query.keyAccount
-      ) {
-        return false;
-      }
-      return matchesSearch(
-        [p.title, p.subtitle, p.client, p.code, p.categoryTag, ...p.locations],
-        query.search
-      );
-    });
-
-    return paginate(filtered, query.page, query.limit);
-  }
-
-  async getGalleryData(query: ProjectListQuery): Promise<GalleryApiResponse> {
-    const filtered = mockStore.galleryProjects.filter((p: GalleryProject) => {
-      if (query.segment && query.segment !== "ALL" && p.segment !== query.segment) {
-        return false;
-      }
-      if (query.stage && query.stage !== "ALL" && p.stage !== query.stage) {
-        return false;
-      }
-      if (
-        query.categoryTag &&
-        query.categoryTag !== "ALL" &&
-        p.category.toLowerCase() !== query.categoryTag.toLowerCase()
-      ) {
-        return false;
-      }
-      if (
-        query.keyAccount &&
-        query.keyAccount !== "ALL" &&
-        p.keyAccount !== query.keyAccount
-      ) {
-        return false;
-      }
-      return matchesSearch(
-        [p.title, p.client, p.code, p.category, p.location, p.material],
-        query.search
-      );
-    });
-
-    const { items, pagination } = paginate(filtered, query.page, query.limit);
-
-    return {
-      items,
-      pagination,
-      keyAccounts: mockStore.keyAccounts,
-      categories: mockStore.galleryCategories,
-      stats: mockStore.galleryStats,
-      clusters: mockStore.galleryClusters,
-    };
-  }
-
-  async getProjectById(id: string): Promise<FeaturedProject | null> {
-    const project = mockStore.landing.featuredProjects.find((p) => p.id === id);
-    return project ? { ...project } : null;
-  }
-
-  async getProjectDetailById(id: string): Promise<ProjectDetail | null> {
-    const project = await this.getProjectById(id);
-    if (!project) return null;
-
-    const media = mockStore.projectMedia
-      .filter((m) => m.projectId === id)
+  private hydrateProject(p: Project): Project {
+    const store = getStore();
+    const organization = p.organizationId
+      ? store.organizations.find((o) => o.id === p.organizationId) ?? null
+      : null;
+    const serviceIds = store.projectServices
+      .filter((ps) => ps.projectId === p.id)
+      .map((ps) => ps.serviceId);
+    const services = store.services
+      .filter((s) => serviceIds.includes(s.id))
       .sort((a, b) => a.sortOrder - b.sortOrder);
-
-    const mediaMap = new Map(media.map((m) => [m.id, m.publicUrl]));
-    const comparisonPairs: ProjectComparisonPair[] = mockStore.projectComparisons
-      .filter((c) => c.projectId === id)
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-      .map((c) => ({
-        ...c,
-        renderUrl: c.renderUrl ?? mediaMap.get(c.renderMediaId),
-        actualUrl: c.actualUrl ?? mediaMap.get(c.actualMediaId),
-      }));
+    const media = store.projectMedia
+      .filter((m) => m.projectId === p.id)
+      .sort((a, b) => a.sortOrder - b.sortOrder);
+    const comparisons = store.projectComparisons.filter(
+      (c) => c.projectId === p.id
+    );
 
     return {
-      ...project,
+      ...p,
+      organization,
+      services,
       media,
-      comparisonPairs,
+      comparisons,
     };
   }
 
-  async createProject(
-    data: Omit<FeaturedProject, "id"> & { id?: string }
-  ): Promise<FeaturedProject> {
-    const duplicateCode = mockStore.landing.featuredProjects.some(
-      (p) => p.code.toLowerCase() === data.code.toLowerCase()
-    );
-    if (duplicateCode) {
-      const err = new Error(`Project code '${data.code}' already exists`);
-      (err as Error & { statusCode?: number }).statusCode = 409;
-      throw err;
+  async getLandingData(): Promise<LandingContent> {
+    const store = getStore();
+    const featuredProjects = store.projects
+      .filter((p) => p.publishStatus === "PUBLISHED" && p.isFeatured)
+      .sort((a, b) => a.featuredOrder - b.featuredOrder)
+      .map((p) => this.hydrateProject(p));
+
+    const featuredOrganizations = store.organizations
+      .filter((o) => o.isFeatured)
+      .sort((a, b) => a.featuredOrder - b.featuredOrder);
+
+    return {
+      heroSlides: [...store.heroSlides],
+      featuredOrganizations,
+      coreDisciplines: [...store.coreDisciplines],
+      featuredProjects,
+      productionDivisions: [...store.productionDivisions],
+      companyLegalInfo: { ...store.companyLegalInfo },
+    };
+  }
+
+  async getGalleryData(
+    options?: GalleryQueryOptions
+  ): Promise<ProjectGalleryResponse> {
+    const store = getStore();
+    const allProjects = await this.getProjects({
+      includeDrafts: false,
+      search: options?.search,
+    });
+
+    const filtered = allProjects.filter((p) => {
+      if (
+        options?.serviceSlug &&
+        !p.services?.some((s) => s.slug === options.serviceSlug)
+      ) {
+        return false;
+      }
+      if (
+        options?.organizationSlug &&
+        p.organization?.slug !== options.organizationSlug
+      ) {
+        return false;
+      }
+      return true;
+    });
+
+    const projects: GalleryProject[] = filtered.map((p) => {
+      const media = p.media ?? [];
+      const coverMedia = media.find((m) => m.isCover) ?? media[0] ?? null;
+      return {
+        id: p.id,
+        slug: p.slug,
+        title: p.title,
+        summary: p.summary ?? null,
+        year: p.year ?? null,
+        publishStatus: p.publishStatus,
+        isFeatured: p.isFeatured,
+        featuredOrder: p.featuredOrder,
+        organization: p.organization ?? null,
+        services: p.services ?? [],
+        coverMedia,
+        media,
+        comparisons: p.comparisons ?? [],
+      };
+    });
+
+    return {
+      clusters: [...store.galleryClusters].sort(
+        (a, b) => a.sortOrder - b.sortOrder
+      ),
+      services: [...store.services].sort((a, b) => a.sortOrder - b.sortOrder),
+      organizations: await this.getOrganizations(),
+      projects,
+    };
+  }
+
+  async getProjects(options?: ProjectQueryOptions): Promise<Project[]> {
+    const store = getStore();
+    let list = store.projects
+      .filter((p) =>
+        options?.includeDrafts ? true : p.publishStatus === "PUBLISHED"
+      )
+      .map((p) => this.hydrateProject(p));
+
+    if (options?.organizationId) {
+      list = list.filter((p) => p.organizationId === options.organizationId);
+    }
+    if (options?.serviceId) {
+      list = list.filter((p) =>
+        p.services?.some((s) => s.id === options.serviceId)
+      );
+    }
+    if (options?.search?.trim()) {
+      const term = options.search.trim().toLowerCase();
+      list = list.filter(
+        (p) =>
+          p.title.toLowerCase().includes(term) ||
+          p.slug.toLowerCase().includes(term) ||
+          (p.organization?.name.toLowerCase().includes(term) ?? false)
+      );
     }
 
-    const newProject: FeaturedProject = {
-      ...data,
-      id: data.id || `project-${Date.now()}`,
+    return list.sort((a, b) => a.featuredOrder - b.featuredOrder);
+  }
+
+  async getProjectById(id: string): Promise<Project | null> {
+    const p = getStore().projects.find((item) => item.id === id);
+    return p ? this.hydrateProject(p) : null;
+  }
+
+  async getProjectBySlug(
+    slug: string,
+    includeDrafts = false
+  ): Promise<Project | null> {
+    const p = getStore().projects.find((item) => item.slug === slug);
+    if (!p) return null;
+    if (!includeDrafts && p.publishStatus !== "PUBLISHED") return null;
+    return this.hydrateProject(p);
+  }
+
+  async createProject(input: CreateProjectDto): Promise<Project> {
+    const store = getStore();
+    const now = Math.floor(Date.now() / 1000);
+    const id = generateUuidV7();
+    const slug = input.slug?.trim() || `${slugify(input.title)}-${id.slice(-4)}`;
+
+    if (store.projects.some((p) => p.slug === slug)) {
+      throw new Error(`UNIQUE constraint failed: projects.slug (${slug})`);
+    }
+
+    const project: Project = {
+      id,
+      slug,
+      title: input.title.trim(),
+      summary: input.summary?.trim() || null,
+      organizationId: input.organizationId ?? null,
+      year: input.year ?? null,
+      publishStatus: input.publishStatus,
+      isFeatured: input.isFeatured,
+      featuredOrder: input.featuredOrder,
+      createdAt: now,
+      updatedAt: now,
     };
-    mockStore.landing.featuredProjects.push(newProject);
-    mockStore.galleryProjects.unshift({
-      id: newProject.id,
-      code: newProject.code,
-      title: newProject.title,
-      client: newProject.client,
-      keyAccount: newProject.keyAccountId ?? null,
-      segment: newProject.segment ?? "B2B",
-      stage: newProject.stage ?? "COMPLETED",
-      category: newProject.categoryTag,
-      location: newProject.locations.join(" • "),
-      material: newProject.materials.slice(0, 2).join(", "),
-      team: newProject.teamAndTimeline ?? "Đội ngũ Khang Việt",
-      imgActual: newProject.coverImage,
-      img3D: newProject.gallery[0]?.src ?? newProject.coverImage,
-      focalPoint: newProject.focalPoint,
-      desc: newProject.summary,
-      year: newProject.year,
-      featured: false,
-    });
-    return newProject;
+
+    store.projects.unshift(project);
+    for (const serviceId of input.serviceIds) {
+      store.projectServices.push({ projectId: id, serviceId });
+    }
+
+    return this.hydrateProject(project);
   }
 
   async updateProject(
     id: string,
-    data: Partial<FeaturedProject>
-  ): Promise<FeaturedProject | null> {
-    const index = mockStore.landing.featuredProjects.findIndex(
-      (p) => p.id === id
-    );
-    if (index === -1) {
-      return null;
+    input: UpdateProjectDto
+  ): Promise<Project | null> {
+    const store = getStore();
+    const idx = store.projects.findIndex((p) => p.id === id);
+    if (idx === -1) return null;
+
+    if (
+      input.slug !== undefined &&
+      store.projects.some((p) => p.id !== id && p.slug === input.slug?.trim())
+    ) {
+      throw new Error(
+        `UNIQUE constraint failed: projects.slug (${input.slug})`
+      );
     }
 
-    if (data.code) {
-      const duplicateCode = mockStore.landing.featuredProjects.some(
-        (p) => p.id !== id && p.code.toLowerCase() === data.code!.toLowerCase()
+    const existing = store.projects[idx];
+    const updated: Project = {
+      ...existing,
+      ...(input.slug !== undefined ? { slug: input.slug.trim() } : {}),
+      ...(input.title !== undefined ? { title: input.title.trim() } : {}),
+      ...(input.summary !== undefined
+        ? { summary: input.summary?.trim() || null }
+        : {}),
+      ...(input.organizationId !== undefined
+        ? { organizationId: input.organizationId }
+        : {}),
+      ...(input.year !== undefined ? { year: input.year } : {}),
+      ...(input.publishStatus !== undefined
+        ? { publishStatus: input.publishStatus }
+        : {}),
+      ...(input.isFeatured !== undefined
+        ? { isFeatured: input.isFeatured }
+        : {}),
+      ...(input.featuredOrder !== undefined
+        ? { featuredOrder: input.featuredOrder }
+        : {}),
+      updatedAt: Math.floor(Date.now() / 1000),
+    };
+
+    store.projects[idx] = updated;
+
+    if (input.serviceIds !== undefined) {
+      store.projectServices = store.projectServices.filter(
+        (ps) => ps.projectId !== id
       );
-      if (duplicateCode) {
-        const err = new Error(`Project code '${data.code}' already exists`);
-        (err as Error & { statusCode?: number }).statusCode = 409;
-        throw err;
+      for (const serviceId of input.serviceIds) {
+        store.projectServices.push({ projectId: id, serviceId });
       }
     }
 
-    const updated = { ...mockStore.landing.featuredProjects[index], ...data };
-    mockStore.landing.featuredProjects[index] = updated;
-
-    const gIdx = mockStore.galleryProjects.findIndex((p) => p.id === id);
-    if (gIdx !== -1) {
-      mockStore.galleryProjects[gIdx] = {
-        ...mockStore.galleryProjects[gIdx],
-        code: updated.code,
-        title: updated.title,
-        client: updated.client,
-        keyAccount: updated.keyAccountId ?? mockStore.galleryProjects[gIdx].keyAccount,
-        segment: updated.segment ?? mockStore.galleryProjects[gIdx].segment,
-        stage: updated.stage ?? mockStore.galleryProjects[gIdx].stage,
-        category: updated.categoryTag,
-        location: updated.locations.join(" • "),
-        material: updated.materials.slice(0, 2).join(", "),
-        team: updated.teamAndTimeline ?? mockStore.galleryProjects[gIdx].team,
-        imgActual: updated.coverImage,
-        img3D: updated.gallery[0]?.src ?? mockStore.galleryProjects[gIdx].img3D,
-        focalPoint: updated.focalPoint ?? mockStore.galleryProjects[gIdx].focalPoint,
-        desc: updated.summary,
-        year: updated.year,
-      };
-    }
-
-    return updated;
+    return this.hydrateProject(updated);
   }
 
   async deleteProject(id: string): Promise<boolean> {
-    const prevLen = mockStore.landing.featuredProjects.length;
-    mockStore.landing.featuredProjects =
-      mockStore.landing.featuredProjects.filter((p) => p.id !== id);
-    const prevGalleryLen = mockStore.galleryProjects.length;
-    mockStore.galleryProjects = mockStore.galleryProjects.filter(
-      (p) => p.id !== id
+    const store = getStore();
+    const idx = store.projects.findIndex((p) => p.id === id);
+    if (idx === -1) return false;
+    store.projects.splice(idx, 1);
+    store.projectServices = store.projectServices.filter(
+      (ps) => ps.projectId !== id
     );
-    if (
-      mockStore.landing.featuredProjects.length < prevLen ||
-      mockStore.galleryProjects.length < prevGalleryLen
-    ) {
-      mockStore.landingPlacements = mockStore.landingPlacements.filter(
-        (pl) => pl.projectId !== id
-      );
-      return true;
-    }
-    return false;
+    store.projectMedia = store.projectMedia.filter((m) => m.projectId !== id);
+    store.projectComparisons = store.projectComparisons.filter(
+      (c) => c.projectId !== id
+    );
+    return true;
   }
 
-  async getHeroSlides(): Promise<HeroSlide[]> {
-    const heroPlacements = await this.getPlacements("HERO_SLIDE");
-    if (heroPlacements.length === 0) {
-      return mockStore.landing.heroSlides;
+  async addProjectMedia(
+    projectId: string,
+    input: CreateProjectMediaDto
+  ): Promise<ProjectMedia> {
+    const store = getStore();
+    if (input.isCover) {
+      store.projectMedia = store.projectMedia.map((m) =>
+        m.projectId === projectId ? { ...m, isCover: false } : m
+      );
     }
 
-    const projectMap = new Map(
-      mockStore.landing.featuredProjects.map((p) => [p.id, p])
-    );
+    const media: ProjectMedia = {
+      id: generateUuidV7(),
+      projectId,
+      kind: input.kind,
+      storageKey: input.storageKey,
+      altText: input.altText ?? null,
+      caption: input.caption ?? null,
+      sortOrder: input.sortOrder,
+      isCover: input.isCover,
+      createdAt: Math.floor(Date.now() / 1000),
+    };
+    store.projectMedia.push(media);
+    return media;
+  }
 
-    return heroPlacements.map((pl) => {
-      const meta = (pl.customMeta ?? {}) as Record<string, string>;
-      const proj = projectMap.get(pl.projectId);
-      return {
-        id: meta.slideId ?? pl.id,
-        image: meta.image ?? proj?.coverImage ?? "",
-        tag: meta.tag ?? proj?.categoryTag ?? "",
-        title: meta.title ?? proj?.title ?? "",
-        location: meta.location ?? proj?.locations[0] ?? "",
-        specs: meta.specs ?? proj?.scaleMetric ?? "",
-        lightingMode: meta.lightingMode ?? "Architectural Daylight",
-      };
+  async deleteProjectMedia(mediaId: string): Promise<boolean> {
+    const store = getStore();
+    const idx = store.projectMedia.findIndex((m) => m.id === mediaId);
+    if (idx === -1) return false;
+    store.projectMedia.splice(idx, 1);
+    store.projectComparisons = store.projectComparisons.filter(
+      (c) => c.renderMediaId !== mediaId && c.actualMediaId !== mediaId
+    );
+    return true;
+  }
+
+  async setProjectComparison(
+    projectId: string,
+    renderMediaId: string,
+    actualMediaId: string
+  ): Promise<ProjectComparison> {
+    const store = getStore();
+    store.projectComparisons = store.projectComparisons.filter(
+      (c) => c.projectId !== projectId
+    );
+    const comparison: ProjectComparison = {
+      id: generateUuidV7(),
+      projectId,
+      renderMediaId,
+      actualMediaId,
+    };
+    store.projectComparisons.push(comparison);
+    return comparison;
+  }
+
+  async getOrganizations(): Promise<Organization[]> {
+    return [...getStore().organizations].sort((a, b) => {
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      if (a.featuredOrder !== b.featuredOrder) {
+        return a.featuredOrder - b.featuredOrder;
+      }
+      return a.name.localeCompare(b.name);
     });
   }
 
+  async getOrganizationById(id: string): Promise<Organization | null> {
+    return getStore().organizations.find((o) => o.id === id) ?? null;
+  }
+
+  async createOrganization(
+    input: CreateOrganizationDto
+  ): Promise<Organization> {
+    const store = getStore();
+    const now = Math.floor(Date.now() / 1000);
+    const id = generateUuidV7();
+    const slug = input.slug?.trim() || `${slugify(input.name)}-${id.slice(-4)}`;
+
+    if (store.organizations.some((o) => o.slug === slug)) {
+      throw new Error(`UNIQUE constraint failed: organizations.slug (${slug})`);
+    }
+
+    const org: Organization = {
+      id,
+      name: input.name.trim(),
+      slug,
+      description: input.description?.trim() || null,
+      logoKey: input.logoKey?.trim() || null,
+      isFeatured: input.isFeatured,
+      featuredOrder: input.featuredOrder,
+      createdAt: now,
+      updatedAt: now,
+    };
+    store.organizations.push(org);
+    return org;
+  }
+
+  async updateOrganization(
+    id: string,
+    input: UpdateOrganizationDto
+  ): Promise<Organization | null> {
+    const store = getStore();
+    const idx = store.organizations.findIndex((o) => o.id === id);
+    if (idx === -1) return null;
+
+    if (
+      input.slug !== undefined &&
+      store.organizations.some(
+        (o) => o.id !== id && o.slug === input.slug?.trim()
+      )
+    ) {
+      throw new Error(
+        `UNIQUE constraint failed: organizations.slug (${input.slug})`
+      );
+    }
+
+    const updated: Organization = {
+      ...store.organizations[idx],
+      ...(input.name !== undefined ? { name: input.name.trim() } : {}),
+      ...(input.slug !== undefined ? { slug: input.slug.trim() } : {}),
+      ...(input.description !== undefined
+        ? { description: input.description?.trim() || null }
+        : {}),
+      ...(input.logoKey !== undefined
+        ? { logoKey: input.logoKey?.trim() || null }
+        : {}),
+      ...(input.isFeatured !== undefined
+        ? { isFeatured: input.isFeatured }
+        : {}),
+      ...(input.featuredOrder !== undefined
+        ? { featuredOrder: input.featuredOrder }
+        : {}),
+      updatedAt: Math.floor(Date.now() / 1000),
+    };
+    store.organizations[idx] = updated;
+    return updated;
+  }
+
+  async deleteOrganization(id: string): Promise<boolean> {
+    const store = getStore();
+    const idx = store.organizations.findIndex((o) => o.id === id);
+    if (idx === -1) return false;
+    store.organizations.splice(idx, 1);
+    store.projects = store.projects.map((p) =>
+      p.organizationId === id ? { ...p, organizationId: null } : p
+    );
+    return true;
+  }
+
+  async getServices(): Promise<Service[]> {
+    return [...getStore().services].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  async getSiteSetting<T>(key: SiteSettingKey): Promise<T | null> {
+    const store = getStore();
+    switch (key) {
+      case "hero_slides":
+        return store.heroSlides as unknown as T;
+      case "core_disciplines":
+        return store.coreDisciplines as unknown as T;
+      case "production_divisions":
+        return store.productionDivisions as unknown as T;
+      case "company_legal_info":
+        return store.companyLegalInfo as unknown as T;
+      case "gallery_clusters":
+        return store.galleryClusters as unknown as T;
+      default:
+        return null;
+    }
+  }
+
+  async upsertSiteSetting<T>(key: SiteSettingKey, value: T): Promise<void> {
+    const store = getStore();
+    switch (key) {
+      case "hero_slides":
+        store.heroSlides = value as unknown as HeroSlide[];
+        break;
+      case "core_disciplines":
+        store.coreDisciplines = value as unknown as typeof store.coreDisciplines;
+        break;
+      case "production_divisions":
+        store.productionDivisions =
+          value as unknown as typeof store.productionDivisions;
+        break;
+      case "company_legal_info":
+        store.companyLegalInfo = value as unknown as CompanyLegalInfo;
+        break;
+      case "gallery_clusters":
+        store.galleryClusters = value as unknown as GalleryClusterConfig[];
+        break;
+    }
+  }
+
+  async getHeroSlides(): Promise<HeroSlide[]> {
+    return [...getStore().heroSlides];
+  }
+
   async updateHeroSlides(slides: HeroSlide[]): Promise<HeroSlide[]> {
-    mockStore.landing.heroSlides = slides;
+    getStore().heroSlides = slides;
     return slides;
   }
 
   async getLegalInfo(): Promise<CompanyLegalInfo> {
-    return mockStore.landing.companyLegalInfo;
+    return { ...getStore().companyLegalInfo };
   }
 
   async updateLegalInfo(
     info: Partial<CompanyLegalInfo>
   ): Promise<CompanyLegalInfo> {
-    const updated = { ...mockStore.landing.companyLegalInfo, ...info };
-    mockStore.landing.companyLegalInfo = updated;
-    return updated;
+    const store = getStore();
+    store.companyLegalInfo = { ...store.companyLegalInfo, ...info };
+    return store.companyLegalInfo;
   }
 
-  async getPlacements(
-    slotType?: LandingPlacementSlot
-  ): Promise<LandingPlacement[]> {
-    const list = slotType
-      ? mockStore.landingPlacements.filter((p) => p.slotType === slotType)
-      : mockStore.landingPlacements;
-    return [...list].sort((a, b) => a.sortOrder - b.sortOrder);
-  }
-
-  async upsertPlacement(
-    input: UpsertLandingPlacement
-  ): Promise<LandingPlacement> {
-    const projectExists = mockStore.landing.featuredProjects.some(
-      (p) => p.id === input.projectId
+  async getGalleryClusters(): Promise<GalleryClusterConfig[]> {
+    return [...getStore().galleryClusters].sort(
+      (a, b) => a.sortOrder - b.sortOrder
     );
-    if (!projectExists) {
-      const err = new Error(
-        `Project with id '${input.projectId}' does not exist`
-      );
-      (err as Error & { statusCode?: number }).statusCode = 400;
-      throw err;
-    }
-
-    const now = new Date().toISOString();
-    if (input.id) {
-      const idx = mockStore.landingPlacements.findIndex(
-        (p) => p.id === input.id
-      );
-      if (idx !== -1) {
-        const updated: LandingPlacement = {
-          ...mockStore.landingPlacements[idx],
-          slotType: input.slotType,
-          projectId: input.projectId,
-          sortOrder: input.sortOrder,
-          customMeta: input.customMeta ?? null,
-          updatedAt: now,
-        };
-        mockStore.landingPlacements[idx] = updated;
-        return updated;
-      }
-    }
-
-    const created: LandingPlacement = {
-      id: input.id || `pl-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-      slotType: input.slotType,
-      projectId: input.projectId,
-      sortOrder: input.sortOrder,
-      customMeta: input.customMeta ?? null,
-      createdAt: now,
-      updatedAt: now,
-    };
-    mockStore.landingPlacements.push(created);
-    return created;
-  }
-
-  async deletePlacement(id: string): Promise<boolean> {
-    const prevLen = mockStore.landingPlacements.length;
-    mockStore.landingPlacements = mockStore.landingPlacements.filter(
-      (p) => p.id !== id
-    );
-    return mockStore.landingPlacements.length < prevLen;
-  }
-
-  async getGalleryClusters(): Promise<GalleryClusterConfig[] | undefined> {
-    return mockStore.galleryClusters;
   }
 
   async updateGalleryClusters(
     clusters: GalleryClusterConfig[]
   ): Promise<GalleryClusterConfig[]> {
-    mockStore.galleryClusters = clusters;
+    getStore().galleryClusters = clusters;
     return clusters;
   }
 }

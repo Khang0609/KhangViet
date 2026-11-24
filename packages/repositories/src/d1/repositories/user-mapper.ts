@@ -1,35 +1,13 @@
-import type { User, SafeUser } from "@khangviet/types";
+import type { User } from "@khangviet/types";
+import type { UserRecord } from "../schema";
 
-export interface UserJoinedRow {
-  id: string;
-  email: string;
-  role: User["role"];
-  passwordHash: string;
-  createdAt: string;
-  updatedAt: string;
-  fullName: string;
-  phone: string;
-}
-
-export function mapToUser(r: UserJoinedRow): User {
+export function mapUserRecordToDomain(row: UserRecord): User {
   return {
-    id: r.id,
-    email: r.email,
-    role: r.role,
-    password: r.passwordHash,
-    info: { name: r.fullName, phone: r.phone },
-    createdAt: r.createdAt,
-    updatedAt: r.updatedAt,
-  };
-}
-
-export function mapToSafeUser(r: UserJoinedRow): SafeUser {
-  return {
-    id: r.id,
-    email: r.email,
-    role: r.role,
-    info: { name: r.fullName, phone: r.phone },
-    createdAt: r.createdAt,
-    updatedAt: r.updatedAt,
+    id: row.id,
+    email: row.email,
+    name: row.name,
+    role: row.role,
+    isActive: row.isActive === 1,
+    createdAt: row.createdAt,
   };
 }
