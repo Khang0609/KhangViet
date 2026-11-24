@@ -1,5 +1,10 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { ContactLeadSchema, LeadStatusSchema } from "@khangviet/types";
+import {
+  CreateLeadActivityDtoSchema,
+  LeadActivitySchema,
+  LeadSchema,
+  LeadStatusSchema,
+} from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 
 export const getAdminLeadsRoute = createRoute({
@@ -18,7 +23,7 @@ export const getAdminLeadsRoute = createRoute({
         "application/json": {
           schema: z.object({
             success: z.literal(true),
-            data: z.array(ContactLeadSchema),
+            data: z.array(LeadSchema),
           }),
         },
       },
@@ -34,7 +39,7 @@ export const getAdminLeadsRoute = createRoute({
 export const getAdminLeadByIdRoute = createRoute({
   method: "get",
   path: "/{id}",
-  summary: "Lấy chi tiết CRM lead",
+  summary: "Lấy chi tiết CRM lead kèm lịch sử chăm sóc",
   request: {
     params: z.object({ id: z.string().min(1) }),
   },
@@ -44,7 +49,9 @@ export const getAdminLeadByIdRoute = createRoute({
         "application/json": {
           schema: z.object({
             success: z.literal(true),
-            data: ContactLeadSchema,
+            data: LeadSchema.extend({
+              activities: z.array(LeadActivitySchema).optional(),
+            }),
           }),
         },
       },
@@ -53,6 +60,41 @@ export const getAdminLeadByIdRoute = createRoute({
     400: {
       content: { "application/json": { schema: ErrorResponseSchema } },
       description: "ID không hợp lệ",
+    },
+    404: {
+      content: { "application/json": { schema: ErrorResponseSchema } },
+      description: "Không tìm thấy lead",
+    },
+  },
+});
+
+export const addAdminLeadActivityRoute = createRoute({
+  method: "post",
+  path: "/{id}/activities",
+  summary: "Thêm ghi chú / lịch sử chăm sóc lead",
+  request: {
+    params: z.object({ id: z.string().min(1) }),
+    body: {
+      content: {
+        "application/json": { schema: CreateLeadActivityDtoSchema },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            success: z.literal(true),
+            data: LeadActivitySchema,
+          }),
+        },
+      },
+      description: "Thêm hoạt động thành công",
+    },
+    400: {
+      content: { "application/json": { schema: ErrorResponseSchema } },
+      description: "Dữ liệu không hợp lệ",
     },
     404: {
       content: { "application/json": { schema: ErrorResponseSchema } },

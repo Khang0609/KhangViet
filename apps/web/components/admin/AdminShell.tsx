@@ -7,17 +7,11 @@ import {
   ExternalLink,
   FolderKanban,
   LayoutGrid,
-  Lock,
-  LogOut,
+  ShieldAlert,
   ShieldCheck,
 } from "lucide-react";
 import KhangVietLogo from "@/ui/KhangVietLogo";
-import {
-  getAdminMe,
-  loginAdmin,
-  logoutAdmin,
-  type AdminSession,
-} from "@/lib/adminApi";
+import { getAdminMe, type AdminSession } from "@/lib/adminApi";
 
 interface AdminShellProps {
   children: React.ReactNode;
@@ -34,11 +28,6 @@ export const AdminShell: React.FC<AdminShellProps> = ({
   const [session, setSession] = useState<AdminSession | null>(null);
   const [checking, setChecking] = useState(true);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-
   useEffect(() => {
     let active = true;
     getAdminMe()
@@ -46,9 +35,9 @@ export const AdminShell: React.FC<AdminShellProps> = ({
         if (!active) return;
         if (
           res.success &&
-          (res.data.role === "ADMIN" || res.data.role === "STAFF")
+          (res.data.user.role === "ADMIN" || res.data.user.role === "STAFF")
         ) {
-          setSession({ user: res.data });
+          setSession({ user: res.data.user });
         } else {
           setSession(null);
         }
@@ -64,44 +53,10 @@ export const AdminShell: React.FC<AdminShellProps> = ({
     };
   }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError(null);
-    setSubmitting(true);
-    try {
-      const res = await loginAdmin({ email: email.trim(), password });
-
-      if (!res.success) {
-        setLoginError(res.error || "Email hoặc mật khẩu không đúng");
-        return;
-      }
-
-      if (res.data.user.role !== "ADMIN" && res.data.user.role !== "STAFF") {
-        await logoutAdmin();
-        setLoginError("Tài khoản này không có quyền truy cập trang Quản trị.");
-        return;
-      }
-
-      setSession({
-        user: res.data.user,
-      });
-    } catch {
-      setLoginError("Không thể kết nối máy chủ xác thực.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleLogout = async () => {
-    await logoutAdmin();
-    setSession(null);
-    setPassword("");
-  };
-
   if (checking) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f4f1ea] text-sm text-[#625f5a]">
-        Đang kiểm tra phiên đăng nhập...
+        Đang xác thực quyền truy cập...
       </div>
     );
   }
@@ -109,74 +64,24 @@ export const AdminShell: React.FC<AdminShellProps> = ({
   if (!session) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#f4f1ea] px-4 py-12 text-[#1a1918]">
-        <div className="w-full max-w-md rounded-3xl border border-black/10 bg-white p-7 shadow-lg sm:p-9">
-          <div className="mb-6 flex items-center justify-between">
-            <KhangVietLogo compact className="h-9" />
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#181715] px-3 py-1 text-[11px] font-semibold text-white">
-              <Lock className="h-3 w-3 text-(--accent-bronze)" />
-              Admin Studio
-            </span>
+        <div className="w-full max-w-md rounded-3xl border border-black/10 bg-white p-7 text-center shadow-lg sm:p-9">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-600">
+            <ShieldAlert className="h-6 w-6" />
           </div>
-
           <h1 className="text-xl font-semibold tracking-tight">
-            Đăng nhập Quản trị Nội dung
+            Không có quyền truy cập
           </h1>
-          <p className="mt-1.5 text-xs leading-relaxed text-[#625f5a]">
-            Sử dụng tài khoản Quản trị / Nhân sự Khang Việt để thêm dự án và sắp
-            xếp bố cục trang Gallery.
+          <p className="mt-2 text-xs leading-relaxed text-[#625f5a]">
+            Phiên làm việc chưa được cấp quyền qua Cloudflare Access hoặc tài
+            khoản không thuộc danh sách nhân sự Khang Việt.
           </p>
-
-          <form onSubmit={handleLogin} className="mt-6 space-y-4">
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-[#1a1918]">
-                Email đăng nhập
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@khangviet.vn"
-                className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm text-[#1a1918] outline-hidden transition-colors focus:border-(--accent-bronze)"
-              />
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-[#1a1918]">
-                Mật khẩu
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm text-[#1a1918] outline-hidden transition-colors focus:border-(--accent-bronze)"
-              />
-            </div>
-
-            {loginError && (
-              <div className="rounded-xl border border-red-500/25 bg-red-50 px-3.5 py-2.5 text-xs font-medium text-red-700">
-                {loginError}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full cursor-pointer rounded-xl bg-[#181715] py-3 text-sm font-semibold text-white transition-colors hover:bg-(--accent-bronze) disabled:opacity-60"
-            >
-              {submitting ? "Đang xác thực..." : "Đăng nhập vào Studio"}
-            </button>
-          </form>
-
-          <div className="mt-6 border-t border-black/8 pt-4 text-center">
+          <div className="mt-6">
             <Link
               href="/projects"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#625f5a] hover:text-[#1a1918]"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-[#181715] px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-(--accent-bronze)"
             >
               <span>Quay lại trang Kho dự án</span>
-              <ExternalLink className="h-3 w-3" />
+              <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
@@ -245,18 +150,8 @@ export const AdminShell: React.FC<AdminShellProps> = ({
 
             <div className="hidden items-center gap-1.5 rounded-full border border-black/10 px-3 py-1 text-xs text-[#625f5a] md:inline-flex">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-              <span className="max-w-32 truncate">{session.user.info.name}</span>
+              <span className="max-w-32 truncate">{session.user.name}</span>
             </div>
-
-            <button
-              type="button"
-              onClick={handleLogout}
-              title="Đăng xuất"
-              className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-black/12 bg-white px-3 py-1.5 text-xs font-medium text-[#625f5a] transition-colors hover:border-red-500/40 hover:text-red-600"
-            >
-              <LogOut className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Thoát</span>
-            </button>
           </div>
         </div>
       </header>

@@ -1,11 +1,14 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { FeaturedProjectSchema } from "@khangviet/types";
+import {
+  CreateProjectDtoSchema,
+  ProjectSchema,
+  UpdateProjectDtoSchema,
+} from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 
 const ProjectMutationResponse = z.object({
   success: z.literal(true),
-  pending: z.boolean(),
-  data: z.unknown(),
+  data: ProjectSchema,
 });
 
 export const createProjectRoute = createRoute({
@@ -16,7 +19,7 @@ export const createProjectRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: FeaturedProjectSchema.extend({ id: z.string().optional() }),
+          schema: CreateProjectDtoSchema,
         },
       },
     },
@@ -32,7 +35,7 @@ export const createProjectRoute = createRoute({
     },
     409: {
       content: { "application/json": { schema: ErrorResponseSchema } },
-      description: "Mã dự án (code) đã tồn tại",
+      description: "Đường dẫn (slug) dự án đã tồn tại",
     },
   },
 });
@@ -44,7 +47,7 @@ export const updateProjectRoute = createRoute({
   request: {
     params: z.object({ id: z.string().trim().min(1) }),
     body: {
-      content: { "application/json": { schema: FeaturedProjectSchema.partial() } },
+      content: { "application/json": { schema: UpdateProjectDtoSchema } },
     },
   },
   responses: {
@@ -62,7 +65,7 @@ export const updateProjectRoute = createRoute({
     },
     409: {
       content: { "application/json": { schema: ErrorResponseSchema } },
-      description: "Mã dự án (code) bị trùng",
+      description: "Đường dẫn (slug) dự án bị trùng",
     },
   },
 });
@@ -76,7 +79,14 @@ export const deleteProjectRoute = createRoute({
   },
   responses: {
     200: {
-      content: { "application/json": { schema: ProjectMutationResponse } },
+      content: {
+        "application/json": {
+          schema: z.object({
+            success: z.literal(true),
+            data: z.object({ deleted: z.literal(true), id: z.string() }),
+          }),
+        },
+      },
       description: "Xóa dự án thành công",
     },
     400: {

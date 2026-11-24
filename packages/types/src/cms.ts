@@ -11,17 +11,9 @@ export const HeroSlideSchema = z.object({
 });
 export type HeroSlide = z.infer<typeof HeroSlideSchema>;
 
-export const PartnerBrandSchema = z.object({
-  name: z.string(),
-  subtitle: z.string(),
-  category: z.string(),
-  logoUrl: z.string().optional(),
-});
-export type PartnerBrand = z.infer<typeof PartnerBrandSchema>;
-
 export const CoreDisciplineSchema = z.object({
   number: z.string(),
-  code: z.string(),
+  slug: z.string(),
   title: z.string(),
   vietnameseTitle: z.string(),
   description: z.string(),
@@ -33,7 +25,7 @@ export const CoreDisciplineSchema = z.object({
 export type CoreDiscipline = z.infer<typeof CoreDisciplineSchema>;
 
 export const ProductionDivisionSchema = z.object({
-  code: z.string(),
+  id: z.string(),
   name: z.string(),
   headcount: z.string(),
   unitLabel: z.string(),
@@ -59,30 +51,18 @@ export const CompanyLegalInfoSchema = z.object({
 });
 export type CompanyLegalInfo = z.infer<typeof CompanyLegalInfoSchema>;
 
-export const LandingPlacementSlotSchema = z.enum([
-  "HERO_SLIDE",
-  "FEATURED_SHOWCASE",
+export const SiteSettingKeySchema = z.enum([
+  "hero_slides",
+  "core_disciplines",
+  "production_divisions",
+  "company_legal_info",
+  "gallery_clusters",
 ]);
-export type LandingPlacementSlot = z.infer<typeof LandingPlacementSlotSchema>;
+export type SiteSettingKey = z.infer<typeof SiteSettingKeySchema>;
 
-export const LandingPlacementSchema = z.object({
-  id: z.string(),
-  slotType: LandingPlacementSlotSchema,
-  projectId: z.string().min(1, "projectId không được để trống"),
-  sortOrder: z.number().int().min(0).default(0),
-  customMeta: z.record(z.string(), z.unknown()).optional().nullable(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+export const SiteSettingSchema = z.object({
+  key: z.string(),
+  valueJson: z.string(),
+  updatedAt: z.number().int(),
 });
-export type LandingPlacement = z.infer<typeof LandingPlacementSchema>;
-
-export const UpsertLandingPlacementSchema = z.object({
-  id: z.string().optional(),
-  slotType: LandingPlacementSlotSchema,
-  projectId: z.string().min(1, "projectId không được để trống"),
-  sortOrder: z.number().int().min(0).default(0),
-  customMeta: z.record(z.string(), z.unknown()).optional().nullable(),
-});
-export type UpsertLandingPlacement = z.infer<
-  typeof UpsertLandingPlacementSchema
->;
+export type SiteSetting = z.infer<typeof SiteSettingSchema>;

@@ -3,40 +3,55 @@ import { z } from "zod";
 export const LeadStatusSchema = z.enum([
   "NEW",
   "CONTACTED",
-  "SURVEY_SCHEDULED",
   "QUOTED",
   "WON",
   "LOST",
 ]);
 export type LeadStatus = z.infer<typeof LeadStatusSchema>;
 
-export const ContactLeadSchema = z.object({
+export const LeadSchema = z.object({
   id: z.string(),
-  fullName: z.string(),
+  name: z.string(),
+  email: z.string().nullable().optional(),
   phone: z.string(),
-  email: z.string().optional(),
-  serviceCategory: z.string().optional(),
-  projectScale: z.string().optional(),
-  message: z.string().optional(),
+  companyName: z.string().nullable().optional(),
+  serviceId: z.string().nullable().optional(),
+  message: z.string().nullable().optional(),
+  budgetRange: z.string().nullable().optional(),
+  source: z.string().nullable().optional(),
   status: LeadStatusSchema,
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  notes: z.string().optional(),
+  createdAt: z.number().int(),
+  updatedAt: z.number().int(),
 });
-export type ContactLead = z.infer<typeof ContactLeadSchema>;
+export type Lead = z.infer<typeof LeadSchema>;
 
 export const CreateLeadDtoSchema = z.object({
-  fullName: z.string().trim().min(1, "Họ tên không được để trống").max(120),
+  name: z.string().trim().min(1, "Họ tên không được để trống").max(120),
   phone: z
     .string()
     .trim()
     .regex(/^[0-9+\-\s()]{8,20}$/, "Số điện thoại không hợp lệ"),
-  email: z.string().trim().email("Email không hợp lệ").max(160).optional().or(z.literal("")),
-  serviceCategory: z.string().trim().max(120).optional(),
-  projectScale: z.string().trim().max(120).optional(),
-  message: z.string().trim().max(2000).optional(),
+  email: z
+    .string()
+    .trim()
+    .email("Email không hợp lệ")
+    .max(160)
+    .nullable()
+    .optional()
+    .or(z.literal("")),
+  companyName: z.string().trim().max(160).nullable().optional(),
+  serviceId: z.string().nullable().optional(),
+  message: z.string().trim().max(2000).nullable().optional(),
+  budgetRange: z.string().trim().max(120).nullable().optional(),
+  source: z.string().trim().max(80).nullable().optional(),
 });
 export type CreateLeadDto = z.infer<typeof CreateLeadDtoSchema>;
+
+export const UpdateLeadStatusDtoSchema = z.object({
+  status: LeadStatusSchema,
+  note: z.string().trim().max(1000).optional(),
+});
+export type UpdateLeadStatusDto = z.infer<typeof UpdateLeadStatusDtoSchema>;
 
 export const LeadFilterSchema = z.object({
   status: LeadStatusSchema.optional(),
@@ -44,21 +59,26 @@ export const LeadFilterSchema = z.object({
 });
 export type LeadFilter = z.infer<typeof LeadFilterSchema>;
 
-export const LeadActivityActionTypeSchema = z.enum([
+export const LeadActivityActionSchema = z.enum([
   "NOTE",
   "CALL",
   "EMAIL",
-  "SURVEY",
   "STATUS_CHANGE",
 ]);
-export type LeadActivityActionType = z.infer<typeof LeadActivityActionTypeSchema>;
+export type LeadActivityAction = z.infer<typeof LeadActivityActionSchema>;
 
 export const LeadActivitySchema = z.object({
   id: z.string(),
   leadId: z.string(),
-  staffIdentityId: z.string().optional().nullable(),
-  actionType: z.string(),
-  content: z.string(),
-  createdAt: z.string(),
+  userId: z.string().nullable().optional(),
+  action: LeadActivityActionSchema,
+  note: z.string(),
+  createdAt: z.number().int(),
 });
 export type LeadActivity = z.infer<typeof LeadActivitySchema>;
+
+export const CreateLeadActivityDtoSchema = z.object({
+  action: LeadActivityActionSchema,
+  note: z.string().trim().min(1, "Nội dung ghi chú không được trống").max(1000),
+});
+export type CreateLeadActivityDto = z.infer<typeof CreateLeadActivityDtoSchema>;

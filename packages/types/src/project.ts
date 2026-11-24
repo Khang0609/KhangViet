@@ -1,154 +1,125 @@
 import { z } from "zod";
 
-export const ProjectGalleryItemSchema = z.object({
+export const PublishStatusSchema = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
+export type PublishStatus = z.infer<typeof PublishStatusSchema>;
+
+export const OrganizationSchema = z.object({
   id: z.string(),
-  src: z.string(),
-  caption: z.string(),
-  location: z.string(),
-  spec: z.string(),
-  aspect: z.enum(["landscape", "portrait", "wide"]),
+  name: z.string().min(1, "Tên đối tác không được để trống"),
+  slug: z.string().min(1),
+  description: z.string().nullable().optional(),
+  logoKey: z.string().nullable().optional(),
+  isFeatured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(0),
+  createdAt: z.number().int(),
+  updatedAt: z.number().int(),
 });
-export type ProjectGalleryItem = z.infer<typeof ProjectGalleryItemSchema>;
+export type Organization = z.infer<typeof OrganizationSchema>;
 
-export const ProjectStatusSchema = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
-export type ProjectStatus = z.infer<typeof ProjectStatusSchema>;
+export const CreateOrganizationDtoSchema = z.object({
+  name: z.string().trim().min(1, "Tên đối tác không được để trống").max(160),
+  slug: z
+    .string()
+    .trim()
+    .min(1)
+    .max(120)
+    .regex(/^[a-z0-9-]+$/, "Slug chỉ gồm chữ thường, số và dấu gạch ngang")
+    .optional(),
+  description: z.string().trim().max(1000).nullable().optional(),
+  logoKey: z.string().trim().max(500).nullable().optional(),
+  isFeatured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(0),
+});
+export type CreateOrganizationDto = z.infer<typeof CreateOrganizationDtoSchema>;
 
-export const ProjectSegmentSchema = z.enum(["B2B", "C2B"]);
-export type ProjectSegment = z.infer<typeof ProjectSegmentSchema>;
+export const UpdateOrganizationDtoSchema = CreateOrganizationDtoSchema.partial();
+export type UpdateOrganizationDto = z.infer<typeof UpdateOrganizationDtoSchema>;
 
-export const ProjectStageSchema = z.enum(["COMPLETED", "TENDER_3D"]);
-export type ProjectStage = z.infer<typeof ProjectStageSchema>;
+export const ServiceSchema = z.object({
+  id: z.string(),
+  slug: z.string().min(1),
+  name: z.string().min(1),
+  sortOrder: z.number().int().min(0).default(0),
+});
+export type Service = z.infer<typeof ServiceSchema>;
 
-export const LandingSlotTypeSchema = z.enum([
-  "HERO_SLIDE",
-  "FEATURED_SHOWCASE",
-]);
-export type LandingSlotType = z.infer<typeof LandingSlotTypeSchema>;
-
-export const ProjectMediaTypeSchema = z.enum([
+export const ProjectMediaKindSchema = z.enum([
+  "RENDER",
   "ACTUAL",
-  "RENDER_3D",
-  "CONSTRUCTION",
-  "FLOOR_PLAN",
-  "COVER",
-  "GALLERY_IMAGE",
-  "VIDEO",
+  "HERO",
+  "GALLERY",
 ]);
-export type ProjectMediaType = z.infer<typeof ProjectMediaTypeSchema>;
+export type ProjectMediaKind = z.infer<typeof ProjectMediaKindSchema>;
 
 export const ProjectMediaSchema = z.object({
   id: z.string(),
   projectId: z.string(),
-  mediaType: ProjectMediaTypeSchema.default("ACTUAL"),
-  r2Key: z.string().optional().nullable(),
-  publicUrl: z.string(),
-  caption: z.string().optional().nullable(),
-  location: z.string().optional().nullable(),
-  spec: z.string().optional().nullable(),
-  aspectRatio: z.string().optional().nullable(),
-  widthPx: z.number().int().optional().nullable(),
-  heightPx: z.number().int().optional().nullable(),
-  fileSizeBytes: z.number().int().optional().nullable(),
-  sortOrder: z.number().int().default(0),
-  createdAt: z.string(),
+  kind: ProjectMediaKindSchema,
+  storageKey: z.string().min(1),
+  altText: z.string().nullable().optional(),
+  caption: z.string().nullable().optional(),
+  sortOrder: z.number().int().min(0).default(0),
+  isCover: z.boolean().default(false),
+  createdAt: z.number().int(),
 });
 export type ProjectMedia = z.infer<typeof ProjectMediaSchema>;
 
-export const OrganizationSchema = z.object({
-  identityId: z.string(),
-  scale: z.string().optional().nullable(),
-  description: z.string().optional().nullable(),
-  logoUrl: z.string().optional().nullable(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+export const CreateProjectMediaDtoSchema = z.object({
+  kind: ProjectMediaKindSchema.default("GALLERY"),
+  storageKey: z.string().trim().min(1),
+  altText: z.string().trim().max(255).nullable().optional(),
+  caption: z.string().trim().max(500).nullable().optional(),
+  sortOrder: z.number().int().min(0).default(0),
+  isCover: z.boolean().default(false),
 });
-export type Organization = z.infer<typeof OrganizationSchema>;
+export type CreateProjectMediaDto = z.infer<typeof CreateProjectMediaDtoSchema>;
 
-export const KeyAccountSchema = z.object({
-  organizationId: z.string(),
-  slug: z.string(),
-  tag: z.string(),
-  sortOrder: z.number().int().default(0),
-});
-export type KeyAccount = z.infer<typeof KeyAccountSchema>;
-
-export const ProjectComparisonPairSchema = z.object({
+export const ProjectComparisonSchema = z.object({
   id: z.string(),
   projectId: z.string(),
-  label: z.string().optional().default(""),
-  title: z.string().optional().nullable(),
   renderMediaId: z.string(),
   actualMediaId: z.string(),
-  aspectRatio: z.string().default("16/10"),
-  sortOrder: z.number().int().default(0),
-  renderUrl: z.string().optional(),
-  actualUrl: z.string().optional(),
 });
-export type ProjectComparisonPair = z.infer<typeof ProjectComparisonPairSchema>;
+export type ProjectComparison = z.infer<typeof ProjectComparisonSchema>;
 
-export const LandingPlacementMetaSchema = z.object({
-  lightingMode: z.string().optional(),
-  tag: z.string().optional(),
-  overrideImage: z.string().optional(),
-  overrideTitle: z.string().optional(),
-  slideId: z.string().optional(),
-  image: z.string().optional(),
-  title: z.string().optional(),
-  location: z.string().optional(),
-  specs: z.string().optional(),
-});
-export type LandingPlacementMeta = z.infer<typeof LandingPlacementMetaSchema>;
-
-export const FeaturedProjectSchema = z.object({
+export const ProjectSchema = z.object({
   id: z.string(),
-  code: z.string(),
-  title: z.string(),
-  subtitle: z.string(),
-  client: z.string(),
-  locations: z.array(z.string()),
-  year: z.union([z.string(), z.number()]).transform((v) => String(v)),
-  categoryTag: z.string(),
-  scaleMetric: z.string(),
-  materials: z.array(z.string()),
-  engineeringNotes: z.array(z.string()),
-  summary: z.string(),
-  coverImage: z.string(),
-  focalPoint: z
-    .object({
-      x: z.number().min(0).max(100),
-      y: z.number().min(0).max(100),
-    })
+  slug: z.string().min(1),
+  title: z.string().min(1),
+  summary: z.string().nullable().optional(),
+  organizationId: z.string().nullable().optional(),
+  year: z.number().int().min(1990).max(2100).nullable().optional(),
+  publishStatus: PublishStatusSchema.default("DRAFT"),
+  isFeatured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(0),
+  createdAt: z.number().int(),
+  updatedAt: z.number().int(),
+  // Optional hydrated relations for read views
+  organization: OrganizationSchema.nullable().optional(),
+  services: z.array(ServiceSchema).optional(),
+  media: z.array(ProjectMediaSchema).optional(),
+  comparisons: z.array(ProjectComparisonSchema).optional(),
+});
+export type Project = z.infer<typeof ProjectSchema>;
+
+export const CreateProjectDtoSchema = z.object({
+  slug: z
+    .string()
+    .trim()
+    .min(1)
+    .max(160)
+    .regex(/^[a-z0-9-]+$/, "Slug chỉ gồm chữ thường, số và dấu gạch ngang")
     .optional(),
-  segment: ProjectSegmentSchema.optional(),
-  stage: ProjectStageSchema.optional(),
-  keyAccountId: z.string().optional().nullable(),
-  teamAndTimeline: z.string().optional().nullable(),
-  status: ProjectStatusSchema.optional(),
-  gallery: z.array(ProjectGalleryItemSchema),
+  title: z.string().trim().min(1, "Tiêu đề dự án không được để trống").max(200),
+  summary: z.string().trim().max(2000).nullable().optional(),
+  organizationId: z.string().nullable().optional(),
+  year: z.number().int().min(1990).max(2100).nullable().optional(),
+  publishStatus: PublishStatusSchema.default("DRAFT"),
+  isFeatured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(0),
+  serviceIds: z.array(z.string()).default([]),
 });
-export type FeaturedProject = z.infer<typeof FeaturedProjectSchema>;
+export type CreateProjectDto = z.infer<typeof CreateProjectDtoSchema>;
 
-export const ProjectDetailSchema = FeaturedProjectSchema.extend({
-  media: z.array(ProjectMediaSchema),
-  comparisonPairs: z.array(ProjectComparisonPairSchema),
-});
-export type ProjectDetail = z.infer<typeof ProjectDetailSchema>;
-
-export const PaginationMetaSchema = z.object({
-  page: z.number().int().min(1),
-  limit: z.number().int().min(1),
-  total: z.number().int().min(0),
-  totalPages: z.number().int().min(0),
-});
-export type PaginationMeta = z.infer<typeof PaginationMetaSchema>;
-
-export const ProjectListQuerySchema = z.object({
-  segment: z.enum(["ALL", "B2B", "C2B"]).optional(),
-  stage: z.enum(["ALL", "COMPLETED", "TENDER_3D"]).optional(),
-  categoryTag: z.string().trim().min(1).optional(),
-  keyAccount: z.string().trim().min(1).optional(),
-  search: z.string().trim().optional(),
-  page: z.coerce.number().int().min(1).default(1),
-  limit: z.coerce.number().int().min(1).max(50).default(12),
-});
-export type ProjectListQuery = z.infer<typeof ProjectListQuerySchema>;
+export const UpdateProjectDtoSchema = CreateProjectDtoSchema.partial();
+export type UpdateProjectDto = z.infer<typeof UpdateProjectDtoSchema>;

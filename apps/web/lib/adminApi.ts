@@ -2,30 +2,19 @@ import type {
   CreateGalleryProjectInput,
   FeaturedProject,
   GalleryClusterConfig,
-  LoginCredentials,
-  LoginResponseData,
-  SafeUser,
+  User,
 } from "@khangviet/types";
 import { apiClient, type ApiResult } from "./apiClient";
 
 export interface AdminSession {
-  user: SafeUser;
+  user: User;
 }
 
-export async function getAdminMe(): Promise<ApiResult<SafeUser, string>> {
-  return await apiClient<SafeUser>("/api/auth/me", { method: "GET" });
-}
-
-export async function logoutAdmin(): Promise<ApiResult<unknown, string>> {
-  return await apiClient<unknown>("/api/auth/logout", { method: "POST" });
-}
-
-export async function loginAdmin(
-  credentials: LoginCredentials
-): Promise<ApiResult<LoginResponseData, string>> {
-  return await apiClient<LoginResponseData>("/api/auth/login", {
-    method: "POST",
-    body: JSON.stringify(credentials),
+export async function getAdminMe(): Promise<
+  ApiResult<{ message: string; user: User }, string>
+> {
+  return await apiClient<{ message: string; user: User }>("/api/protected", {
+    method: "GET",
   });
 }
 

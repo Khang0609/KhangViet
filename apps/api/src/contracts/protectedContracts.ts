@@ -1,15 +1,14 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { SafeUserSchema } from "@khangviet/types";
+import { UserSchema } from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 
 /**
- * Route kiểm tra chứng thực với Bearer AccessToken.
- * Trả về thông tin người dùng được định danh từ JWT payload.
+ * Route kiểm tra danh tính nhân sự qua Cloudflare Access Zero Trust.
  */
 export const protectedRoute = createRoute({
   method: "get",
   path: "/protected",
-  summary: "Truy vấn tài nguyên yêu cầu xác thực Bearer Token",
+  summary: "Truy vấn thông tin nhân sự đã xác thực qua Cloudflare Access",
   responses: {
     200: {
       content: {
@@ -18,7 +17,7 @@ export const protectedRoute = createRoute({
             success: z.literal(true),
             data: z.object({
               message: z.string(),
-              user: SafeUserSchema,
+              user: UserSchema,
             }),
           }),
         },
@@ -27,8 +26,7 @@ export const protectedRoute = createRoute({
     },
     401: {
       content: { "application/json": { schema: ErrorResponseSchema } },
-      description: "Chưa đăng nhập hoặc token không hợp lệ / hết hạn",
+      description: "Chưa xác thực Cloudflare Access",
     },
   },
 });
-

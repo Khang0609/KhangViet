@@ -1,5 +1,8 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { ContactLeadSchema, LeadStatusSchema } from "@khangviet/types";
+import {
+  LeadSchema,
+  UpdateLeadStatusDtoSchema,
+} from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 
 export const updateAdminLeadStatusRoute = createRoute({
@@ -11,10 +14,7 @@ export const updateAdminLeadStatusRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: z.object({
-            status: LeadStatusSchema,
-            notes: z.string().optional(),
-          }),
+          schema: UpdateLeadStatusDtoSchema,
         },
       },
     },
@@ -25,7 +25,7 @@ export const updateAdminLeadStatusRoute = createRoute({
         "application/json": {
           schema: z.object({
             success: z.literal(true),
-            data: ContactLeadSchema,
+            data: LeadSchema,
           }),
         },
       },
@@ -64,4 +64,3 @@ export const deleteAdminLeadRoute = createRoute({
     },
   },
 });
-
