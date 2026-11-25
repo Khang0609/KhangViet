@@ -1,17 +1,17 @@
-# Graph Report - source  (2026-11-17)
+# Graph Report - source  (2026-11-21)
 
 ## Corpus Check
-- 238 files · ~383,657 words
+- 258 files · ~532,827 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 17 file(s) not represented in the graph (top: .ttf 7, (none) 4, .jsonc 2)
 
 ## Summary
-- 1950 nodes · 4443 edges · 90 communities (83 shown, 7 thin omitted)
+- 2078 nodes · 4758 edges · 98 communities (91 shown, 7 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 104 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8bc9ed97`
+- Built from commit: `6136d0cb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -26,17 +26,17 @@
 - copy-lint.mjs
 - gate.mjs
 - factory.ts
-- project.ts
+- gallery.ts
 - UniversalMediaUpload.tsx
 - moments.mjs
 - generateSampleImage
 - effects.mjs
 - d1-cms-repository.ts
-- LandingContext.tsx
+- AdminGallerySlugClient.tsx
 - SafeUser
 - api/src/index.ts
 - perf.mjs
-- lucide-react
+- audit-functions.js
 - GalleryFilterBar.tsx
 - web/package.json
 - shoot.mjs
@@ -52,11 +52,11 @@
 - react
 - compilerOptions
 - sync.ts
-- auth/authService.ts
+- next
 - repositories/package.json
 - JsonCmsRepository.ts
 - adminCms.ts
-- getRepositories
+- revalidateNotifier.ts
 - types/src/index.ts
 - seed-local-d1.mjs
 - ISessionRepository
@@ -68,8 +68,8 @@
 - block
 - publicLeads.ts
 - ImageCard.tsx
-- seed.ts
-- FeaturedProject
+- d1-session-repository.ts
+- JsonCmsRepository
 - die
 - test-challenger-deep-stress.mjs
 - publicContent.ts
@@ -77,7 +77,7 @@
 - compilerOptions
 - test-media-upload.mjs
 - package.json
-- data/src/index.ts
+- store.ts
 - compilerOptions
 - refsOf
 - ref_node_assert
@@ -85,8 +85,8 @@
 - compilerOptions
 - compilerOptions
 - PasswordService
-- auth.ts
-- D1Client
+- lucide-react
+- data/src/index.ts
 - dependencies
 - tilesMod
 - analyse
@@ -99,43 +99,51 @@
 - opt
 - allowBuilds
 - scripts
-- @hono/zod-openapi
+- media-worker/package.json
 - shaderLint
 - pnpm
 - postcss.config.mjs
 - eslint.config.mjs
 - AppError
-- layout.tsx
+- independent-audit.mjs
+- project.ts
+- audit-check.mjs
+- FeaturedProject
+- ref_node_assert
+- test-blueprint-ast.mjs
+- GalleryClusterConfig
+- CompanyLegalInfo
+- runSweep
 
 ## God Nodes (most connected - your core abstractions)
 1. `lib()` - 148 edges
-2. `react` - 61 edges
+2. `react` - 71 edges
 3. `sel()` - 48 edges
 4. `shown()` - 45 edges
 5. `inFixed()` - 42 edges
-6. `FeaturedProject` - 36 edges
-7. `rgba()` - 34 edges
-8. `lucide-react` - 33 edges
+6. `lucide-react` - 41 edges
+7. `FeaturedProject` - 37 edges
+8. `rgba()` - 34 edges
 9. `ownText()` - 30 edges
 10. `measure()` - 30 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `BentoTile` --references--> `GalleryProject`  [EXTRACTED]
-  apps/web/components/gallery/BentoClusterSection.tsx → packages/types/src/gallery.ts
-- `GalleryHeroStatsProps` --references--> `GalleryStats`  [EXTRACTED]
-  apps/web/components/gallery/GalleryHeroStats.tsx → packages/types/src/gallery.ts
-- `AuthSession` --references--> `SafeUser`  [EXTRACTED]
-  apps/api/src/services/authService.ts → packages/types/src/user.ts
-- `LandingContextValue` --references--> `CompanyLegalInfo`  [EXTRACTED]
-  apps/web/components/contexts/LandingContext.tsx → packages/types/src/cms.ts
-- `LandingContextValue` --references--> `CoreDiscipline`  [EXTRACTED]
-  apps/web/components/contexts/LandingContext.tsx → packages/types/src/cms.ts
+- `ProjectLightboxModalProps` --references--> `FeaturedProject`  [EXTRACTED]
+  apps/web/components/modals/ProjectLightboxModal.tsx → packages/types/src/project.ts
+- `ModalContextValue` --references--> `FeaturedProject`  [EXTRACTED]
+  apps/web/components/modals/modalContext.tsx → packages/types/src/project.ts
+- `ProjectDossierInfoProps` --references--> `FeaturedProject`  [EXTRACTED]
+  apps/web/components/modals/project-lightbox/ProjectDossierInfo.tsx → packages/types/src/project.ts
+- `ProjectShowcaseProps` --references--> `FeaturedProject`  [EXTRACTED]
+  apps/web/components/modules/project-showcase/ProjectShowcase.tsx → packages/types/src/project.ts
+- `ProjectShowcaseDetailsProps` --references--> `FeaturedProject`  [EXTRACTED]
+  apps/web/components/modules/project-showcase/ProjectShowcaseDetails.tsx → packages/types/src/project.ts
 
 ## Import Cycles
 - 2-file cycle: `apps/web/components/modules/header/HeaderMobileNav.tsx -> apps/web/components/shared/SiteHeader.tsx -> apps/web/components/modules/header/HeaderMobileNav.tsx`
 - 2-file cycle: `apps/api/src/helpers/repoResolver.ts -> apps/api/src/middlewares/authMiddleware.ts -> apps/api/src/helpers/repoResolver.ts`
 
-## Communities (90 total, 7 thin omitted)
+## Communities (98 total, 7 thin omitted)
 
 ### Community 0 - "lib"
 Cohesion: 0.06
@@ -147,15 +155,15 @@ Nodes (69): ALIAS, argv, byId, cmdPath(), craftFits(), craftOf(), CRAFTS, credit
 
 ### Community 2 - "consistency.mjs"
 Cohesion: 0.03
-Nodes (58): argv, asJson, AUDIENCE, BANNED, BUSY_EDGE, BUSY_RNG, CATEGORY, CHECKS (+50 more)
+Nodes (56): argv, asJson, AUDIENCE, BANNED, BUSY_EDGE, BUSY_RNG, CATEGORY, CHECKS (+48 more)
 
 ### Community 3 - "services/authService.ts"
 Cohesion: 0.28
 Nodes (9): AuthService, JWT_ALGORITHM, TokenService, err(), ok(), Result, AccessTokenPayload, LoginCredentials (+1 more)
 
 ### Community 4 - "services/types.ts"
-Cohesion: 0.05
-Nodes (50): dependencies, @cf-wasm/photon@^0.4.0, hono@^4.13.2, @khangviet/types@workspace:*, devDependencies, @cloudflare/workers-types@^4.20241022.0, @types/node@^20.19.43, wrangler@^4.154.0 (+42 more)
+Cohesion: 0.08
+Nodes (30): ALLOWED_ORIGINS, corsMiddleware(), getCorsOrigin(), ALLOWED_MIME_TYPES, MAX_DIMENSION_PX, MAX_FILE_SIZE_BYTES, app, fetchExternalRoute (+22 more)
 
 ### Community 5 - "icons.mjs"
 Cohesion: 0.08
@@ -174,16 +182,16 @@ Cohesion: 0.05
 Nodes (37): args, base, children, dot, FAMILY, files, fp, gateDir (+29 more)
 
 ### Community 9 - "factory.ts"
-Cohesion: 0.09
-Nodes (23): RFC-4122, RFC-9562, createD1Client(), D1DatabaseBinding, D1LeadRepository, findOrCreateIdentity(), LeadJoinedRow, mapToContactLead() (+15 more)
+Cohesion: 0.11
+Nodes (16): D1LeadRepository, LeadJoinedRow, mapToContactLead(), ILeadRepository, JsonLeadRepository, __dirname, ContactLead, CreateLeadDto (+8 more)
 
-### Community 10 - "project.ts"
-Cohesion: 0.07
-Nodes (31): BentoLayoutPresetSchema, ClusterSurfaceToneSchema, GalleryApiResponseSchema, GalleryClusterConfigSchema, GalleryExecutionStage, GalleryExecutionStageSchema, GalleryFilterStateSchema, GalleryFocalPoint (+23 more)
+### Community 10 - "gallery.ts"
+Cohesion: 0.11
+Nodes (18): BentoLayoutPresetSchema, ClusterSurfaceToneSchema, CreateGalleryProjectInputSchema, GalleryClusterConfigSchema, GalleryExecutionStage, GalleryExecutionStageSchema, GalleryFilterStateSchema, GalleryFocalPointSchema (+10 more)
 
 ### Community 11 - "UniversalMediaUpload.tsx"
-Cohesion: 0.11
-Nodes (32): DropzoneFileInput, DropzoneIdle(), DropzoneUploading(), MediaDropzoneView(), MediaDropzoneViewProps, useDropzoneDrag(), formatSize(), MediaActionButtons() (+24 more)
+Cohesion: 0.12
+Nodes (31): DropzoneFileInput, DropzoneIdle(), DropzoneUploading(), MediaDropzoneView(), MediaDropzoneViewProps, useDropzoneDrag(), formatSize(), MediaActionButtons() (+23 more)
 
 ### Community 12 - "moments.mjs"
 Cohesion: 0.09
@@ -198,28 +206,28 @@ Cohesion: 0.08
 Nodes (26): args, buildIndex(), checkFilters(), commands, ENUMS, FX, gallery(), INDEX (+18 more)
 
 ### Community 15 - "d1-cms-repository.ts"
-Cohesion: 0.10
-Nodes (27): ProjectGalleryViewerProps, mapMediaRecord(), mapMediaToGallery(), InsertKeyAccountRecord, KeyAccountRecord, keyAccountsTable, InsertLandingPlacementRecord, LandingPlacementRecord (+19 more)
+Cohesion: 0.09
+Nodes (33): CmsMetadataRecord, cmsMetadataTable, PendingChangeRecord, pendingChangesTable, identitiesTable, IdentityRecord, InsertIdentityRecord, InsertKeyAccountRecord (+25 more)
 
-### Community 16 - "LandingContext.tsx"
-Cohesion: 0.21
-Nodes (15): LandingContext, LandingContextValue, useCoreDisciplines(), useFeaturedProjects(), useLandingContext(), usePartnerBrands(), useProductionDivisions(), InHouseEngineering() (+7 more)
+### Community 16 - "AdminGallerySlugClient.tsx"
+Cohesion: 0.13
+Nodes (30): AdminHomePage(), metadata, AdminGalleryOverviewClient(), AdminGalleryOverviewClientProps, PRESET_LABELS, TONE_OPTIONS, AdminGallerySlugClient(), AdminGallerySlugClientProps (+22 more)
 
 ### Community 17 - "SafeUser"
-Cohesion: 0.16
-Nodes (9): AuthSession, D1UserRepository, mapToSafeUser(), mapToUser(), UserJoinedRow, IUserRepository, JsonUserRepository, SafeUser (+1 more)
+Cohesion: 0.14
+Nodes (10): AuthSession, D1UserRepository, mapToSafeUser(), mapToUser(), UserJoinedRow, IUserRepository, SessionEntry, JsonUserRepository (+2 more)
 
 ### Community 18 - "api/src/index.ts"
-Cohesion: 0.20
-Nodes (12): DEV_ORIGINS, PRODUCTION_ORIGINS, resolveAllowedOrigin(), AppErrorStatusCode, app, adminAuthMiddleware(), AppEnv, authMiddleware() (+4 more)
+Cohesion: 0.16
+Nodes (19): DEV_ORIGINS, PRODUCTION_ORIGINS, resolveAllowedOrigin(), getContextRepos(), app, adminAuthMiddleware(), AppEnv, authMiddleware() (+11 more)
 
 ### Community 19 - "perf.mjs"
 Cohesion: 0.09
 Nodes (24): args, B, child, cpuSnap(), die(), exited, guard, GZ (+16 more)
 
-### Community 20 - "lucide-react"
-Cohesion: 0.16
-Nodes (16): metadata, ShopComingSoonPage(), useOptionalModalContext(), authenticateUser(), LoginForm(), LoginPageView(), HeaderMobileNav(), HeaderMobileNavProps (+8 more)
+### Community 20 - "audit-functions.js"
+Cohesion: 0.15
+Nodes (8): allFunctions, files, fs, path, ts, violations, walkDir(), nextConfig
 
 ### Community 21 - "GalleryFilterBar.tsx"
 Cohesion: 0.27
@@ -234,44 +242,44 @@ Cohesion: 0.09
 Nodes (15): args, child, defaultProfile(), guard, HEIGHTS, kill(), MIME, out (+7 more)
 
 ### Community 24 - "galleryClusters.ts"
-Cohesion: 0.13
-Nodes (28): generateMetadata(), generateStaticParams(), PartnerPageProps, PartnerProjectsPage(), generateMetadata(), generateStaticParams(), SolutionPageProps, SolutionProjectsPage() (+20 more)
+Cohesion: 0.11
+Nodes (29): AdminGalleryOverviewPage(), metadata, AdminGallerySlugPage(), AdminGallerySlugPageProps, generateStaticParams(), AdminProjectsPage(), metadata, generateMetadata() (+21 more)
 
 ### Community 25 - "app/page.tsx"
-Cohesion: 0.14
-Nodes (22): Home(), LandingProvider(), LazyModalContainer(), ProjectLightboxModal, SpecAndProfileModal, ModalContext, ModalProvider(), ProfileModalType (+14 more)
+Cohesion: 0.09
+Nodes (31): Home(), metadata, ShopComingSoonPage(), LandingProvider(), useFeaturedProjects(), LazyModalContainer(), ProjectLightboxModal, SpecAndProfileModal (+23 more)
 
 ### Community 26 - "user.ts"
 Cohesion: 0.12
 Nodes (15): Identity, IdentitySchema, IdentityType, IdentityTypeSchema, UserAccount, UserAccountSchema, AccessTokenPayloadSchema, AuthErrorCode (+7 more)
 
 ### Community 27 - "norm"
-Cohesion: 0.14
-Nodes (19): addressMod, areaMod, basicsMod, CDP, copyChecks(), copyTerms(), holds(), holdsAny() (+11 more)
+Cohesion: 0.15
+Nodes (18): addressMod, areaMod, basicsMod, CDP, copyChecks(), copyTerms(), holds(), holdsAny() (+10 more)
 
 ### Community 28 - "runWidth"
 Cohesion: 0.12
-Nodes (23): auditFindings(), bySev(), clean(), clusterLooks(), extrasFindings(), groupLike(), groupSame(), invertedLook() (+15 more)
+Nodes (21): auditFindings(), clusterLooks(), extrasFindings(), groupLike(), groupSame(), invertedLook(), isLocal(), lookName() (+13 more)
 
 ### Community 29 - "sleep"
 Cohesion: 0.22
 Nodes (14): cropTo(), deadIoPass(), glFallbackPass(), hiddenNow(), hiddenWalk(), lose(), narrowPass(), reducedPass() (+6 more)
 
 ### Community 30 - "ref_node_fs"
-Cohesion: 0.15
-Nodes (6): __dirname, __dirname, __dirname, initFullDatabase(), runSqlFile(), __dirname
+Cohesion: 0.13
+Nodes (12): db, m0, m1, db, __dirname, m0, m1, root (+4 more)
 
 ### Community 31 - "D1CmsRepository"
-Cohesion: 0.24
-Nodes (3): D1CmsRepository, mapProject(), parseYear()
+Cohesion: 0.19
+Nodes (5): D1CmsRepository, mapMediaRecord(), mapMediaToGallery(), mapProject(), ProjectDetail
 
 ### Community 32 - "adminLeads.ts"
 Cohesion: 0.33
 Nodes (7): getAdminLeadByIdRoute, getAdminLeadsRoute, deleteAdminLeadRoute, updateAdminLeadStatusRoute, adminLeadsRouter, ContactLeadSchema, LeadStatusSchema
 
 ### Community 33 - "react"
-Cohesion: 0.14
-Nodes (21): useLegalInfo(), QuoteRequestModal(), CorporateProfileTab(), LegalAndFactorySection(), COLOR_TOKENS, WireframeSpecTab(), SpecAndProfileModal(), SpecAndProfileModalProps (+13 more)
+Cohesion: 0.09
+Nodes (40): LandingContext, LandingContextValue, useCoreDisciplines(), useLandingContext(), useLegalInfo(), usePartnerBrands(), useProductionDivisions(), ProjectDossierInfoProps (+32 more)
 
 ### Community 34 - "compilerOptions"
 Cohesion: 0.11
@@ -281,33 +289,37 @@ Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModu
 Cohesion: 0.15
 Nodes (13): applyPendingChangesRoute, discardPendingChangeRoute, getPendingChangesRoute, getSyncStatusRoute, ApplyPendingResult, ApplyPendingResultSchema, ChangeActionTypeSchema, PendingChange (+5 more)
 
-### Community 36 - "auth/authService.ts"
-Cohesion: 0.38
-Nodes (7): logoutUser(), apiClient(), ApiResult, getApiBaseUrl(), isInternalApiTarget(), createLead(), LoginResponseData
+### Community 36 - "next"
+Cohesion: 0.20
+Nodes (11): metadata, authenticateUser(), logoutUser(), LoginForm(), LoginPageView(), apiClient(), ApiResult, getApiBaseUrl() (+3 more)
 
 ### Community 37 - "repositories/package.json"
 Cohesion: 0.09
 Nodes (22): dependencies, drizzle-orm@^0.45.4, @khangviet/data@workspace:*, @khangviet/types@workspace:*, devDependencies, drizzle-kit@^0.31.11, exports, @khangviet/data (+14 more)
 
 ### Community 38 - "JsonCmsRepository.ts"
-Cohesion: 0.19
-Nodes (10): buildProjectWhereConditions(), matchesSearch(), paginate(), LandingPlacement, LandingPlacementSlot, UpsertLandingPlacement, GalleryApiResponse, PaginationMeta (+2 more)
+Cohesion: 0.20
+Nodes (9): buildProjectWhereConditions(), matchesSearch(), paginate(), LandingPlacement, LandingPlacementSlot, UpsertLandingPlacement, GalleryApiResponse, PaginationMeta (+1 more)
 
 ### Community 39 - "adminCms.ts"
-Cohesion: 0.15
-Nodes (17): MetaMutationResponse, updateHeroRoute, updateLegalRoute, deletePlacementRoute, getPlacementsRoute, upsertPlacementRoute, createProjectRoute, deleteProjectRoute (+9 more)
+Cohesion: 0.10
+Nodes (26): MetaMutationResponse, updateGalleryClustersRoute, updateHeroRoute, updateLegalRoute, deletePlacementRoute, getPlacementsRoute, upsertPlacementRoute, createProjectRoute (+18 more)
 
-### Community 40 - "getRepositories"
-Cohesion: 0.29
-Nodes (7): getContextRepos(), ChangeHandleResult, handleCmsChange(), RevalidateOptions, triggerWebRevalidation(), WorkerEnvBindings, getRepositories()
+### Community 40 - "revalidateNotifier.ts"
+Cohesion: 0.50
+Nodes (3): RevalidateOptions, triggerWebRevalidation(), WorkerEnvBindings
 
 ### Community 41 - "types/src/index.ts"
-Cohesion: 0.25
-Nodes (7): useHeroSlides(), ProjectDossierInfo(), ProjectGalleryViewer(), ProjectLightboxModal(), HeroCarouselVisual(), HeroSection(), useCarousel()
+Cohesion: 0.24
+Nodes (10): useHeroSlides(), ProjectDossierInfo(), ProjectGalleryViewer(), ProjectGalleryViewerProps, ProjectLightboxModal(), ProjectLightboxModalProps, HeroCarouselVisual(), HeroSection() (+2 more)
 
 ### Community 42 - "seed-local-d1.mjs"
 Cohesion: 0.11
 Nodes (14): db, dbDir, dbPath, insertCmsMeta, insertIdentity, insertLead, insertMedia, insertProject (+6 more)
+
+### Community 43 - "ISessionRepository"
+Cohesion: 0.15
+Nodes (6): createD1Client(), D1DatabaseBinding, Repositories, StorageDriver, ISessionRepository, JsonSessionRepository
 
 ### Community 44 - "cms.ts"
 Cohesion: 0.17
@@ -330,36 +342,36 @@ Cohesion: 0.22
 Nodes (6): classify_ratio(), main(), make_new_name(), move_file(), process_image(), process_video()
 
 ### Community 49 - "block"
-Cohesion: 0.26
-Nodes (12): allow(), applyWaivers(), block(), errorReason(), guard, readJson(), readLedger(), record() (+4 more)
+Cohesion: 0.21
+Nodes (14): allow(), applyWaivers(), block(), errorReason(), guard, killTree(), readJson(), readLedger() (+6 more)
 
 ### Community 50 - "publicLeads.ts"
-Cohesion: 0.31
-Nodes (6): defaultValidationHook(), createLeadRoute, publicLeadsRouter, formatLeadMessage(), notifyNewLead(), TelegramEnvBindings
+Cohesion: 0.20
+Nodes (11): cleanupExpired(), createRateLimiter(), memoryStore, RateLimitEntry, RateLimitOptions, resolveClientIp(), createLeadRoute, publicLeadsRouter (+3 more)
 
 ### Community 51 - "ImageCard.tsx"
 Cohesion: 0.20
 Nodes (10): cn(), clsx@^2.1.1, ExampleColor, FlickeringImage(), FlickeringImageProps, ImageCard(), ImageCardOrientation, ImageCardProps (+2 more)
 
-### Community 52 - "seed.ts"
-Cohesion: 0.11
-Nodes (26): CmsMetadataRecord, cmsMetadataTable, PendingChangeRecord, pendingChangesTable, identitiesTable, IdentityRecord, InsertIdentityRecord, InsertLeadActivityRecord (+18 more)
+### Community 52 - "d1-session-repository.ts"
+Cohesion: 0.15
+Nodes (8): D1Client, D1SessionRepository, InsertSessionRecord, SessionRecord, sessionsTable, InsertUserAccountRecord, UserAccountRecord, userAccountsTable
 
-### Community 53 - "FeaturedProject"
-Cohesion: 0.07
-Nodes (14): ModalContextValue, ProjectDossierInfoProps, ProjectLightboxModalProps, FooterProps, HeroCarouselVisualProps, HeroSectionProps, ProjectShowcaseProps, ProjectShowcaseDetailsProps (+6 more)
+### Community 53 - "JsonCmsRepository"
+Cohesion: 0.15
+Nodes (4): HeroCarouselVisualProps, HeroSectionProps, JsonCmsRepository, HeroSlide
 
 ### Community 54 - "die"
 Cohesion: 0.27
 Nodes (9): CDP, die(), findChrome(), inProject(), launch(), perf(), serve(), shot() (+1 more)
 
 ### Community 55 - "test-challenger-deep-stress.mjs"
-Cohesion: 0.18
+Cohesion: 0.20
 Nodes (7): failures, loadTsModule(), require, service, targetFiles, ts, types
 
 ### Community 56 - "publicContent.ts"
-Cohesion: 0.20
-Nodes (9): getGalleryRoute, getLandingRoute, getProjectByIdRoute, getProjectsRoute, publicContentRouter, LandingContentSchema, FeaturedProjectSchema, ProjectDetailSchema (+1 more)
+Cohesion: 0.17
+Nodes (11): getGalleryRoute, getLandingRoute, getProjectByIdRoute, getProjectsRoute, publicContentRouter, GalleryApiResponseSchema, LandingContentSchema, FeaturedProjectSchema (+3 more)
 
 ### Community 57 - "compilerOptions"
 Cohesion: 0.18
@@ -377,9 +389,9 @@ Nodes (9): filesToCheck, imageUrlInputContent, indexContent, loadTsModule(), moc
 Cohesion: 0.20
 Nodes (10): devDependencies, turbo@^2.10.10, packageManager, private, scripts, build, dev, dev:web (+2 more)
 
-### Community 61 - "data/src/index.ts"
-Cohesion: 0.10
-Nodes (22): KeyAccountsSpotlightProps, ProjectCardProps, ProjectDetailDrawerProps, QuoteRequestModalProps, WIREFRAME_SPEC_TEXT, galleryExt, GalleryExtSeed, initialLandingContent (+14 more)
+### Community 61 - "store.ts"
+Cohesion: 0.19
+Nodes (10): GalleryHeroStatsProps, buildDefaultMediaAndComparisons(), buildDefaultPlacements(), MockMemoryStore, mockStore, GalleryStats, LandingContent, ProjectComparisonPair (+2 more)
 
 ### Community 62 - "compilerOptions"
 Cohesion: 0.20
@@ -390,12 +402,12 @@ Cohesion: 0.22
 Nodes (9): attrs(), cssRefs(), jsRefs(), kindOf(), local(), metas(), refsOf(), stripRef() (+1 more)
 
 ### Community 64 - "ref_node_assert"
-Cohesion: 0.28
+Cohesion: 0.32
 Nodes (3): json(), loginAdmin(), runTests()
 
 ### Community 65 - "BentoClusterSection.tsx"
-Cohesion: 0.14
-Nodes (19): metadata, ProjectsPage(), BentoClusterSection(), BentoClusterSectionProps, BentoPhotoTile(), BentoTile, buildBentoTiles(), getSurfaceClasses() (+11 more)
+Cohesion: 0.17
+Nodes (16): metadata, ProjectsPage(), BentoClusterSection(), BentoClusterSectionProps, BentoPhotoTile(), buildBentoTiles(), getSurfaceClasses(), renderPresetGrid() (+8 more)
 
 ### Community 66 - "compilerOptions"
 Cohesion: 0.22
@@ -405,13 +417,17 @@ Nodes (8): compilerOptions, declaration, module, moduleResolution, skipLibCheck,
 Cohesion: 0.22
 Nodes (8): compilerOptions, declaration, module, moduleResolution, skipLibCheck, strict, target, include
 
-### Community 69 - "auth.ts"
-Cohesion: 0.18
-Nodes (12): loginRoute, refreshRoute, getJwtSecret(), cleanupExpired(), createRateLimiter(), memoryStore, RateLimitEntry, RateLimitOptions (+4 more)
+### Community 69 - "lucide-react"
+Cohesion: 0.11
+Nodes (24): FocalPointPicker(), FocalPointPickerProps, createEmptyDraft(), projectToDraft(), ProjectWizardModal(), ProjectWizardModalProps, STEP_LABELS, WizardDraft (+16 more)
+
+### Community 70 - "data/src/index.ts"
+Cohesion: 0.15
+Nodes (15): RFC-4122, RFC-9562, galleryExt, initialLandingContent, initialLeads, initialProjectGallery, initialUsers, findOrCreateIdentity() (+7 more)
 
 ### Community 71 - "dependencies"
 Cohesion: 0.17
-Nodes (12): dependencies, @khangviet/data@workspace:*, @khangviet/types@workspace:*, lucide-react@^1.57.0, next@16.4.3, react@19.2.8, react-dom@19.2.8, tailwind-merge@^3.6.0 (+4 more)
+Nodes (12): dependencies, @khangviet/data@workspace:*, @khangviet/types@workspace:*, lucide-react@^1.57.0, next@16.4.6, react@19.2.8, react-dom@19.2.8, tailwind-merge@^3.6.0 (+4 more)
 
 ### Community 72 - "tilesMod"
 Cohesion: 0.38
@@ -426,8 +442,8 @@ Cohesion: 0.29
 Nodes (5): ButtonProps, ButtonSize, ButtonVariant, sizeStyles, variantStyles
 
 ### Community 76 - "dotOf"
-Cohesion: 0.43
-Nodes (7): activeIn(), below(), dotOf(), findProject(), lastTouch(), traceFile(), unarmedPage()
+Cohesion: 0.47
+Nodes (6): activeIn(), below(), dotOf(), findProject(), lastTouch(), unarmedPage()
 
 ### Community 77 - "applyFlags"
 Cohesion: 0.40
@@ -453,9 +469,9 @@ Nodes (5): allowBuilds, esbuild, unrs-resolver, workerd, packages
 Cohesion: 0.40
 Nodes (5): scripts, build, dev, lint, start
 
-### Community 83 - "@hono/zod-openapi"
-Cohesion: 0.47
-Nodes (3): protectedRoute, protectedRouter, @hono/zod-openapi
+### Community 83 - "media-worker/package.json"
+Cohesion: 0.12
+Nodes (20): dependencies, @cf-wasm/photon@^0.4.0, hono@^4.13.2, @khangviet/types@workspace:*, devDependencies, @cloudflare/workers-types@^4.20241022.0, @types/node@^20.19.43, wrangler@^4.154.0 (+12 more)
 
 ### Community 84 - "shaderLint"
 Cohesion: 0.50
@@ -467,27 +483,51 @@ Nodes (3): source-map-js, pnpm, overrides
 
 ### Community 87 - "eslint.config.mjs"
 Cohesion: 0.33
-Nodes (5): eslintConfig, eslint@^10.13.0, eslint-config-next@16.4.3, eslint, eslint-config-next
+Nodes (5): eslintConfig, eslint@^10.13.0, eslint-config-next@16.4.6, eslint, eslint-config-next
+
+### Community 89 - "independent-audit.mjs"
+Cohesion: 0.11
+Nodes (18): getFunctionName(), hasLocalMockToMediaResult, importsGenuineService, importsGenuineTypes, require, serviceContent, sFakeReturn, sFetch (+10 more)
+
+### Community 90 - "project.ts"
+Cohesion: 0.11
+Nodes (17): KeyAccount, KeyAccountSchema, LandingPlacementMetaSchema, LandingSlotType, LandingSlotTypeSchema, Organization, OrganizationSchema, ProjectComparisonPairSchema (+9 more)
+
+### Community 91 - "audit-check.mjs"
+Cohesion: 0.15
+Nodes (13): getFunctionName(), hasFakeMockReturn, hasFormData, hasRealFetch, hasRealFetchExternalEndpoint, hasRealUploadEndpoint, hasThrowError, require (+5 more)
+
+### Community 92 - "FeaturedProject"
+Cohesion: 0.23
+Nodes (3): parseYear(), ICmsRepository, FeaturedProject
+
+### Community 94 - "test-blueprint-ast.mjs"
+Cohesion: 0.33
+Nodes (5): getFunctionName(), require, snippets, ts, visit()
+
+### Community 97 - "runSweep"
+Cohesion: 0.67
+Nodes (4): bySev(), clean(), lostFindings(), runSweep()
 
 ## Knowledge Gaps
 - **2 isolated node(s):** `RFC-9562`, `RFC-4122`
-  These have ≤1 connection - possible missing edges. (Counts symbols only; 648 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges. (Counts symbols only; 709 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `lib()` connect `lib` to `consistency.mjs`?**
-  _High betweenness centrality (0.164) - this node is a cross-community bridge._
+  _High betweenness centrality (0.134) - this node is a cross-community bridge._
 - **Are the 51 inferred relationships involving `lib()` (e.g. with `arrive()` and `audit()`) actually correct?**
   _`lib()` has 51 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `RFC-9562`, `RFC-4122` to the rest of the system?**
   _2 weakly-connected nodes found - possible missing edges._
 - **Should `lib` be split into smaller, more focused modules?**
   _Cohesion score 0.05791505791505792 - nodes in this community are weakly interconnected._
-- **Why does `react` connect `react` to `BentoClusterSection.tsx`, `dependencies`, `types/src/index.ts`, `UniversalMediaUpload.tsx`, `Button.tsx`, `LandingContext.tsx`, `ImageCard.tsx`, `lucide-react`, `GalleryFilterBar.tsx`, `web/package.json`, `galleryClusters.ts`, `app/page.tsx`, `data/src/index.ts`?**
-  _High betweenness centrality (0.096) - this node is a cross-community bridge._
+- **Why does `react` connect `react` to `BentoClusterSection.tsx`, `next`, `lucide-react`, `dependencies`, `types/src/index.ts`, `UniversalMediaUpload.tsx`, `Button.tsx`, `AdminGallerySlugClient.tsx`, `ImageCard.tsx`, `GalleryFilterBar.tsx`, `web/package.json`, `galleryClusters.ts`, `app/page.tsx`?**
+  _High betweenness centrality (0.065) - this node is a cross-community bridge._
 - **Should `photos.mjs` be split into smaller, more focused modules?**
   _Cohesion score 0.06128364389233954 - nodes in this community are weakly interconnected._
-- **Why does `@hono/zod-openapi` connect `@hono/zod-openapi` to `adminLeads.ts`, `sync.ts`, `auth.ts`, `adminCms.ts`, `api/package.json`, `api/src/index.ts`, `publicLeads.ts`, `publicContent.ts`?**
-  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+- **Why does `drizzle-orm` connect `d1-cms-repository.ts` to `repositories/package.json`, `factory.ts`, `ISessionRepository`, `SafeUser`, `d1-session-repository.ts`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._

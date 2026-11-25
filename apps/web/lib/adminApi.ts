@@ -9,6 +9,7 @@ import type {
   LeadStatus,
   Organization,
   Project,
+  ProjectComparison,
   ProjectMedia,
   UpdateOrganizationDto,
   UpdateProjectDto,
@@ -87,6 +88,20 @@ export async function deleteAdminProjectMedia(
     `/api/v1/admin/cms/media/${encodeURIComponent(mediaId)}`,
     {
       method: "DELETE",
+    }
+  );
+}
+
+export async function setAdminProjectComparison(
+  projectId: string,
+  renderMediaId: string,
+  actualMediaId: string
+): Promise<ApiResult<ProjectComparison, string>> {
+  return await apiClient<ProjectComparison>(
+    `/api/v1/admin/cms/projects/${encodeURIComponent(projectId)}/comparison`,
+    {
+      method: "PUT",
+      body: JSON.stringify({ renderMediaId, actualMediaId }),
     }
   );
 }

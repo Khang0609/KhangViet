@@ -100,12 +100,7 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
   };
 
   const handleRowNavigate = (project: GalleryProject) => {
-    const targetSlug =
-      project.organization?.slug ||
-      project.services[0]?.slug ||
-      initialData.services[0]?.slug ||
-      "khang-viet";
-    router.push(`/admin/projects/${targetSlug}`);
+    router.push(`/admin/projects/${project.slug}`);
   };
 
   const handleSubmitProject = async (
