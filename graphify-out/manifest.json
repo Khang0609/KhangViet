@@ -93,10 +93,10 @@
     "semantic_hash": "224e53a463c1f996fc2adce9fa1e63ac"
   },
   "apps/api/src/contracts/adminCmsMetaContracts.ts": {
-    "mtime": 1793622259.571109,
-    "seen": 1794838041.5375593,
-    "ast_hash": "702b1cda6f8e16a17d2686a5a3d8aa1e",
-    "semantic_hash": "702b1cda6f8e16a17d2686a5a3d8aa1e"
+    "mtime": 1795242524.4784763,
+    "seen": 1795242861.5476544,
+    "ast_hash": "85242c37f473d2842c3a0457a3167d03",
+    "semantic_hash": ""
   },
   "apps/api/src/contracts/adminCmsPlacementContracts.ts": {
     "mtime": 1794626921.7894356,
@@ -189,10 +189,10 @@
     "semantic_hash": "17338cfaa6f4dea2408200b64d418bfd"
   },
   "apps/api/src/routes/adminCms.ts": {
-    "mtime": 1794626921.8001823,
-    "seen": 1794838041.5648026,
-    "ast_hash": "26eb8ce3e6d1df517cb74fe4c0d4866c",
-    "semantic_hash": "26eb8ce3e6d1df517cb74fe4c0d4866c"
+    "mtime": 1795242524.4860451,
+    "seen": 1795242861.5516615,
+    "ast_hash": "3a6d841bd092b794151bc30f8af041b9",
+    "semantic_hash": ""
   },
   "apps/api/src/routes/adminCmsHelper.ts": {
     "mtime": 1794541746.8254921,
@@ -465,9 +465,9 @@
     "semantic_hash": "db7fac7c4bb5254e323f47e8a9abe333"
   },
   "apps/web/components/gallery/GalleryHeroStats.tsx": {
-    "mtime": 1794879710.4101832,
-    "seen": 1794880039.3249593,
-    "ast_hash": "451e0303235aa6d432b653cef923dc9b",
+    "mtime": 1795242524.5724528,
+    "seen": 1795242861.561328,
+    "ast_hash": "4d45645ac6604641ff0604910ec3fe2f",
     "semantic_hash": ""
   },
   "apps/web/components/gallery/KeyAccountsSpotlight.tsx": {
@@ -489,9 +489,9 @@
     "semantic_hash": "428e53f66b4056b0f82cc44e1eb872d9"
   },
   "apps/web/components/gallery/ProjectGalleryClient.tsx": {
-    "mtime": 1794879760.2185268,
-    "seen": 1794880039.3259602,
-    "ast_hash": "2f9b1ed3abecc5a6292e977543df645e",
+    "mtime": 1795242524.578884,
+    "seen": 1795242861.5624511,
+    "ast_hash": "88939bdb5ad3f430c5eaa6cc6821f435",
     "semantic_hash": ""
   },
   "apps/web/components/gallery/QuoteRequestModal.tsx": {
@@ -807,16 +807,16 @@
     "semantic_hash": "e3f848f1b39f863e6164cf58b5a8e752"
   },
   "apps/web/next.config.ts": {
-    "mtime": 1794541746.8864155,
-    "seen": 1794838041.6666985,
-    "ast_hash": "2218bd5960a0f968275b23ec647ceed3",
-    "semantic_hash": "2218bd5960a0f968275b23ec647ceed3"
+    "mtime": 1795242545.7795138,
+    "seen": 1795242861.5737314,
+    "ast_hash": "c121b7c0f60acb2d5064ee49ad136dc6",
+    "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1794056927.3157935,
-    "seen": 1794838041.6672707,
-    "ast_hash": "0a40abe0789305da414691f95b8d19e0",
-    "semantic_hash": "0a40abe0789305da414691f95b8d19e0"
+    "mtime": 1795242545.7982416,
+    "seen": 1795242861.5737314,
+    "ast_hash": "9a3f3d594881aff94f6deb4a4cd29aaf",
+    "semantic_hash": ""
   },
   "apps/web/postcss.config.mjs": {
     "mtime": 1786982211.5545373,
@@ -831,8 +831,8 @@
     "semantic_hash": "67f1c658c72b1a289765de5f8114a98c"
   },
   "apps/web/services/galleryService.ts": {
-    "mtime": 1794879681.2488203,
-    "seen": 1794880039.3416064,
+    "mtime": 1795242524.6013372,
+    "seen": 1795242861.5743296,
     "ast_hash": "7873df694ce7b19cb00d41be4710f137",
     "semantic_hash": ""
   },
@@ -1019,10 +1019,10 @@
     "semantic_hash": "a9ced0779558f51141d72fb7b6d5dc0a"
   },
   "packages/repositories/src/d1/repositories/d1-cms-repository.ts": {
-    "mtime": 1794626921.8488858,
-    "seen": 1794838041.6892138,
-    "ast_hash": "dbf5c904a2c7f6dc78bff75c7eeb14e5",
-    "semantic_hash": "dbf5c904a2c7f6dc78bff75c7eeb14e5"
+    "mtime": 1795242524.6364243,
+    "seen": 1795242861.5803747,
+    "ast_hash": "43649d5071c5258cc906dca6909a426f",
+    "semantic_hash": ""
   },
   "packages/repositories/src/d1/repositories/d1-lead-repository.ts": {
     "mtime": 1794114976.275098,
@@ -1169,10 +1169,10 @@
     "semantic_hash": "197cf061229efa0403dada0256828a0d"
   },
   "packages/repositories/src/interfaces/ICmsRepository.ts": {
-    "mtime": 1794626921.863315,
-    "seen": 1794838041.7151253,
-    "ast_hash": "f53d9129e55ea72e48b05da372a5607a",
-    "semantic_hash": "f53d9129e55ea72e48b05da372a5607a"
+    "mtime": 1795242524.64987,
+    "seen": 1795242861.5858285,
+    "ast_hash": "b070d2aa1cd95db7085cdcfaf9848f4a",
+    "semantic_hash": ""
   },
   "packages/repositories/src/interfaces/ILeadRepository.ts": {
     "mtime": 1793622260.938789,
@@ -1199,10 +1199,10 @@
     "semantic_hash": "6db3ca651bdb6b1c0f96b4a7d483d2a8"
   },
   "packages/repositories/src/json/JsonCmsRepository.ts": {
-    "mtime": 1794626921.8643143,
-    "seen": 1794838041.718825,
-    "ast_hash": "a04da5b03618d5e8f6374ea2ce35d6be",
-    "semantic_hash": "a04da5b03618d5e8f6374ea2ce35d6be"
+    "mtime": 1795242524.6580403,
+    "seen": 1795242861.586827,
+    "ast_hash": "e3b962a284ba716cb52a55f0736fd7b0",
+    "semantic_hash": ""
   },
   "packages/repositories/src/json/JsonLeadRepository.ts": {
     "mtime": 1793622260.9911566,
@@ -1229,10 +1229,10 @@
     "semantic_hash": "f087c60728ae38c627990296d2a36c89"
   },
   "packages/repositories/src/json/store.ts": {
-    "mtime": 1794626921.866315,
-    "seen": 1794838041.7228222,
-    "ast_hash": "9a70c7d2982a032bacfc2d4d34c7aa7a",
-    "semantic_hash": "9a70c7d2982a032bacfc2d4d34c7aa7a"
+    "mtime": 1795242524.6648777,
+    "seen": 1795242861.5878263,
+    "ast_hash": "be1471992894fdaef6adc85bdb85bc57",
+    "semantic_hash": ""
   },
   "packages/repositories/test/adversarial-party-identity.test.mjs": {
     "mtime": 1794115197.597793,
@@ -1289,9 +1289,9 @@
     "semantic_hash": "2e2fe984cfdccf5c5e386bbd804f85ef"
   },
   "packages/types/src/gallery.ts": {
-    "mtime": 1794879674.9897182,
-    "seen": 1794880039.3626063,
-    "ast_hash": "68726948b19d5860b04874c459d4a845",
+    "mtime": 1795242524.6708815,
+    "seen": 1795242861.5887783,
+    "ast_hash": "dfd1dd7e86e0f6d075add865e6233482",
     "semantic_hash": ""
   },
   "packages/types/src/identity.ts": {
@@ -1313,10 +1313,10 @@
     "semantic_hash": "18f8742ff51736ac9130987f202eb70b"
   },
   "packages/types/src/project.ts": {
-    "mtime": 1794626921.8754966,
-    "seen": 1794838041.739138,
-    "ast_hash": "396f0a90b0cb1a253f49c149f57e93cd",
-    "semantic_hash": "396f0a90b0cb1a253f49c149f57e93cd"
+    "mtime": 1795242524.67818,
+    "seen": 1795242861.5898285,
+    "ast_hash": "8e24e9b8f68c720acbde9bee74e61dfa",
+    "semantic_hash": ""
   },
   "packages/types/src/result.ts": {
     "mtime": 1794054606.1741817,
@@ -1355,11 +1355,10 @@
     "semantic_hash": "ad4d77488e10c0c75e0b82965f514523"
   },
   "skills-lock.json": {
-    "mtime": 1794547272.2145214,
-    "seen": 1794838041.7500181,
-    "ast_hash": "1ad13e5fcd17df453cf313303a3ecb88",
-    "semantic_hash": "1ad13e5fcd17df453cf313303a3ecb88",
-    "ast_empty": true
+    "mtime": 1795242545.8341312,
+    "seen": 1795242861.5907755,
+    "ast_hash": "82d893a8c9b731ba5e714ecbe3705767",
+    "semantic_hash": ""
   },
   "turbo.json": {
     "mtime": 1793346249.119333,
@@ -1380,45 +1379,45 @@
     "semantic_hash": ""
   },
   "apps/web/app/projects/partners/[slug]/page.tsx": {
-    "mtime": 1794879807.1166055,
-    "seen": 1794880039.3240066,
-    "ast_hash": "e487f622cf0a4ee8448e0a19c18a9d37",
+    "mtime": 1795242524.521276,
+    "seen": 1795242861.561328,
+    "ast_hash": "3f53b313dbf2e25490053c3a586a630a",
     "semantic_hash": ""
   },
   "apps/web/app/projects/solutions/[slug]/page.tsx": {
-    "mtime": 1794879808.649038,
-    "seen": 1794880039.3240066,
-    "ast_hash": "5eb1ebb3d4d0aacd9b0b0da8d41d66fc",
+    "mtime": 1795242524.5294342,
+    "seen": 1795242861.561328,
+    "ast_hash": "765bfb3b9a2775e24502820d18a0018b",
     "semantic_hash": ""
   },
   "apps/web/components/gallery/BentoClusterSection.tsx": {
-    "mtime": 1794879750.813293,
-    "seen": 1794880039.3249593,
-    "ast_hash": "fe188a8b5ec802694f551b3769a92e0a",
+    "mtime": 1795242524.5598812,
+    "seen": 1795242861.561328,
+    "ast_hash": "4ecf2a2729fbffc8f53f6a692e1bf341",
     "semantic_hash": ""
   },
   "apps/web/components/gallery/ChapterScrollRail.tsx": {
-    "mtime": 1794879726.3469405,
-    "seen": 1794880039.3249593,
-    "ast_hash": "75017bc787a08ba01b87ef2b96f965f6",
+    "mtime": 1795242524.565943,
+    "seen": 1795242861.561328,
+    "ast_hash": "2b990970814af2674718663eb995a3ed",
     "semantic_hash": ""
   },
   "apps/web/components/gallery/SplitViewExplorer.tsx": {
-    "mtime": 1794879789.9371512,
-    "seen": 1794880039.3259602,
-    "ast_hash": "bb91f6b2eeb25dc7c33a8b9d202bcc71",
+    "mtime": 1795242524.5849054,
+    "seen": 1795242861.5624511,
+    "ast_hash": "64bcbb680bfd2dd5e11d808ff037bfe5",
     "semantic_hash": ""
   },
   "apps/web/lib/galleryClusters.ts": {
-    "mtime": 1794879701.3292892,
-    "seen": 1794880039.3396542,
-    "ast_hash": "17789dac9759bea6343ebd9a92be7eb1",
+    "mtime": 1795242524.5924287,
+    "seen": 1795242861.5737314,
+    "ast_hash": "adc69951045993f49ba3754018ddd392",
     "semantic_hash": ""
   },
   ".agents/GEMINI.md": {
-    "mtime": 1794839652.8571837,
-    "seen": 1794880039.3653119,
-    "ast_hash": "8689f501b927fc060b0107b1c9a0d1d9",
+    "mtime": 1795242545.1300848,
+    "seen": 1795242861.5907755,
+    "ast_hash": "9729998ae27a67211ba97bde0929b999",
     "semantic_hash": ""
   },
   ".agents/rules/code-organization.md": {
@@ -1470,9 +1469,9 @@
     "semantic_hash": ""
   },
   ".agents/skills/design-taste-frontend/SKILL.md": {
-    "mtime": 1794647386.1941288,
-    "seen": 1794880039.3653119,
-    "ast_hash": "365df7d001fa568b1161815c647da6e7",
+    "mtime": 1795242545.75164,
+    "seen": 1795242861.592826,
+    "ast_hash": "efb9c3b184b799efa95bfa38092e4f0e",
     "semantic_hash": ""
   },
   ".agents/skills/design-taste-frontend/references/backgrounds.md": {
@@ -1656,9 +1655,9 @@
     "semantic_hash": ""
   },
   "apps/web/AGENTS.md": {
-    "mtime": 1794625889.6229625,
-    "seen": 1794880039.3653119,
-    "ast_hash": "9c7609a564e872730d2228ee7710ce0c",
+    "mtime": 1795242545.7615774,
+    "seen": 1795242861.5998697,
+    "ast_hash": "1d579962154172bfd180f9b132b342f5",
     "semantic_hash": ""
   },
   "apps/web/CLAUDE.md": {
@@ -1817,10 +1816,1312 @@
     "ast_hash": "72c29e8a6a56a1351fe8518599c948c8",
     "semantic_hash": ""
   },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1_fix/adversarial_audit_test.mjs": {
+    "mtime": 1794115820.901703,
+    "seen": 1795242861.5440996,
+    "ast_hash": "b91b4898ff664ddb413eed0e747e3233",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_1/audit-functions.js": {
+    "mtime": 1794118408.2284358,
+    "seen": 1795242861.5440996,
+    "ast_hash": "c494fb0f126cade0c48aa6ac90808e35",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_1/forensic-test.mjs": {
+    "mtime": 1794118537.7509308,
+    "seen": 1795242861.5440996,
+    "ast_hash": "aca55e6344d2f40d28d7adfd3212616b",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_1/audit-check.mjs": {
+    "mtime": 1794120826.916329,
+    "seen": 1795242861.5440996,
+    "ast_hash": "d7bfa7c88d54a724eab67bb4689cc06b",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_2/independent-audit.mjs": {
+    "mtime": 1794123327.5170617,
+    "seen": 1795242861.5440996,
+    "ast_hash": "b9eb0eda830014767a8fdcc2d263af03",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_2/proposed_0001_snapshot.json": {
+    "mtime": 1794113827.9103057,
+    "seen": 1795242861.5440996,
+    "ast_hash": "a28994c10b938a492510bce528f24f75",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m3_remediation/test-blueprint-ast.mjs": {
+    "mtime": 1794122059.5157516,
+    "seen": 1795242861.5440996,
+    "ast_hash": "c49e694c84c7ec7424ed4fbddf137bb5",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_2/test-check-constraints.mjs": {
+    "mtime": 1794112647.957782,
+    "seen": 1795242861.5440996,
+    "ast_hash": "2cbefb3fca9ca483668312c412d5d7fb",
+    "semantic_hash": ""
+  },
+  "apps/web/app/admin/gallery/[slug]/page.tsx": {
+    "mtime": 1795242524.4951074,
+    "seen": 1795242861.5603437,
+    "ast_hash": "5202542c8e4d0ca0bf5951c76ef3f4a9",
+    "semantic_hash": ""
+  },
+  "apps/web/app/admin/gallery/page.tsx": {
+    "mtime": 1795242524.5012105,
+    "seen": 1795242861.5603437,
+    "ast_hash": "bcd93762ab9ca8579609d84006ab2fae",
+    "semantic_hash": ""
+  },
+  "apps/web/app/admin/page.tsx": {
+    "mtime": 1795242524.5022163,
+    "seen": 1795242861.5603437,
+    "ast_hash": "e8f1d280017208a12a08202e6ade75b9",
+    "semantic_hash": ""
+  },
+  "apps/web/app/admin/projects/page.tsx": {
+    "mtime": 1795242524.5084896,
+    "seen": 1795242861.5603437,
+    "ast_hash": "a5a270abd918ff7ab109ff957f8a8d06",
+    "semantic_hash": ""
+  },
+  "apps/web/components/admin/AdminGalleryOverviewClient.tsx": {
+    "mtime": 1795242524.534954,
+    "seen": 1795242861.561328,
+    "ast_hash": "e87043c3b42273396d6bc744ef9d139f",
+    "semantic_hash": ""
+  },
+  "apps/web/components/admin/AdminGallerySlugClient.tsx": {
+    "mtime": 1795242524.5411685,
+    "seen": 1795242861.561328,
+    "ast_hash": "b41435ca9851f9930b713dc981fedb2c",
+    "semantic_hash": ""
+  },
+  "apps/web/components/admin/AdminProjectsClient.tsx": {
+    "mtime": 1795242524.5411685,
+    "seen": 1795242861.561328,
+    "ast_hash": "c4533609bd4aa3c74330b5ea178224fb",
+    "semantic_hash": ""
+  },
+  "apps/web/components/admin/AdminShell.tsx": {
+    "mtime": 1795242524.5421681,
+    "seen": 1795242861.561328,
+    "ast_hash": "9054c02b60f633f9416ed00cb89d44e9",
+    "semantic_hash": ""
+  },
+  "apps/web/components/admin/FocalPointPicker.tsx": {
+    "mtime": 1795242524.5477884,
+    "seen": 1795242861.561328,
+    "ast_hash": "2b83f5bd0eef899444f373817776259a",
+    "semantic_hash": ""
+  },
+  "apps/web/components/admin/ProjectWizardModal.tsx": {
+    "mtime": 1795242524.5543146,
+    "seen": 1795242861.561328,
+    "ast_hash": "b9bc8b31f2c33ca5965c6c667bbdfb12",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/adminApi.ts": {
+    "mtime": 1795242524.5859127,
+    "seen": 1795242861.5737314,
+    "ast_hash": "c879c7e2b561a15c632f843f58049888",
+    "semantic_hash": ""
+  },
+  ".agents/docs/architecture-handbook-database-media-ui.md": {
+    "mtime": 1794147876.9778655,
+    "seen": 1795242861.5907755,
+    "ast_hash": "ff8fddaf2fe26f50c5947b308892bb37",
+    "semantic_hash": ""
+  },
+  ".agents/docs/data_risk.md": {
+    "mtime": 1794305661.9672785,
+    "seen": 1795242861.5907755,
+    "ast_hash": "1e7bcaa277af6e865a9d4826101e3a02",
+    "semantic_hash": ""
+  },
+  ".agents/docs/hono_openapi_schemathesis_integration_guide.md": {
+    "mtime": 1793352558.6842089,
+    "seen": 1795242861.5907755,
+    "ast_hash": "17094046d0c8bf0df6128974b232bed4",
+    "semantic_hash": ""
+  },
+  ".agents/docs/issue-resolution-checklist.md": {
+    "mtime": 1794292018.4407728,
+    "seen": 1795242861.5907755,
+    "ast_hash": "e24616f58d386984256f0f50184d7024",
+    "semantic_hash": ""
+  },
+  ".agents/docs/schemathesis-fuzz-test-report.md": {
+    "mtime": 1793416665.672711,
+    "seen": 1795242861.5907755,
+    "ast_hash": "2e3b76fdfc3cfb273a8308a6972762ac",
+    "semantic_hash": ""
+  },
+  ".agents/docs/security-audit-report.md": {
+    "mtime": 1794045868.283277,
+    "seen": 1795242861.5907755,
+    "ast_hash": "33a2dc5cb985a1456721697cb1905591",
+    "semantic_hash": ""
+  },
+  ".agents/docs/session-checkpoint.md": {
+    "mtime": 1793416706.6504314,
+    "seen": 1795242861.5907755,
+    "ast_hash": "51cf4c2bb1cf223e5811b8ad202261a8",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/PROJECT.md": {
+    "mtime": 1794124185.9448657,
+    "seen": 1795242861.5907755,
+    "ast_hash": "362eb2e587c467a6aecc32f6be9297b6",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/TEST_INFRA.md": {
+    "mtime": 1794111091.9393384,
+    "seen": 1795242861.5907755,
+    "ast_hash": "72463b1df5ce0939c8a3b3b02cd35c0c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/ORIGINAL_REQUEST.md": {
+    "mtime": 1794110188.285107,
+    "seen": 1795242861.5907755,
+    "ast_hash": "969eaf5611c1b14483deec6206ad62be",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/interviewer/prompt_draft.md": {
+    "mtime": 1794110000.677807,
+    "seen": 1795242861.5907755,
+    "ast_hash": "439ed44e517046c50c4f016c5d833401",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1/BRIEFING.md": {
+    "mtime": 1794124249.6643095,
+    "seen": 1795242861.5907755,
+    "ast_hash": "156c6b430eaac9f91b9e7fa8d7c1498a",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1/DEAD_ENDS.md": {
+    "mtime": 1794111100.709119,
+    "seen": 1795242861.5907755,
+    "ast_hash": "4203ffb2ac4b0edac863dc6bd5506315",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1/DISPATCH.md": {
+    "mtime": 1794110228.2146814,
+    "seen": 1795242861.5907755,
+    "ast_hash": "0c90b59b59d3453934f32d11367002a6",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1/GATE_STATUS.md": {
+    "mtime": 1794124193.6112099,
+    "seen": 1795242861.591834,
+    "ast_hash": "ab335e8f965ea8a925b3d727c1ec9862",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1/handoff.md": {
+    "mtime": 1794124230.5523758,
+    "seen": 1795242861.591834,
+    "ast_hash": "0c1df92c07a2ec2bd3e7430c4b2ab375",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1/progress.md": {
+    "mtime": 1794124213.6511638,
+    "seen": 1795242861.591834,
+    "ast_hash": "f2b688b340f1e3dac3df7b831d7dedd4",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1_gen1/DEAD_ENDS.md": {
+    "mtime": 1794116550.397657,
+    "seen": 1795242861.591834,
+    "ast_hash": "4203ffb2ac4b0edac863dc6bd5506315",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1_gen1/DISPATCH.md": {
+    "mtime": 1794116523.5375917,
+    "seen": 1795242861.591834,
+    "ast_hash": "0c90b59b59d3453934f32d11367002a6",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/orchestrator_1_gen1/GATE_STATUS.md": {
+    "mtime": 1794116537.580952,
+    "seen": 1795242861.591834,
+    "ast_hash": "f4bcf1aebede12677b276991200039fd",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/sentinel/BRIEFING.md": {
+    "mtime": 1794125198.333601,
+    "seen": 1795242861.591834,
+    "ast_hash": "dd2b7267ebcef75a1ba04c4da29a6e1e",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/sentinel/handoff.md": {
+    "mtime": 1794125211.6580346,
+    "seen": 1795242861.591834,
+    "ast_hash": "ee81ac74640cf0d3996be699b2ae08bb",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1/BRIEFING.md": {
+    "mtime": 1794112664.2645297,
+    "seen": 1795242861.591834,
+    "ast_hash": "e10252ec70c6aafaea90a1f37893162a",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1/DISPATCH.md": {
+    "mtime": 1794112304.4212458,
+    "seen": 1795242861.591834,
+    "ast_hash": "fef4fee5455b4901493f6139393867a8",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1/handoff.md": {
+    "mtime": 1794112653.500779,
+    "seen": 1795242861.591834,
+    "ast_hash": "5fd5f61a5890e7d2ecbe44ddc2b2db86",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1/progress.md": {
+    "mtime": 1794112668.9083824,
+    "seen": 1795242861.591834,
+    "ast_hash": "402cfb21d0159651921774904ff7aa1d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1_fix/BRIEFING.md": {
+    "mtime": 1794115848.9535956,
+    "seen": 1795242861.591834,
+    "ast_hash": "bc6401c88a7c82b6e85495cf14e38bdf",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1_fix/DISPATCH.md": {
+    "mtime": 1794115486.5871248,
+    "seen": 1795242861.591834,
+    "ast_hash": "e02a4a77a34b44d30efca58a8c633786",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1_fix/handoff.md": {
+    "mtime": 1794115878.1516695,
+    "seen": 1795242861.591834,
+    "ast_hash": "fdbec83794c5f91ee9e33a1cfa1095a6",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m1_fix/progress.md": {
+    "mtime": 1794115841.111806,
+    "seen": 1795242861.591834,
+    "ast_hash": "663d71b287ed89b10d991308811d891d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_1/BRIEFING.md": {
+    "mtime": 1794118598.6660903,
+    "seen": 1795242861.591834,
+    "ast_hash": "b2effacee3fed3cd9fc6630b76b99bf6",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_1/DISPATCH.md": {
+    "mtime": 1794118322.5216851,
+    "seen": 1795242861.591834,
+    "ast_hash": "2047be08798fb358a812557e45e6b4e2",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_1/handoff.md": {
+    "mtime": 1794118626.339102,
+    "seen": 1795242861.591834,
+    "ast_hash": "a01ef1c3d43db9bcb62876561778f1fb",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_1/progress.md": {
+    "mtime": 1794118601.8033552,
+    "seen": 1795242861.591834,
+    "ast_hash": "4edb6b669da9ac55eb36e74cd068c53e",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_remediation/BRIEFING.md": {
+    "mtime": 1794119778.6568031,
+    "seen": 1795242861.591834,
+    "ast_hash": "b433d1f66034fa1f959e7ffd19c91d2c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_remediation/DISPATCH.md": {
+    "mtime": 1794119568.6141138,
+    "seen": 1795242861.591834,
+    "ast_hash": "b9a51ab9a2e2bc61db6192af00ccb5c6",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_remediation/handoff.md": {
+    "mtime": 1794119811.4650545,
+    "seen": 1795242861.591834,
+    "ast_hash": "2284932db0c89ad2049634f68e85d8fa",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m2_remediation/progress.md": {
+    "mtime": 1794119770.2823699,
+    "seen": 1795242861.591834,
+    "ast_hash": "be5786cf653bfd679a35bfb35e735460",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_1/BRIEFING.md": {
+    "mtime": 1794121282.508319,
+    "seen": 1795242861.591834,
+    "ast_hash": "47d8ae84f0e49016321926ef5f7c0927",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_1/DISPATCH.md": {
+    "mtime": 1794120720.6709073,
+    "seen": 1795242861.591834,
+    "ast_hash": "345a19d5a4fc11ff0631f7a70b4e6755",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_1/handoff.md": {
+    "mtime": 1794121311.8543274,
+    "seen": 1795242861.591834,
+    "ast_hash": "ecea361d5ce5103abfa1afe5fac34075",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_1/progress.md": {
+    "mtime": 1794121287.8696988,
+    "seen": 1795242861.591834,
+    "ast_hash": "ec05bc2c20281492244d69c4ee530098",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_2/BRIEFING.md": {
+    "mtime": 1794123740.1065156,
+    "seen": 1795242861.591834,
+    "ast_hash": "b6bce6cd721e548ad789331f782ae2f2",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_2/DISPATCH.md": {
+    "mtime": 1794123187.397562,
+    "seen": 1795242861.591834,
+    "ast_hash": "c764dc18ba9b8f779f4e915af76e26ec",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_2/handoff.md": {
+    "mtime": 1794123772.2618794,
+    "seen": 1795242861.591834,
+    "ast_hash": "b669235bb003381a17f0644cc18cdf21",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_auditor_m3_2/progress.md": {
+    "mtime": 1794123744.8221364,
+    "seen": 1795242861.591834,
+    "ast_hash": "80f70bc7702492288a1b54057f98a043",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_1/BRIEFING.md": {
+    "mtime": 1794113189.952577,
+    "seen": 1795242861.591834,
+    "ast_hash": "ffdc89066a13233445a043b01c5c49f3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_1/DISPATCH.md": {
+    "mtime": 1794112297.7369146,
+    "seen": 1795242861.591834,
+    "ast_hash": "19e470edd884334af8dc1e5cdf109049",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_1/handoff.md": {
+    "mtime": 1794113218.668883,
+    "seen": 1795242861.591834,
+    "ast_hash": "cf27e33b67666441ef993336f4917d70",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_1/progress.md": {
+    "mtime": 1794113194.0078685,
+    "seen": 1795242861.591834,
+    "ast_hash": "f877fa147b496d46c5d9bbff7ef37492",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_2/BRIEFING.md": {
+    "mtime": 1794112632.1000364,
+    "seen": 1795242861.591834,
+    "ast_hash": "2496bcf708baf8215b3cdb21d56d6c09",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_2/DISPATCH.md": {
+    "mtime": 1794112295.832329,
+    "seen": 1795242861.591834,
+    "ast_hash": "f62210f13e4ccebf628e04992cb347dd",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_2/handoff.md": {
+    "mtime": 1794112657.7263937,
+    "seen": 1795242861.591834,
+    "ast_hash": "abfae96652f79cb2c1a8d40709ffd902",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_2/progress.md": {
+    "mtime": 1794112635.681903,
+    "seen": 1795242861.591834,
+    "ast_hash": "d0c3ede9f08a6cdc5cfd3d9ce420839d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_fix_1/BRIEFING.md": {
+    "mtime": 1794115856.9869287,
+    "seen": 1795242861.591834,
+    "ast_hash": "2eb5d1b7238f56569864a19d6af29b1f",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_fix_1/DISPATCH.md": {
+    "mtime": 1794115484.7210891,
+    "seen": 1795242861.591834,
+    "ast_hash": "713ca3b3e523ff76543e30ba516b89fb",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_fix_1/handoff.md": {
+    "mtime": 1794115885.1621394,
+    "seen": 1795242861.591834,
+    "ast_hash": "692ff33f99f3ecc4e22e2250ac0f903e",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m1_fix_1/progress.md": {
+    "mtime": 1794115863.3119602,
+    "seen": 1795242861.591834,
+    "ast_hash": "16253638c0b1402d6dd341631fae7fd4",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_1/BRIEFING.md": {
+    "mtime": 1794118856.869744,
+    "seen": 1795242861.591834,
+    "ast_hash": "8c4f35652f06b7e69f31698520d5d4a8",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_1/DISPATCH.md": {
+    "mtime": 1794118319.1436033,
+    "seen": 1795242861.591834,
+    "ast_hash": "33e68d8eb3657e205a840c4d3593c0b1",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_1/handoff.md": {
+    "mtime": 1794118895.0801213,
+    "seen": 1795242861.591834,
+    "ast_hash": "843b8d49872b0b3e20fd846f3e60cc31",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_1/progress.md": {
+    "mtime": 1794118861.969407,
+    "seen": 1795242861.591834,
+    "ast_hash": "cd6e51ee4c2bf2b5e3c2e0c217a7f693",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_2/BRIEFING.md": {
+    "mtime": 1794118706.1818547,
+    "seen": 1795242861.591834,
+    "ast_hash": "5962fde36bd1774044eb9f33be9cbedd",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_2/DISPATCH.md": {
+    "mtime": 1794118327.392061,
+    "seen": 1795242861.591834,
+    "ast_hash": "febac205d8775caa16bb8be11ad8471f",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_2/handoff.md": {
+    "mtime": 1794118746.5982704,
+    "seen": 1795242861.591834,
+    "ast_hash": "8e563004c37ad57e5979ff56b3965c6f",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_2/progress.md": {
+    "mtime": 1794118711.1449735,
+    "seen": 1795242861.591834,
+    "ast_hash": "709f2092ca7c2ea171b42c391cb82c79",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_remediation/BRIEFING.md": {
+    "mtime": 1794119770.202094,
+    "seen": 1795242861.591834,
+    "ast_hash": "96d041ee3ae983c37b13ba66781a9f5d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_remediation/DISPATCH.md": {
+    "mtime": 1794119544.0764794,
+    "seen": 1795242861.591834,
+    "ast_hash": "d3b411161480d5bf93ea9f52262c6ebb",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_remediation/handoff.md": {
+    "mtime": 1794119801.1314206,
+    "seen": 1795242861.591834,
+    "ast_hash": "4be58b2eb37ae9aa73fbaada3a807e9e",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m2_remediation/progress.md": {
+    "mtime": 1794119775.9734695,
+    "seen": 1795242861.591834,
+    "ast_hash": "408eedd22f6e59a4c0aa4494a23d75ff",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_1/BRIEFING.md": {
+    "mtime": 1794121348.6469915,
+    "seen": 1795242861.591834,
+    "ast_hash": "8245be43f691864b6b55b583361ff417",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_1/DISPATCH.md": {
+    "mtime": 1794120717.1743588,
+    "seen": 1795242861.591834,
+    "ast_hash": "770183b59ddfb60481fc1118d5d62c9a",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_1/handoff.md": {
+    "mtime": 1794121373.5882277,
+    "seen": 1795242861.591834,
+    "ast_hash": "f272b443d6fd078b42c0b037b4f952d1",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_1/progress.md": {
+    "mtime": 1794121354.3989565,
+    "seen": 1795242861.591834,
+    "ast_hash": "f1246fbde0832e1e1eeb338febfe56e7",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_2/BRIEFING.md": {
+    "mtime": 1794123509.1407547,
+    "seen": 1795242861.591834,
+    "ast_hash": "e85543abd9cee04652b299cc76629e6a",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_2/DISPATCH.md": {
+    "mtime": 1794123174.6470213,
+    "seen": 1795242861.591834,
+    "ast_hash": "984c2805f98d5805cdb904a89f0635e4",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_2/handoff.md": {
+    "mtime": 1794123544.2824967,
+    "seen": 1795242861.591834,
+    "ast_hash": "95befc845e6a2a6b3a97e87baaed594d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_challenger_m3_2/progress.md": {
+    "mtime": 1794123516.222486,
+    "seen": 1795242861.591834,
+    "ast_hash": "d9ca5d4f6060239222b8b39b4dd7c93f",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_1/BRIEFING.md": {
+    "mtime": 1794113601.7238524,
+    "seen": 1795242861.591834,
+    "ast_hash": "3a41aa0c46331350ba6bed0cccd5bad5",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_1/DISPATCH.md": {
+    "mtime": 1794113281.6112773,
+    "seen": 1795242861.591834,
+    "ast_hash": "4432d252141d1fa43f10377fc466cc18",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_1/analysis.md": {
+    "mtime": 1794113574.643702,
+    "seen": 1795242861.591834,
+    "ast_hash": "c2bc8aa49b27bd09e4b5e65f5099abef",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_1/handoff.md": {
+    "mtime": 1794113593.3896666,
+    "seen": 1795242861.591834,
+    "ast_hash": "9ab8b3a6edff2078466ee0ec815850b0",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_1/progress.md": {
+    "mtime": 1794113605.5036886,
+    "seen": 1795242861.591834,
+    "ast_hash": "e2cb1c48c69cd5932194d735572b29f3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_2/BRIEFING.md": {
+    "mtime": 1794114018.7682424,
+    "seen": 1795242861.591834,
+    "ast_hash": "15ef351c0cccafb15f474df5df89438d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_2/DISPATCH.md": {
+    "mtime": 1794113289.996198,
+    "seen": 1795242861.591834,
+    "ast_hash": "0c471720208204451e3eda405b064d9c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_2/analysis.md": {
+    "mtime": 1794113973.749771,
+    "seen": 1795242861.591834,
+    "ast_hash": "4f4829b9e5528787b1982321c8e2ea97",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_2/handoff.md": {
+    "mtime": 1794113998.6931286,
+    "seen": 1795242861.591834,
+    "ast_hash": "f052308cf208494cb9e575354a4c9ad3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_2/progress.md": {
+    "mtime": 1794114022.5031278,
+    "seen": 1795242861.591834,
+    "ast_hash": "c316e68037166dfa2e0b137cc541f37b",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_3/BRIEFING.md": {
+    "mtime": 1794113825.1753457,
+    "seen": 1795242861.591834,
+    "ast_hash": "5dd90eed499596bd519e7a2334e49c6f",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_3/DISPATCH.md": {
+    "mtime": 1794113295.453151,
+    "seen": 1795242861.591834,
+    "ast_hash": "52787a7f420f4841dde2d526c1ae13f8",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_3/analysis.md": {
+    "mtime": 1794113787.9123216,
+    "seen": 1795242861.591834,
+    "ast_hash": "1f0128602a8336ee0b91835b306fb9df",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_3/handoff.md": {
+    "mtime": 1794113815.303163,
+    "seen": 1795242861.591834,
+    "ast_hash": "6aa5a230fa8741feb38143c9b43f1d4e",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m1_fix_3/progress.md": {
+    "mtime": 1794113830.9871626,
+    "seen": 1795242861.591834,
+    "ast_hash": "8e8eb8c660e1be398a32e8da967525e6",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m3_remediation/BRIEFING.md": {
+    "mtime": 1794122087.6734455,
+    "seen": 1795242861.591834,
+    "ast_hash": "51343b804cdc6ad961c71c53a76e3acd",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m3_remediation/DISPATCH.md": {
+    "mtime": 1794121657.256918,
+    "seen": 1795242861.591834,
+    "ast_hash": "882d27ff6c9734318fc8776f76ce2295",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m3_remediation/handoff.md": {
+    "mtime": 1794122150.1577432,
+    "seen": 1795242861.591834,
+    "ast_hash": "653914bb3c3b1a1d7e79e54faf614ff5",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_m3_remediation/progress.md": {
+    "mtime": 1794122163.2939122,
+    "seen": 1795242861.591834,
+    "ast_hash": "f13efdaa0eb0ab130b7f94b4597a6eaa",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_1/BRIEFING.md": {
+    "mtime": 1794110948.5693388,
+    "seen": 1795242861.591834,
+    "ast_hash": "672bdaa8d114791cd67cf3b6cb8e3c30",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_1/DISPATCH.md": {
+    "mtime": 1794110934.5038373,
+    "seen": 1795242861.591834,
+    "ast_hash": "7fbe354236c32d5ef18f1226ef2bdaa0",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_1/analysis.md": {
+    "mtime": 1794111001.9706068,
+    "seen": 1795242861.591834,
+    "ast_hash": "cde3694dec7935c7d131d5ce0479d876",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_1/handoff.md": {
+    "mtime": 1794111030.944194,
+    "seen": 1795242861.591834,
+    "ast_hash": "d88625dd734de68fae510e981ad9a1ac",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_1/progress.md": {
+    "mtime": 1794111035.1420953,
+    "seen": 1795242861.591834,
+    "ast_hash": "8509123a01093dd3a5bd625b0a74b882",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_2/BRIEFING.md": {
+    "mtime": 1794110668.6173751,
+    "seen": 1795242861.591834,
+    "ast_hash": "5b00e5ee353f41608ed8a4bfbdcbc223",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_2/DISPATCH.md": {
+    "mtime": 1794110307.4218438,
+    "seen": 1795242861.591834,
+    "ast_hash": "f018abac3603e84a09b72110dcc8c41f",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_2/analysis.md": {
+    "mtime": 1794110636.1820693,
+    "seen": 1795242861.591834,
+    "ast_hash": "8639ab0104ba7e3fa2d919313320704c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_2/handoff.md": {
+    "mtime": 1794110656.8241568,
+    "seen": 1795242861.591834,
+    "ast_hash": "29098aeaac4767354bc7ff55515311c5",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_2/progress.md": {
+    "mtime": 1794110661.8361065,
+    "seen": 1795242861.591834,
+    "ast_hash": "fcf19986d5e63a2cd7ce14702979e170",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_3/BRIEFING.md": {
+    "mtime": 1794111003.7727861,
+    "seen": 1795242861.591834,
+    "ast_hash": "74371ddd913aed99b5ef901673c624ac",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_3/DISPATCH.md": {
+    "mtime": 1794110313.622128,
+    "seen": 1795242861.591834,
+    "ast_hash": "2385d8f0a2a8b954e7a99cb6368ce711",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_3/analysis.md": {
+    "mtime": 1794110975.3032544,
+    "seen": 1795242861.591834,
+    "ast_hash": "8eda3b4428bd121a77d01a4f49c08482",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_3/handoff.md": {
+    "mtime": 1794110995.0029132,
+    "seen": 1795242861.591834,
+    "ast_hash": "187d03f59f19eb732f9d065b59504262",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_explorer_survey_3/progress.md": {
+    "mtime": 1794111008.8774493,
+    "seen": 1795242861.591834,
+    "ast_hash": "4177c661a7f026eef4d420e698390930",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_1/BRIEFING.md": {
+    "mtime": 1794112727.783558,
+    "seen": 1795242861.591834,
+    "ast_hash": "7e021492bdd3775525cd3041b1bf575a",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_1/DISPATCH.md": {
+    "mtime": 1794112257.566729,
+    "seen": 1795242861.591834,
+    "ast_hash": "cda9cbb8a1ad4a0d0e9e2eaacd60b030",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_1/handoff.md": {
+    "mtime": 1794112755.0924082,
+    "seen": 1795242861.591834,
+    "ast_hash": "51412fa3c005abfdc597482fd4c91ba1",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_1/progress.md": {
+    "mtime": 1794112720.2432585,
+    "seen": 1795242861.591834,
+    "ast_hash": "a78d306431611c3c47613a185d407852",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_2/BRIEFING.md": {
+    "mtime": 1794112692.836228,
+    "seen": 1795242861.591834,
+    "ast_hash": "c928ab772ffa3b46454bc8817bc95289",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_2/DISPATCH.md": {
+    "mtime": 1794112263.563306,
+    "seen": 1795242861.591834,
+    "ast_hash": "063e394696c01942cdb3741796f5cacf",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_2/handoff.md": {
+    "mtime": 1794112732.527014,
+    "seen": 1795242861.591834,
+    "ast_hash": "d3435d4de326986782e7031cfdb21046",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_2/progress.md": {
+    "mtime": 1794112696.8684485,
+    "seen": 1795242861.591834,
+    "ast_hash": "b9688fe5456178fbcbfd93019bd7a5a4",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_1/BRIEFING.md": {
+    "mtime": 1794116184.7099023,
+    "seen": 1795242861.591834,
+    "ast_hash": "35377ed4e6df0edc9b336453c531872a",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_1/DISPATCH.md": {
+    "mtime": 1794115460.1343944,
+    "seen": 1795242861.591834,
+    "ast_hash": "ace7fe985b9d5997626c42f36f808ea7",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_1/handoff.md": {
+    "mtime": 1794116216.0744536,
+    "seen": 1795242861.591834,
+    "ast_hash": "b5417a39c7d5b7cb76bb3744356d9885",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_1/progress.md": {
+    "mtime": 1794116187.8774223,
+    "seen": 1795242861.591834,
+    "ast_hash": "b1e717a7d4cb4d80466643a9bd048543",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_2/BRIEFING.md": {
+    "mtime": 1794116366.7801178,
+    "seen": 1795242861.591834,
+    "ast_hash": "36debd46536908301fe6309804e93300",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_2/DISPATCH.md": {
+    "mtime": 1794115466.0772665,
+    "seen": 1795242861.591834,
+    "ast_hash": "fda82908270f84a43a5049fae55ed2fc",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_2/handoff.md": {
+    "mtime": 1794116406.9447222,
+    "seen": 1795242861.591834,
+    "ast_hash": "79cffc5e971c44dee3b60fd80b65b62d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m1_fix_2/progress.md": {
+    "mtime": 1794116373.0812528,
+    "seen": 1795242861.591834,
+    "ast_hash": "58998fb0e51138d16e0eae32f02b4642",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_1/BRIEFING.md": {
+    "mtime": 1794118690.0878694,
+    "seen": 1795242861.591834,
+    "ast_hash": "3e9ec20eed0cc00ee2c26a9f96547f5c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_1/DISPATCH.md": {
+    "mtime": 1794118323.804854,
+    "seen": 1795242861.591834,
+    "ast_hash": "f04d2cbf339366e2a9c87dfe147dae85",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_1/handoff.md": {
+    "mtime": 1794118733.0722263,
+    "seen": 1795242861.591834,
+    "ast_hash": "0017da5822644c264a3f9d9bba23fca5",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_1/progress.md": {
+    "mtime": 1794118754.5289004,
+    "seen": 1795242861.591834,
+    "ast_hash": "e9eb1519be448fe1b42c26ae4624243b",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_2/BRIEFING.md": {
+    "mtime": 1794118680.0238118,
+    "seen": 1795242861.591834,
+    "ast_hash": "a2c80e9f28f78aacd6a3978e632dfa72",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_2/DISPATCH.md": {
+    "mtime": 1794118309.0917234,
+    "seen": 1795242861.591834,
+    "ast_hash": "3387fa6e47c0942c10b502e83afa090e",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_2/handoff.md": {
+    "mtime": 1794118711.1511557,
+    "seen": 1795242861.591834,
+    "ast_hash": "a0057009c2995a2e5558247173613982",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_2/progress.md": {
+    "mtime": 1794118720.2439544,
+    "seen": 1795242861.591834,
+    "ast_hash": "5e406865b2ac62ec830ca2c98b8c0d07",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_remediation/BRIEFING.md": {
+    "mtime": 1794119868.6915526,
+    "seen": 1795242861.591834,
+    "ast_hash": "5407c6d039c73e12dcc2fa9880d103b2",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_remediation/DISPATCH.md": {
+    "mtime": 1794119554.4104657,
+    "seen": 1795242861.591834,
+    "ast_hash": "ec6a6267ae818333f993234cb14df2a7",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_remediation/handoff.md": {
+    "mtime": 1794119897.1263778,
+    "seen": 1795242861.591834,
+    "ast_hash": "0d82838d9f80eef787572c3ba806d0e0",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m2_remediation/progress.md": {
+    "mtime": 1794119873.6070745,
+    "seen": 1795242861.591834,
+    "ast_hash": "d58b207d9e35a5c40e337da2e4ea923c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_1/BRIEFING.md": {
+    "mtime": 1794121587.4411926,
+    "seen": 1795242861.591834,
+    "ast_hash": "ec7967eee7cd72184dc05ebdb5c4776f",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_1/DISPATCH.md": {
+    "mtime": 1794120721.205525,
+    "seen": 1795242861.591834,
+    "ast_hash": "1a6b32a5f226f111c109d803329bd40c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_1/handoff.md": {
+    "mtime": 1794121623.3756344,
+    "seen": 1795242861.591834,
+    "ast_hash": "e093229b41af04cf9939156918156a70",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_1/progress.md": {
+    "mtime": 1794121592.5471199,
+    "seen": 1795242861.591834,
+    "ast_hash": "9b9b515ec02a9bb023c4809ce093fd4c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_2/BRIEFING.md": {
+    "mtime": 1794123534.4999564,
+    "seen": 1795242861.591834,
+    "ast_hash": "8a71bc22b77a586fa727c39718855dc8",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_2/DISPATCH.md": {
+    "mtime": 1794123166.2808998,
+    "seen": 1795242861.591834,
+    "ast_hash": "1dbb14ce6f608a544fb7041e248fbc31",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_2/handoff.md": {
+    "mtime": 1794123572.3004277,
+    "seen": 1795242861.591834,
+    "ast_hash": "c73de66d0fc53414fb8d235546356d83",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_reviewer_m3_2/progress.md": {
+    "mtime": 1794123540.9130046,
+    "seen": 1795242861.591834,
+    "ast_hash": "d4b614ce747cd131807d3a1f0e934fe4",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1/BRIEFING.md": {
+    "mtime": 1794112180.012854,
+    "seen": 1795242861.591834,
+    "ast_hash": "f18cce56e1893cb50ce9069d8c8dbe11",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1/DISPATCH.md": {
+    "mtime": 1794112021.9344704,
+    "seen": 1795242861.591834,
+    "ast_hash": "1d88d24c2242ca214435f6b9625e4032",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1/changes.md": {
+    "mtime": 1794112196.0374203,
+    "seen": 1795242861.591834,
+    "ast_hash": "e7e303c56db976eb347d46f87065c2a3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1/handoff.md": {
+    "mtime": 1794112215.1779394,
+    "seen": 1795242861.591834,
+    "ast_hash": "b2eed442df55ccc1b21c619e19b2d541",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1/progress.md": {
+    "mtime": 1794112167.241709,
+    "seen": 1795242861.591834,
+    "ast_hash": "f9799de51934302d9846734470f39114",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1_fix/BRIEFING.md": {
+    "mtime": 1794115341.1641142,
+    "seen": 1795242861.591834,
+    "ast_hash": "a2d4422280ce20f2fe1100270cf507af",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1_fix/DISPATCH.md": {
+    "mtime": 1794114074.163349,
+    "seen": 1795242861.591834,
+    "ast_hash": "f43049caf54da61cfa02d349d7b407e2",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1_fix/changes.md": {
+    "mtime": 1794115371.3603654,
+    "seen": 1795242861.591834,
+    "ast_hash": "3385c1efdacefb2cc323694e4b47553c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1_fix/handoff.md": {
+    "mtime": 1794115397.7287529,
+    "seen": 1795242861.591834,
+    "ast_hash": "235ee264ccadd2fc8f6b9982d84d5c90",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m1_fix/progress.md": {
+    "mtime": 1794115349.6836176,
+    "seen": 1795242861.591834,
+    "ast_hash": "f907282c564a159536b2b101ecf8163c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2/BRIEFING.md": {
+    "mtime": 1794118161.5992355,
+    "seen": 1795242861.591834,
+    "ast_hash": "ecda880c940283b155a819370656fa1d",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2/DISPATCH.md": {
+    "mtime": 1794116664.255943,
+    "seen": 1795242861.591834,
+    "ast_hash": "5e60471e683b177b726dc2da2257b004",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2/changes.md": {
+    "mtime": 1794118177.3121352,
+    "seen": 1795242861.591834,
+    "ast_hash": "bc71e65afcb8450fe488d56a6f46f0d3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2/handoff.md": {
+    "mtime": 1794118198.3027585,
+    "seen": 1795242861.591834,
+    "ast_hash": "3522a3d4ae8de4ebcd1c106dc5201b83",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2/progress.md": {
+    "mtime": 1794118146.640876,
+    "seen": 1795242861.591834,
+    "ast_hash": "bbba9004fd47caa7ef8bc1cf034fca27",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2_remediation/BRIEFING.md": {
+    "mtime": 1794119465.437775,
+    "seen": 1795242861.591834,
+    "ast_hash": "b4cfaa0c670c8466c07c1a23fa77a3d4",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2_remediation/DISPATCH.md": {
+    "mtime": 1794118963.807266,
+    "seen": 1795242861.591834,
+    "ast_hash": "357a36d6bef68ae83dfd9194ea80e315",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2_remediation/changes.md": {
+    "mtime": 1794119423.367777,
+    "seen": 1795242861.591834,
+    "ast_hash": "2acef09898b0c4fe765af19dbcd0110b",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2_remediation/handoff.md": {
+    "mtime": 1794119450.0918708,
+    "seen": 1795242861.591834,
+    "ast_hash": "7ab8c5657c8e26a44368ed96f8d71849",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m2_remediation/progress.md": {
+    "mtime": 1794119471.8021865,
+    "seen": 1795242861.591834,
+    "ast_hash": "fe18f8c65612a64fdd5aad4d98f73638",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_1/BRIEFING.md": {
+    "mtime": 1794120607.591136,
+    "seen": 1795242861.591834,
+    "ast_hash": "ce92b557d14ab85702dfc46b7be09424",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_1/DISPATCH.md": {
+    "mtime": 1794120025.877272,
+    "seen": 1795242861.591834,
+    "ast_hash": "6be184e016d79ac726bb207e206074ce",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_1/changes.md": {
+    "mtime": 1794120631.4648921,
+    "seen": 1795242861.591834,
+    "ast_hash": "b97c862591f23c72de3ac6df82d877cb",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_1/handoff.md": {
+    "mtime": 1794120650.8156276,
+    "seen": 1795242861.591834,
+    "ast_hash": "6e30c4ac218eae35ca416fa11fb2de3c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_1/progress.md": {
+    "mtime": 1794120615.4648788,
+    "seen": 1795242861.591834,
+    "ast_hash": "d375695fed5ccd5a471613bed41f9afa",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_remediation/BRIEFING.md": {
+    "mtime": 1794123059.7970636,
+    "seen": 1795242861.591834,
+    "ast_hash": "d5cb8065e7ce311245e87c4294ab8a84",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_remediation/DISPATCH.md": {
+    "mtime": 1794122268.6559806,
+    "seen": 1795242861.591834,
+    "ast_hash": "283e35f88ff4f01e6fddb49051ee4273",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_remediation/handoff.md": {
+    "mtime": 1794123089.681251,
+    "seen": 1795242861.591834,
+    "ast_hash": "0c10d8ffac98ab3eb7f36ca8f0f943d3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m3_remediation/progress.md": {
+    "mtime": 1794123066.6383996,
+    "seen": 1795242861.591834,
+    "ast_hash": "2b142d73cdce82cae94b0faf790c1c2b",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m4/BRIEFING.md": {
+    "mtime": 1794124123.7799768,
+    "seen": 1795242861.591834,
+    "ast_hash": "b57885905c6422f28bf833ff0687c0a3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m4/DISPATCH.md": {
+    "mtime": 1794123850.4614317,
+    "seen": 1795242861.591834,
+    "ast_hash": "a6407cb36e220ec59dd07402d13dde5a",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m4/handoff.md": {
+    "mtime": 1794124162.708637,
+    "seen": 1795242861.591834,
+    "ast_hash": "8b3eac3a4b8542e987cda9a78ffc01ab",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/teamwork_worker_m4/progress.md": {
+    "mtime": 1794124116.3393395,
+    "seen": 1795242861.591834,
+    "ast_hash": "54fce851e10d7d30df1324fa8bc9434c",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/victory_auditor_1/BRIEFING.md": {
+    "mtime": 1794125124.952827,
+    "seen": 1795242861.591834,
+    "ast_hash": "ee593fe77c37c75c5e2b36e74c6e8464",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/victory_auditor_1/DISPATCH.md": {
+    "mtime": 1794124291.1204195,
+    "seen": 1795242861.591834,
+    "ast_hash": "e83bb4ad8090a78e4e859109bd5eb7d1",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/victory_auditor_1/handoff.md": {
+    "mtime": 1794125161.2007966,
+    "seen": 1795242861.591834,
+    "ast_hash": "dd9afa5ae8dcc1354297c34b40886e82",
+    "semantic_hash": ""
+  },
+  ".agents/docs/teamwork_9-11-2026/teamwork/victory_auditor_1/progress.md": {
+    "mtime": 1794125139.2835412,
+    "seen": 1795242861.591834,
+    "ast_hash": "3963846c2d8c427856aa210144bdcee3",
+    "semantic_hash": ""
+  },
+  ".agents/docs/wishlist.md": {
+    "mtime": 1793439435.3746908,
+    "seen": 1795242861.591834,
+    "ast_hash": "7e5808b2c39bc25998d50c6540ba0035",
+    "semantic_hash": ""
+  },
+  ".agents/error/api-run-dev-log.md": {
+    "mtime": 1794305190.1651776,
+    "seen": 1795242861.591834,
+    "ast_hash": "884c86362c11e5537ef4a9ed20525aa8",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-core/SKILL.md": {
+    "mtime": 1795060668.747377,
+    "seen": 1795242861.598781,
+    "ast_hash": "442e31452152be4115b904fad0fa5487",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-frameworks/SKILL.md": {
+    "mtime": 1795060668.747377,
+    "seen": 1795242861.598781,
+    "ast_hash": "fbd4d542ae797fbe3a6eb34682b7d93f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-performance/SKILL.md": {
+    "mtime": 1795060668.7483766,
+    "seen": 1795242861.598781,
+    "ast_hash": "70536cc5c8f8c017be0a4ed8104b9845",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-plugins/SKILL.md": {
+    "mtime": 1795060668.7493763,
+    "seen": 1795242861.598781,
+    "ast_hash": "466d8913c840ca9b1d2abdecde473e2c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-react/SKILL.md": {
+    "mtime": 1795060668.7493763,
+    "seen": 1795242861.598781,
+    "ast_hash": "daa3ecc330a1ab075aab9475824af231",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-scrolltrigger/SKILL.md": {
+    "mtime": 1795060668.750376,
+    "seen": 1795242861.598781,
+    "ast_hash": "9aa0d62e6b138cee09bafe595da0319f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-timeline/SKILL.md": {
+    "mtime": 1795060668.7523863,
+    "seen": 1795242861.598781,
+    "ast_hash": "07da4abbe71ed29f1babd34be3b960b3",
+    "semantic_hash": ""
+  },
+  ".agents/skills/gsap-utils/SKILL.md": {
+    "mtime": 1795060668.7533786,
+    "seen": 1795242861.598781,
+    "ast_hash": "ef6b75ec2464a7d95a7bb5cfa88cfa79",
+    "semantic_hash": ""
+  },
+  "docs/api-routes.md": {
+    "mtime": 1795242524.607732,
+    "seen": 1795242861.5998697,
+    "ast_hash": "783d98baba7fba803da2a120932e1922",
+    "semantic_hash": ""
+  },
+  "docs/architecture-and-database.md": {
+    "mtime": 1795242524.6133242,
+    "seen": 1795242861.5998697,
+    "ast_hash": "b100041314db74c9f3ffce4f21dbe291",
+    "semantic_hash": ""
+  },
+  "docs/deploy-cloudflare.md": {
+    "mtime": 1795242524.6286595,
+    "seen": 1795242861.5998697,
+    "ast_hash": "2bfd43029a53375bd28e12a8bbcb325a",
+    "semantic_hash": ""
+  },
   "pnpm-lock.yaml": {
-    "mtime": 1794212991.019497,
-    "seen": 1794880039.3653119,
-    "ast_hash": "935fb9e8dba0ab3e2a7d2f0749a2e214",
+    "mtime": 1795242545.8239129,
+    "seen": 1795242861.605824,
+    "ast_hash": "e55663f00477118cb908ec903aa50552",
     "semantic_hash": ""
   }
 }

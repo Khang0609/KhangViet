@@ -50,7 +50,7 @@ export const QuoteRequestModal: React.FC<QuoteRequestModalProps> = ({
 
         <QuickQuoteForm
           key={project.id}
-          serviceCategory={`Báo giá mẫu (${project.segment}) - ${project.category}`}
+          serviceCategory={`Báo giá mẫu - ${project.services[0]?.name || "Thi công"}`}
           defaultRequestText={`Tư vấn & báo giá hạng mục tương tự dự án: ${project.title}`}
           submitLabel="Gửi yêu cầu báo giá"
           className="space-y-3"

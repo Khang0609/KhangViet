@@ -1,34 +1,34 @@
-import type { User, SafeUser } from "@khangviet/types";
-import { IUserRepository } from "../interfaces/IUserRepository";
-import { mockStore } from "./store";
+import type { CreateUserDto, User } from "@khangviet/types";
+import type { IUserRepository } from "../interfaces/IUserRepository";
+import { generateUuidV7 } from "../d1/uuid-v7";
+import { getStore } from "./store";
 
-/**
- * Triển khai IUserRepository đọc từ bộ nhớ Mock JSON.
- * Cung cấp dữ liệu tài khoản quản trị và khách hàng mẫu phục vụ test luồng auth.
- */
 export class JsonUserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
-    const normalizedEmail = email.trim().toLowerCase();
-    const user = mockStore.users.find(
-      (u) => u.email.toLowerCase() === normalizedEmail
+    const normalized = email.trim().toLowerCase();
+    return (
+      getStore().users.find((u) => u.email.toLowerCase() === normalized) ?? null
     );
-    return user ? { ...user } : null;
   }
 
   async findById(id: string): Promise<User | null> {
-    const user = mockStore.users.find((u) => u.id === id);
-    return user ? { ...user } : null;
+    return getStore().users.find((u) => u.id === id) ?? null;
   }
 
-  async findSafeById(id: string): Promise<SafeUser | null> {
-    const user = await this.findById(id);
-    if (!user) return null;
-    const { password, ...safeUser } = user;
-    return safeUser;
+  async getAllUsers(): Promise<User[]> {
+    return [...getStore().users];
   }
 
-  async getAllUsers(): Promise<SafeUser[]> {
-    return mockStore.users.map(({ password, ...safeUser }) => safeUser);
+  async createUser(input: CreateUserDto): Promise<User> {
+    const user: User = {
+      id: generateUuidV7(),
+      email: input.email.trim().toLowerCase(),
+      name: input.name.trim(),
+      role: input.role,
+      isActive: input.isActive,
+      createdAt: Math.floor(Date.now() / 1000),
+    };
+    getStore().users.push(user);
+    return user;
   }
 }
-

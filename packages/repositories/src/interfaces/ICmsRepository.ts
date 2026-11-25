@@ -1,47 +1,80 @@
 import type {
-  LandingContent,
-  FeaturedProject,
-  ProjectDetail,
-  ProjectListQuery,
-  PaginationMeta,
-  GalleryApiResponse,
+  CompanyLegalInfo,
+  CreateOrganizationDto,
+  CreateProjectDto,
+  CreateProjectMediaDto,
   GalleryClusterConfig,
   HeroSlide,
-  CompanyLegalInfo,
-  LandingPlacement,
-  LandingPlacementSlot,
-  UpsertLandingPlacement,
+  LandingContent,
+  Organization,
+  Project,
+  ProjectComparison,
+  ProjectGalleryResponse,
+  ProjectMedia,
+  Service,
+  SiteSettingKey,
+  UpdateOrganizationDto,
+  UpdateProjectDto,
 } from "@khangviet/types";
+
+export interface ProjectQueryOptions {
+  includeDrafts?: boolean;
+  organizationId?: string;
+  serviceId?: string;
+  search?: string;
+}
+
+export interface GalleryQueryOptions {
+  serviceSlug?: string;
+  organizationSlug?: string;
+  search?: string;
+}
 
 export interface ICmsRepository {
   getLandingData(): Promise<LandingContent>;
-  getProjects(includeDrafts?: boolean): Promise<FeaturedProject[]>;
-  queryProjects(
-    query: ProjectListQuery
-  ): Promise<{ items: FeaturedProject[]; pagination: PaginationMeta }>;
-  getGalleryData(query: ProjectListQuery): Promise<GalleryApiResponse>;
-  getProjectById(id: string): Promise<FeaturedProject | null>;
-  getProjectDetailById(id: string): Promise<ProjectDetail | null>;
-  createProject(
-    project: Omit<FeaturedProject, "id"> & { id?: string }
-  ): Promise<FeaturedProject>;
-  updateProject(
-    id: string,
-    project: Partial<FeaturedProject>
-  ): Promise<FeaturedProject | null>;
+  getGalleryData(options?: GalleryQueryOptions): Promise<ProjectGalleryResponse>;
+
+  // Projects
+  getProjects(options?: ProjectQueryOptions): Promise<Project[]>;
+  getProjectById(id: string): Promise<Project | null>;
+  getProjectBySlug(slug: string, includeDrafts?: boolean): Promise<Project | null>;
+  createProject(input: CreateProjectDto): Promise<Project>;
+  updateProject(id: string, input: UpdateProjectDto): Promise<Project | null>;
   deleteProject(id: string): Promise<boolean>;
-  getHeroSlides(includeDraft?: boolean): Promise<HeroSlide[]>;
+
+  // Project Media & Comparisons
+  addProjectMedia(
+    projectId: string,
+    input: CreateProjectMediaDto
+  ): Promise<ProjectMedia>;
+  deleteProjectMedia(mediaId: string): Promise<boolean>;
+  setProjectComparison(
+    projectId: string,
+    renderMediaId: string,
+    actualMediaId: string
+  ): Promise<ProjectComparison>;
+
+  // Organizations (Partners / Brands)
+  getOrganizations(): Promise<Organization[]>;
+  getOrganizationById(id: string): Promise<Organization | null>;
+  createOrganization(input: CreateOrganizationDto): Promise<Organization>;
+  updateOrganization(
+    id: string,
+    input: UpdateOrganizationDto
+  ): Promise<Organization | null>;
+  deleteOrganization(id: string): Promise<boolean>;
+
+  // Services
+  getServices(): Promise<Service[]>;
+
+  // Site Settings
+  getSiteSetting<T>(key: SiteSettingKey): Promise<T | null>;
+  upsertSiteSetting<T>(key: SiteSettingKey, value: T): Promise<void>;
+  getHeroSlides(): Promise<HeroSlide[]>;
   updateHeroSlides(slides: HeroSlide[]): Promise<HeroSlide[]>;
-  getLegalInfo(includeDraft?: boolean): Promise<CompanyLegalInfo>;
+  getLegalInfo(): Promise<CompanyLegalInfo>;
   updateLegalInfo(info: Partial<CompanyLegalInfo>): Promise<CompanyLegalInfo>;
-
-  // Curated Landing Placements
-  getPlacements(slotType?: LandingPlacementSlot): Promise<LandingPlacement[]>;
-  upsertPlacement(input: UpsertLandingPlacement): Promise<LandingPlacement>;
-  deletePlacement(id: string): Promise<boolean>;
-
-  // Gallery Bento Cluster Configurations
-  getGalleryClusters(): Promise<GalleryClusterConfig[] | undefined>;
+  getGalleryClusters(): Promise<GalleryClusterConfig[]>;
   updateGalleryClusters(
     clusters: GalleryClusterConfig[]
   ): Promise<GalleryClusterConfig[]>;

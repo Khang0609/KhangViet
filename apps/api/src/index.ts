@@ -9,7 +9,7 @@ import { publicContentRouter } from "./routes/publicContent";
 import { publicLeadsRouter } from "./routes/publicLeads";
 import { adminCmsRouter } from "./routes/adminCms";
 import { adminLeadsRouter } from "./routes/adminLeads";
-import { authRouter } from "./routes/auth";
+import { adminOrganizationsRouter } from "./routes/adminOrganizations";
 import { protectedRouter } from "./routes/protected";
 import { AppEnv } from "./middlewares/authMiddleware";
 import { resolveAllowedOrigin } from "./config/cors";
@@ -18,7 +18,7 @@ const app = new OpenAPIHono<AppEnv>({
   defaultHook: defaultValidationHook,
 });
 
-// Global Security & Defense-in-depth Middlewares (SEC-01, SEC-08)
+// Global Security & Defense-in-depth Middlewares
 app.use("*", secureHeaders());
 app.use(
   "*",
@@ -26,7 +26,7 @@ app.use(
     origin: (origin, c) => resolveAllowedOrigin(origin, c),
     credentials: true,
     allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
+    allowHeaders: ["Content-Type", "Cf-Access-Jwt-Assertion", "X-Dev-User-Email"],
   })
 );
 
@@ -36,19 +36,19 @@ app.onError(errorHandler);
 app.get("/api/health", (c) => {
   return c.json({
     name: "Khang Viet Design API",
-    version: "1.0.0",
+    version: "2.0.0",
     status: "healthy",
   });
 });
 
 // Mount Routes
-app.route("/api/auth", authRouter);
 app.route("/api", protectedRouter);
 app.route("/api/v1/content", publicContentRouter);
 app.route("/api/v1/leads", publicLeadsRouter);
 
 app.use("/api/v1/admin/*", adminAuthMiddleware);
 app.route("/api/v1/admin/cms", adminCmsRouter);
+app.route("/api/v1/admin/organizations", adminOrganizationsRouter);
 app.route("/api/v1/admin/leads", adminLeadsRouter);
 
 // Fallback phục vụ Static Assets của Frontend cho tất cả các đường dẫn giao diện
@@ -64,13 +64,13 @@ app.notFound(async (c) => {
   );
 });
 
-// OpenAPI Spec & Documentation UI - Dev only (SEC-08)
+// OpenAPI Spec & Documentation UI - Dev only
 if (process.env.NODE_ENV !== "production") {
   app.doc("/doc", {
     openapi: "3.0.0",
     info: {
       title: "Khang Viet Design API",
-      version: "1.0.0",
+      version: "2.0.0",
       description: "API hệ thống Khang Việt Architecture & Construction",
     },
   });
@@ -78,5 +78,4 @@ if (process.env.NODE_ENV !== "production") {
   app.get("/reference", Scalar({ theme: "purple", url: "/doc" }));
 }
 
-export { PasswordService } from "./services/passwordService";
 export default app;

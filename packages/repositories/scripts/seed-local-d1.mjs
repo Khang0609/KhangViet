@@ -3,19 +3,34 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// 1. Resolve & import trực tiếp file JSON thông qua package subpath export của @khangviet/data
 import landingSeedData from "@khangviet/data/seeds/landing-content.json" with { type: "json" };
 import leadsSeedData from "@khangviet/data/seeds/leads.json" with { type: "json" };
 import usersSeedData from "@khangviet/data/seeds/users.json" with { type: "json" };
+import galleryExtSeedData from "@khangviet/data/seeds/project-gallery-ext.json" with { type: "json" };
 
-// 2. Định vị thư mục database D1 từ vị trí package @khangviet/data được module loader resolve
+function slugify(input) {
+  return String(input)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 const seedFileUrl = import.meta.resolve("@khangviet/data/seeds/landing-content.json");
 const seedFilePath = fileURLToPath(seedFileUrl);
-// Từ packages/data/src/seeds/... đi lên 4 cấp để ra root workspace
 const rootDir = path.resolve(path.dirname(seedFilePath), "../../../..");
+const dbDir = path.resolve(
+  rootDir,
+  "apps/api/.wrangler/state/v3/d1/miniflare-D1DatabaseObject"
+);
 
-const dbDir = path.resolve(rootDir, "apps/api/.wrangler/state/v3/d1/miniflare-D1DatabaseObject");
-const sqliteFiles = fs.readdirSync(dbDir).filter(f => f.endsWith(".sqlite") && !f.startsWith("metadata"));
+const sqliteFiles = fs
+  .readdirSync(dbDir)
+  .filter((f) => f.endsWith(".sqlite") && !f.startsWith("metadata"));
 
 if (sqliteFiles.length === 0) {
   console.error("No sqlite file found in", dbDir);
@@ -23,168 +38,164 @@ if (sqliteFiles.length === 0) {
 }
 
 const dbPath = path.join(dbDir, sqliteFiles[0]);
-console.log("Using DB:", dbPath);
+console.log("Seeding Schema v2 D1:", dbPath);
 const db = new DatabaseSync(dbPath);
+const now = Math.floor(Date.now() / 1000);
 
-const now = new Date().toISOString();
-
-// 1. Seed Users & Identities
-const insertIdentity = db.prepare(`
-  INSERT INTO identities (id, full_name, phone, email, identity_type, notes, created_at, updated_at)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  ON CONFLICT(id) DO UPDATE SET
-    full_name = excluded.full_name,
-    phone = excluded.phone,
-    email = excluded.email,
-    updated_at = excluded.updated_at
+// 1. Users
+const insertUser = db.prepare(`
+  INSERT INTO users (id, email, name, role, is_active, created_at)
+  VALUES (?, ?, ?, ?, 1, ?)
+  ON CONFLICT(id) DO UPDATE SET email = excluded.email, name = excluded.name, role = excluded.role
 `);
-
-const insertUserAccount = db.prepare(`
-  INSERT INTO user_accounts (id, identity_id, email, password_hash, role, is_active, created_at, updated_at)
-  VALUES (?, ?, ?, ?, ?, 1, ?, ?)
-  ON CONFLICT(id) DO UPDATE SET
-    email = excluded.email,
-    password_hash = excluded.password_hash,
-    role = excluded.role,
-    updated_at = excluded.updated_at
-`);
-
-for (const user of usersSeedData) {
-  const t = user.createdAt || now;
-  insertIdentity.run(
-    user.id,
-    user.info.name,
-    user.info.phone,
-    user.email,
-    "INDIVIDUAL",
-    null,
-    t,
-    user.updatedAt || now
-  );
-
-  insertUserAccount.run(
-    user.id,
-    user.id,
-    user.email,
-    user.password,
-    user.role,
-    t,
-    user.updatedAt || now
-  );
+for (const u of usersSeedData) {
+  if (u.role !== "ADMIN" && u.role !== "STAFF") continue;
+  insertUser.run(u.id, u.email.toLowerCase(), u.info?.name || u.email, u.role, now);
 }
-console.log(`Seeded ${usersSeedData.length} users & identities.`);
 
-// 2. Seed Leads
-const insertLead = db.prepare(`
-  INSERT INTO leads (id, identity_id, service_category, project_scale, initial_message, status, created_at, updated_at)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  ON CONFLICT(id) DO NOTHING
+// 2. Services
+const categories = galleryExtSeedData.categories ?? [
+  "Bảng hiệu & Mặt dựng",
+  "Nội thất & Showroom",
+];
+const insertService = db.prepare(`
+  INSERT INTO services (id, slug, name, sort_order)
+  VALUES (?, ?, ?, ?)
+  ON CONFLICT(id) DO UPDATE SET name = excluded.name, sort_order = excluded.sort_order
 `);
-
-for (const lead of leadsSeedData) {
-  const t = lead.createdAt || now;
-  insertIdentity.run(
-    lead.id,
-    lead.fullName,
-    lead.phone,
-    lead.email ?? null,
-    "INDIVIDUAL",
-    lead.notes ?? null,
-    t,
-    lead.updatedAt || now
-  );
-
-  insertLead.run(
-    lead.id,
-    lead.id,
-    lead.serviceCategory ?? null,
-    lead.projectScale ?? null,
-    lead.message ?? null,
-    lead.status,
-    t,
-    lead.updatedAt || now
-  );
+const services = categories.map((name, idx) => ({
+  id: `svc-${idx + 1}`,
+  slug: slugify(name),
+  name,
+  sortOrder: idx,
+}));
+for (const s of services) {
+  insertService.run(s.id, s.slug, s.name, s.sortOrder);
 }
-console.log(`Seeded ${leadsSeedData.length} leads.`);
 
-// 3. Seed Projects & Project Media
+// 3. Organizations
+const insertOrg = db.prepare(`
+  INSERT INTO organizations (id, name, slug, description, logo_key, is_featured, featured_order, created_at, updated_at)
+  VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)
+  ON CONFLICT(id) DO UPDATE SET name = excluded.name, description = excluded.description, updated_at = excluded.updated_at
+`);
+const orgs = (landingSeedData.partnerBrands ?? []).map((p, idx) => ({
+  id: `org-${idx + 1}`,
+  name: p.name,
+  slug: slugify(p.name),
+  description: p.category ?? null,
+  logoKey: p.logoUrl ?? null,
+  featuredOrder: idx,
+}));
+for (const o of orgs) {
+  insertOrg.run(o.id, o.name, o.slug, o.description, o.logoKey, o.featuredOrder, now, now);
+}
+
+// 4. Projects, project_services & project_media
 const insertProject = db.prepare(`
-  INSERT INTO projects (
-    id, code, title, subtitle, client, client_identity_id, locations, year, category_tag,
-    scale_metric, materials, engineering_notes, summary, cover_image, status, sort_order, created_at, updated_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  ON CONFLICT(id) DO UPDATE SET
-    title = excluded.title,
-    subtitle = excluded.subtitle,
-    summary = excluded.summary,
-    cover_image = excluded.cover_image,
-    updated_at = excluded.updated_at
+  INSERT INTO projects (id, slug, title, summary, organization_id, year, publish_status, is_featured, featured_order, created_at, updated_at)
+  VALUES (?, ?, ?, ?, ?, ?, 'PUBLISHED', 1, ?, ?, ?)
+  ON CONFLICT(id) DO UPDATE SET title = excluded.title, summary = excluded.summary, updated_at = excluded.updated_at
 `);
-
+const insertProjectService = db.prepare(`
+  INSERT OR IGNORE INTO project_services (project_id, service_id) VALUES (?, ?)
+`);
 const insertMedia = db.prepare(`
-  INSERT INTO project_media (
-    id, project_id, media_type, public_url, caption, location, spec, aspect_ratio, sort_order, created_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO project_media (id, project_id, kind, storage_key, alt_text, caption, sort_order, is_cover, created_at)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   ON CONFLICT(id) DO NOTHING
 `);
 
-let mediaCount = 0;
-for (const p of landingSeedData.featuredProjects) {
-  const year = typeof p.year === "number" ? p.year : parseInt(String(p.year), 10) || 2026;
+(landingSeedData.featuredProjects ?? []).forEach((p, idx) => {
+  const matchedOrg = orgs.find(
+    (o) => p.client && o.name.toLowerCase().includes(p.client.toLowerCase().slice(0, 6))
+  );
+  const slug = slugify(p.title) || p.id;
+  const year = p.year ? Number(p.year) || 2025 : 2025;
+
   insertProject.run(
     p.id,
-    p.code,
+    slug,
     p.title,
-    p.subtitle,
-    p.client,
-    null,
-    JSON.stringify(p.locations),
+    p.summary ?? null,
+    matchedOrg?.id ?? null,
     year,
-    p.categoryTag,
-    p.scaleMetric,
-    JSON.stringify(p.materials),
-    JSON.stringify(p.engineeringNotes),
-    p.summary,
-    p.coverImage,
-    "PUBLISHED",
-    0,
+    idx,
     now,
     now
   );
 
-  if (p.gallery && p.gallery.length > 0) {
-    for (let i = 0; i < p.gallery.length; i++) {
-      const item = p.gallery[i];
-      const mediaId = item.id || `media-${p.id}-${i}`;
-      insertMedia.run(
-        mediaId,
-        p.id,
-        "GALLERY_IMAGE",
-        item.src,
-        item.caption || null,
-        item.location || null,
-        item.spec || null,
-        item.aspect || null,
-        i,
-        now
-      );
-      mediaCount++;
-    }
+  if (services[0]) {
+    insertProjectService.run(p.id, services[0].id);
   }
-}
-console.log(`Seeded ${landingSeedData.featuredProjects.length} projects and ${mediaCount} media items.`);
+  if (p.coverImage) {
+    insertMedia.run(
+      `${p.id}-cover`,
+      p.id,
+      "ACTUAL",
+      p.coverImage,
+      p.title,
+      "Ảnh thực tế công trình",
+      0,
+      1,
+      now
+    );
+  }
+  (p.gallery ?? []).forEach((g, gIdx) => {
+    insertMedia.run(
+      g.id || `${p.id}-m-${gIdx}`,
+      p.id,
+      gIdx === 0 ? "RENDER" : "GALLERY",
+      g.src,
+      p.title,
+      g.caption ?? null,
+      gIdx + 1,
+      0,
+      now
+    );
+  });
+});
 
-// 4. Seed CMS Metadata
-const insertCmsMeta = db.prepare(`
-  INSERT INTO cms_metadata (key, value_json, updated_at)
-  VALUES (?, ?, ?)
-  ON CONFLICT(key) DO UPDATE SET
-    value_json = excluded.value_json,
-    updated_at = excluded.updated_at
+// 5. Leads
+const insertLead = db.prepare(`
+  INSERT INTO leads (id, name, email, phone, company_name, service_id, message, budget_range, source, status, created_at, updated_at)
+  VALUES (?, ?, ?, ?, NULL, NULL, ?, NULL, 'website', 'NEW', ?, ?)
+  ON CONFLICT(id) DO NOTHING
 `);
+for (const l of leadsSeedData) {
+  insertLead.run(
+    l.id,
+    l.name || l.fullName || "Khách hàng",
+    l.email ?? null,
+    l.phone,
+    l.message ?? null,
+    now,
+    now
+  );
+}
 
-insertCmsMeta.run("hero_slides", JSON.stringify(landingSeedData.heroSlides), now);
-insertCmsMeta.run("legal_info", JSON.stringify(landingSeedData.companyLegalInfo), now);
-console.log("Seeded cms_metadata (hero_slides, legal_info).");
+// 6. Site Settings
+const insertSetting = db.prepare(`
+  INSERT INTO site_settings (key, value_json, updated_at)
+  VALUES (?, ?, ?)
+  ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json, updated_at = excluded.updated_at
+`);
+const clusters = services.map((s, idx) => ({
+  id: `cluster-${s.slug}`,
+  serviceSlug: s.slug,
+  title: s.name,
+  sortOrder: idx,
+  maxItems: 6,
+}));
+const settings = [
+  ["hero_slides", landingSeedData.heroSlides ?? []],
+  ["core_disciplines", landingSeedData.coreDisciplines ?? []],
+  ["production_divisions", landingSeedData.productionDivisions ?? []],
+  ["company_legal_info", landingSeedData.companyLegalInfo ?? {}],
+  ["gallery_clusters", clusters],
+];
+for (const [key, val] of settings) {
+  insertSetting.run(key, JSON.stringify(val), now);
+}
 
-console.log("ALL SEEDING COMPLETED SUCCESSFULLY.");
+console.log("Schema v2 D1 seeded successfully!");

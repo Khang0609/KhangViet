@@ -2,11 +2,11 @@
 
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-import type { FeaturedProject } from "@khangviet/types";
+import type { Project } from "@khangviet/types";
 import { useModalContext } from "../../modals/modalContext";
 
 export interface ProjectShowcaseGalleryProps {
-  project: FeaturedProject;
+  project: Project;
   projectIndex: number;
 }
 
@@ -15,6 +15,11 @@ export const ProjectShowcaseGallery: React.FC<ProjectShowcaseGalleryProps> = ({
   projectIndex,
 }) => {
   const { openProjectModal } = useModalContext();
+  const media = project.media ?? [];
+  const cover =
+    media.find((m) => m.isCover)?.storageKey ??
+    media[0]?.storageKey ??
+    "/images/placeholder-project.jpg";
 
   return (
     <div className={`lg:col-span-7 ${projectIndex % 2 ? "lg:order-2" : ""}`}>
@@ -24,7 +29,7 @@ export const ProjectShowcaseGallery: React.FC<ProjectShowcaseGalleryProps> = ({
         className="group relative block aspect-16/10 w-full cursor-pointer overflow-hidden rounded-2xl bg-[#eae5dc] text-left"
       >
         <img
-          src={project.coverImage}
+          src={cover}
           alt={project.title}
           className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]"
         />
@@ -34,7 +39,7 @@ export const ProjectShowcaseGallery: React.FC<ProjectShowcaseGalleryProps> = ({
       </button>
 
       <div className="mt-3 grid grid-cols-3 gap-3">
-        {project.gallery.slice(0, 3).map((image, imageIndex) => (
+        {media.slice(0, 3).map((image, imageIndex) => (
           <button
             type="button"
             key={image.id}
@@ -42,8 +47,8 @@ export const ProjectShowcaseGallery: React.FC<ProjectShowcaseGalleryProps> = ({
             className="group relative aspect-4/3 cursor-pointer overflow-hidden rounded-xl bg-[#eae5dc]"
           >
             <img
-              src={image.src}
-              alt={image.caption}
+              src={image.storageKey}
+              alt={image.caption || image.altText || project.title}
               className="h-full w-full object-cover opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
             />
           </button>

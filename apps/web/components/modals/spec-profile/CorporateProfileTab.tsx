@@ -6,7 +6,7 @@ import PhoneCallButton from '../../ui/PhoneCallButton';
 import { LegalAndFactorySection } from './LegalAndFactorySection';
 
 export const CorporateProfileTab: React.FC = () => {
-  const { legalInfo, partnerBrands } = useLandingContext();
+  const { legalInfo, featuredOrganizations } = useLandingContext();
   const handlePrint = () => window.print();
 
   return (
@@ -40,10 +40,12 @@ export const CorporateProfileTab: React.FC = () => {
           03. Danh Sách Đối Tác & Tập Đoàn Tiêu Biểu Đã Thực Hiện
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          {partnerBrands.map((partner) => (
-            <div key={partner.name} className="p-3 bg-(--bg-surface) border border-white/6 flex flex-col justify-between">
+          {featuredOrganizations.map((partner) => (
+            <div key={partner.id} className="p-3 bg-(--bg-surface) border border-white/6 flex flex-col justify-between">
               <span className="font-syne font-bold text-sm text-(--text-primary)">{partner.name}</span>
-              <span className="text-[11px] text-(--text-secondary) mt-1">{partner.subtitle}</span>
+              {partner.description && (
+                <span className="text-[11px] text-(--text-secondary) mt-1">{partner.description}</span>
+              )}
             </div>
           ))}
         </div>

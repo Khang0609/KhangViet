@@ -1,18 +1,22 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { MapPin, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Plus, Search, Settings, Trash2 } from "lucide-react";
 import type {
-  CreateGalleryProjectInput,
+  CreateProjectDto,
   GalleryProject,
+  Organization,
+  Project,
   ProjectGalleryResponse,
 } from "@khangviet/types";
 import {
+  addAdminProjectMedia,
   createAdminProject,
   deleteAdminProject,
   updateAdminProject,
 } from "@/lib/adminApi";
-import { getProjectObjectPosition } from "@/lib/galleryClusters";
+import { getProjectCoverUrl } from "@/lib/galleryClusters";
 import { AdminShell } from "./AdminShell";
 import { ProjectWizardModal } from "./ProjectWizardModal";
 
@@ -20,13 +24,40 @@ interface AdminProjectsClientProps {
   initialData: ProjectGalleryResponse;
 }
 
+function projectToGalleryProject(p: Project): GalleryProject {
+  const media = p.media ?? [];
+  return {
+    id: p.id,
+    slug: p.slug,
+    title: p.title,
+    summary: p.summary ?? null,
+    year: p.year ?? null,
+    publishStatus: p.publishStatus,
+    isFeatured: p.isFeatured,
+    featuredOrder: p.featuredOrder,
+    organization: p.organization ?? null,
+    services: p.services ?? [],
+    coverMedia: media.find((m) => m.isCover) ?? media[0] ?? null,
+    media,
+    comparisons: p.comparisons ?? [],
+  };
+}
+
 export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
   initialData,
 }) => {
+  const router = useRouter();
   const [projects, setProjects] = useState<GalleryProject[]>(
     initialData.projects
   );
+  const [organizations, setOrganizations] = useState<Organization[]>(
+    initialData.organizations
+  );
   const [search, setSearch] = useState("");
+  const [partnerFilter, setPartnerFilter] = useState<"ALL" | "WITH_PARTNER">(
+    "ALL"
+  );
+  const [serviceFilter, setServiceFilter] = useState<string>("ALL");
   const [wizardOpen, setWizardOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<GalleryProject | null>(
     null
@@ -38,13 +69,25 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return projects;
-    return projects.filter((p) =>
-      [p.title, p.code, p.client, p.category, p.location]
+    return projects.filter((p) => {
+      if (partnerFilter === "WITH_PARTNER" && !p.organization) return false;
+      if (
+        serviceFilter !== "ALL" &&
+        !p.services.some((s) => s.id === serviceFilter)
+      ) {
+        return false;
+      }
+      if (!q) return true;
+      return [
+        p.title,
+        p.slug,
+        p.organization?.name,
+        ...p.services.map((s) => s.name),
+      ]
         .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q))
-    );
-  }, [projects, search]);
+        .some((v) => String(v).toLowerCase().includes(q));
+    });
+  }, [projects, search, partnerFilter, serviceFilter]);
 
   const handleOpenCreate = () => {
     setEditingProject(null);
@@ -56,58 +99,92 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
     setWizardOpen(true);
   };
 
+  const handleRowNavigate = (project: GalleryProject) => {
+    router.push(`/admin/projects/${project.slug}`);
+  };
+
   const handleSubmitProject = async (
-    input: CreateGalleryProjectInput,
+    input: CreateProjectDto & {
+      coverUrl?: string;
+      renderUrl?: string;
+      createdOrganization?: Organization;
+    },
     editingId?: string
   ): Promise<
     { success: true; project: GalleryProject } | { success: false; error: string }
   > => {
+    const { coverUrl, renderUrl, createdOrganization, ...dto } = input;
+
+    if (createdOrganization) {
+      setOrganizations((prev) =>
+        prev.some((o) => o.id === createdOrganization.id)
+          ? prev
+          : [...prev, createdOrganization]
+      );
+    }
+
     if (editingId) {
-      const res = await updateAdminProject(editingId, input);
+      const res = await updateAdminProject(editingId, dto);
       if (!res.success) {
         return { success: false, error: res.error };
       }
-      const updatedProject: GalleryProject = {
-        ...input,
-        id: editingId,
-        year: input.year ?? String(new Date().getFullYear()),
-        featured: input.featured ?? false,
-      };
+      const updated = projectToGalleryProject(res.data);
       setProjects((prev) =>
-        prev.map((p) => (p.id === editingId ? updatedProject : p))
+        prev.map((p) => (p.id === editingId ? updated : p))
       );
       setFeedback({
         type: "success",
-        text: `Đã cập nhật "${updatedProject.title}"`,
+        text: `Đã cập nhật "${updated.title}"`,
       });
-      return { success: true, project: updatedProject };
+      return { success: true, project: updated };
     }
 
-    const res = await createAdminProject(input);
+    const res = await createAdminProject(dto);
     if (!res.success) {
       return { success: false, error: res.error };
     }
 
-    const createdProject: GalleryProject = {
-      ...input,
-      id: res.data.id,
-      year: input.year ?? String(new Date().getFullYear()),
-      featured: input.featured ?? false,
-    };
-    setProjects((prev) => [createdProject, ...prev]);
+    let created = res.data;
+    if (coverUrl) {
+      const mediaRes = await addAdminProjectMedia(created.id, {
+        kind: "ACTUAL",
+        storageKey: coverUrl,
+        isCover: true,
+        sortOrder: 0,
+      });
+      if (mediaRes.success) {
+        created = {
+          ...created,
+          media: [...(created.media ?? []), mediaRes.data],
+        };
+      }
+    }
+    if (renderUrl) {
+      const renderRes = await addAdminProjectMedia(created.id, {
+        kind: "RENDER",
+        storageKey: renderUrl,
+        isCover: false,
+        sortOrder: 1,
+      });
+      if (renderRes.success) {
+        created = {
+          ...created,
+          media: [...(created.media ?? []), renderRes.data],
+        };
+      }
+    }
+
+    const createdGallery = projectToGalleryProject(created);
+    setProjects((prev) => [createdGallery, ...prev]);
     setFeedback({
       type: "success",
-      text: `Đã thêm mới dự án "${createdProject.title}"`,
+      text: `Đã thêm mới dự án "${createdGallery.title}"`,
     });
-    return { success: true, project: createdProject };
+    return { success: true, project: createdGallery };
   };
 
   const handleDelete = async (project: GalleryProject) => {
-    if (
-      !window.confirm(`Xác nhận xóa dự án "${project.title}" khỏi hệ thống?`)
-    ) {
-      return;
-    }
+    if (!window.confirm(`Xóa dự án "${project.title}"?`)) return;
     const res = await deleteAdminProject(project.id);
     if (!res.success) {
       setFeedback({ type: "error", text: res.error });
@@ -121,30 +198,66 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
   };
 
   return (
-    <AdminShell
-      title="Quản lý Dự án"
-      subtitle="Danh sách dự án — bấm vào từng dòng để xem & sửa nhanh, hoặc thêm hàng loạt qua Wizard 3 bước."
-    >
-      {/* Action Toolbar */}
-      <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <div className="relative flex-1 sm:max-w-md">
-          <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#625f5a]" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm theo tên, mã, đối tác, địa điểm..."
-            className="w-full rounded-xl border border-black/12 bg-white py-2.5 pr-4 pl-10 text-sm outline-hidden focus:border-(--accent-bronze)"
-          />
+    <AdminShell>
+      <div className="mb-5 flex flex-col justify-between gap-3 lg:flex-row lg:items-center">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="relative min-w-56 flex-1 sm:flex-initial">
+            <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#625f5a]" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Tìm dự án, đối tác..."
+              className="w-full rounded-full border border-black/12 bg-white py-2 pr-4 pl-9 text-xs outline-hidden focus:border-(--accent-bronze)"
+            />
+          </div>
+
+          <div className="inline-flex rounded-full border border-black/10 bg-white p-0.5">
+            <button
+              type="button"
+              onClick={() => setPartnerFilter("ALL")}
+              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                partnerFilter === "ALL"
+                  ? "bg-[#181715] text-white"
+                  : "text-[#625f5a] hover:text-[#1a1918]"
+              }`}
+            >
+              Tất cả
+            </button>
+            <button
+              type="button"
+              onClick={() => setPartnerFilter("WITH_PARTNER")}
+              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                partnerFilter === "WITH_PARTNER"
+                  ? "bg-[#181715] text-white"
+                  : "text-[#625f5a] hover:text-[#1a1918]"
+              }`}
+            >
+              Đối tác
+            </button>
+          </div>
+
+          <select
+            value={serviceFilter}
+            onChange={(e) => setServiceFilter(e.target.value)}
+            className="rounded-full border border-black/12 bg-white px-3.5 py-1.5 text-xs font-medium text-[#1a1918] outline-hidden focus:border-(--accent-bronze)"
+          >
+            <option value="ALL">Tất cả dịch vụ</option>
+            {initialData.services.map((svc) => (
+              <option key={svc.id} value={svc.id}>
+                {svc.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <button
           type="button"
           onClick={handleOpenCreate}
-          className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#181715] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-(--accent-bronze)"
+          className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#181715] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-(--accent-bronze)"
         >
           <Plus className="h-4 w-4" />
-          <span>Thêm dự án (Hàng loạt)</span>
+          <span>Thêm dự án mới</span>
         </button>
       </div>
 
@@ -152,115 +265,111 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
         <div
           className={`mb-4 rounded-xl border px-4 py-2.5 text-xs font-medium ${
             feedback.type === "success"
-              ? "border-emerald-500/30 bg-emerald-50 text-emerald-800"
-              : "border-red-500/30 bg-red-50 text-red-700"
+              ? "border-emerald-500/25 bg-emerald-50 text-emerald-700"
+              : "border-red-500/25 bg-red-50 text-red-700"
           }`}
         >
           {feedback.text}
         </div>
       )}
 
-      {/* YouTube Studio List */}
-      <div className="overflow-hidden rounded-2xl border border-black/10 bg-white">
-        <div className="hidden border-b border-black/8 bg-[#faf9f6] px-5 py-3 text-[11px] font-semibold tracking-wider text-[#625f5a] uppercase md:grid md:grid-cols-12 md:gap-4">
-          <div className="col-span-6">Dự án (Thumbnail &amp; Tiêu đề)</div>
-          <div className="col-span-2">Phân loại</div>
-          <div className="col-span-2">Trạng thái</div>
-          <div className="col-span-2 text-right">Thao tác</div>
-        </div>
-
-        <div className="divide-y divide-black/8">
-          {filtered.map((project) => (
-            <div
-              key={project.id}
-              onClick={() => handleOpenEdit(project)}
-              className="group flex cursor-pointer flex-col gap-3 px-4 py-3.5 transition-colors hover:bg-[#faf9f6] md:grid md:grid-cols-12 md:items-center md:gap-4 md:px-5"
-            >
-              {/* Thumbnail + Title + Subtitle */}
-              <div className="flex min-w-0 items-center gap-3.5 md:col-span-6">
-                <div className="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-[#eae5dc]">
-                  <img
-                    src={project.imgActual}
-                    alt={project.title}
-                    style={{ objectPosition: getProjectObjectPosition(project) }}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm font-semibold text-[#1a1918] group-hover:text-(--accent-bronze)">
-                    {project.title}
-                  </div>
-                  <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-[#625f5a]">
-                    <span className="font-mono font-medium">
-                      {project.code ?? project.id}
+      <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xs">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-black/8 bg-[#faf9f6] text-[11px] font-semibold tracking-wider text-[#625f5a] uppercase">
+                <th className="px-4 py-3">Dự án</th>
+                <th className="px-4 py-3">Đối tác</th>
+                <th className="px-4 py-3">Hạng mục</th>
+                <th className="px-4 py-3">Năm</th>
+                <th className="px-4 py-3">Trạng thái</th>
+                <th className="px-4 py-3 text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-black/8">
+              {filtered.map((project) => (
+                <tr
+                  key={project.id}
+                  onClick={() => handleRowNavigate(project)}
+                  className="cursor-pointer transition-colors hover:bg-[#faf9f6]"
+                >
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-11 w-16 shrink-0 overflow-hidden rounded-lg bg-[#eae5dc]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={getProjectCoverUrl(project)}
+                          alt={project.title}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="truncate font-semibold text-[#1a1918]">
+                          {project.title}
+                        </div>
+                        <div className="truncate font-mono text-[11px] text-[#625f5a]">
+                          /{project.slug}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-xs font-medium text-(--accent-bronze)">
+                    {project.organization?.name || "Khách lẻ"}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-[#625f5a]">
+                    {project.services.map((s) => s.name).join(" • ") || "—"}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-[#625f5a] tabular-nums">
+                    {project.year || "—"}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
+                        project.publishStatus === "PUBLISHED"
+                          ? "bg-emerald-50 text-emerald-700"
+                          : "bg-black/5 text-[#625f5a]"
+                      }`}
+                    >
+                      {project.publishStatus}
                     </span>
-                    <span>•</span>
-                    <span className="truncate">{project.client}</span>
-                    <span>•</span>
-                    <span className="inline-flex items-center gap-0.5 truncate">
-                      <MapPin className="h-3 w-3 shrink-0" />
-                      {project.location}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Category + Segment */}
-              <div className="flex items-center gap-2 md:col-span-2 md:flex-col md:items-start md:gap-1">
-                <span className="rounded-md border border-black/10 bg-[#faf9f6] px-2 py-0.5 text-[11px] font-medium">
-                  {project.category}
-                </span>
-                <span className="text-[11px] text-[#625f5a]">
-                  {project.segment === "B2B" ? "Đối tác B2B" : "Khách lẻ C2B"}
-                </span>
-              </div>
-
-              {/* Stage */}
-              <div className="md:col-span-2">
-                <span
-                  className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
-                    project.stage === "TENDER_3D"
-                      ? "bg-amber-100 text-amber-800"
-                      : "bg-emerald-100 text-emerald-800"
-                  }`}
-                >
-                  {project.stage === "TENDER_3D"
-                    ? "Phối cảnh 3D"
-                    : "Nghiệm thu"}
-                </span>
-              </div>
-
-              {/* Actions */}
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center justify-end gap-2 md:col-span-2"
-              >
-                <button
-                  type="button"
-                  onClick={() => handleOpenEdit(project)}
-                  title="Chỉnh sửa"
-                  className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-black/12 bg-white px-2.5 py-1.5 text-xs font-medium text-[#1a1918] hover:border-[#1a1918]"
-                >
-                  <Pencil className="h-3.5 w-3.5" />
-                  <span>Sửa</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDelete(project)}
-                  title="Xóa dự án"
-                  className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-black/12 bg-white p-1.5 text-[#625f5a] hover:border-red-500/40 hover:bg-red-50 hover:text-red-600"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            </div>
-          ))}
-
-          {filtered.length === 0 && (
-            <div className="py-12 text-center text-sm text-[#625f5a]">
-              Không tìm thấy dự án nào phù hợp.
-            </div>
-          )}
+                  </td>
+                  <td
+                    className="px-4 py-3 text-right"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="inline-flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(project)}
+                        title="Chỉnh sửa thông tin dự án"
+                        className="cursor-pointer rounded-lg p-1.5 text-[#625f5a] transition-colors hover:bg-black/5 hover:text-[#1a1918]"
+                      >
+                        <Settings className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(project)}
+                        title="Xóa dự án"
+                        className="cursor-pointer rounded-lg p-1.5 text-[#625f5a] transition-colors hover:bg-red-50 hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-4 py-10 text-center text-xs text-[#625f5a]"
+                  >
+                    Không có dự án nào phù hợp bộ lọc.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -268,8 +377,8 @@ export const AdminProjectsClient: React.FC<AdminProjectsClientProps> = ({
         isOpen={wizardOpen}
         onClose={() => setWizardOpen(false)}
         editingProject={editingProject}
-        keyAccounts={initialData.keyAccounts}
-        categories={initialData.categories}
+        organizations={organizations}
+        services={initialData.services}
         onSubmitProject={handleSubmitProject}
       />
     </AdminShell>

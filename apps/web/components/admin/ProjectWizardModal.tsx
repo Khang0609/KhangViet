@@ -1,200 +1,204 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Plus, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import type {
-  CreateGalleryProjectInput,
-  GalleryFocalPoint,
-  GalleryKeyAccount,
+  CreateProjectDto,
   GalleryProject,
+  Organization,
+  PublishStatus,
+  Service,
 } from "@khangviet/types";
+import { createAdminOrganization } from "@/lib/adminApi";
 import { BaseModal } from "@/components/ui/BaseModal";
 import { UniversalMediaUpload } from "@/components/ui/media-upload";
-import { FocalPointPicker } from "./FocalPointPicker";
+import {
+  getProjectCoverUrl,
+  getProjectRenderUrl,
+  toGallerySlug,
+} from "@/lib/galleryClusters";
 
 interface ProjectWizardModalProps {
   isOpen: boolean;
   onClose: () => void;
   editingProject: GalleryProject | null;
-  keyAccounts: GalleryKeyAccount[];
-  categories: string[];
+  organizations: Organization[];
+  services: Service[];
   onSubmitProject: (
-    input: CreateGalleryProjectInput,
+    input: CreateProjectDto & {
+      coverUrl?: string;
+      renderUrl?: string;
+      createdOrganization?: Organization;
+    },
     editingId?: string
-  ) => Promise<{ success: true; project: GalleryProject } | { success: false; error: string }>;
+  ) => Promise<
+    { success: true; project: GalleryProject } | { success: false; error: string }
+  >;
 }
+
+type PartnerSourceMode = "none" | "existing" | "new";
 
 interface WizardDraft {
-  code: string;
   title: string;
-  client: string;
-  keyAccount: string;
-  segment: "B2B" | "C2B";
-  stage: "COMPLETED" | "TENDER_3D";
-  category: string;
-  location: string;
-  material: string;
-  team: string;
-  imgActual: string;
-  img3D: string;
-  focalPoint: GalleryFocalPoint;
-  desc: string;
+  slug: string;
+  summary: string;
+  partnerMode: PartnerSourceMode;
+  organizationId: string;
+  newPartnerName: string;
+  serviceIds: string[];
   year: string;
+  publishStatus: PublishStatus;
+  isFeatured: boolean;
+  featuredOrder: number;
+  coverUrl: string;
+  renderUrl: string;
 }
 
-function createEmptyDraft(defaultCategory: string): WizardDraft {
+function createEmptyDraft(defaultServiceId?: string): WizardDraft {
   return {
-    code: `KV-${String(Date.now()).slice(-4)}`,
     title: "",
-    client: "",
-    keyAccount: "",
-    segment: "B2B",
-    stage: "COMPLETED",
-    category: defaultCategory,
-    location: "TP. Hồ Chí Minh",
-    material: "",
-    team: "Đội ngũ Khang Việt",
-    imgActual: "",
-    img3D: "",
-    focalPoint: { x: 50, y: 50 },
-    desc: "",
+    slug: "",
+    summary: "",
+    partnerMode: "none",
+    organizationId: "",
+    newPartnerName: "",
+    serviceIds: defaultServiceId ? [defaultServiceId] : [],
     year: String(new Date().getFullYear()),
+    publishStatus: "PUBLISHED",
+    isFeatured: false,
+    featuredOrder: 0,
+    coverUrl: "",
+    renderUrl: "",
   };
 }
 
 function projectToDraft(p: GalleryProject): WizardDraft {
+  const cover = getProjectCoverUrl(p);
   return {
-    code: p.code ?? p.id,
     title: p.title,
-    client: p.client,
-    keyAccount: p.keyAccount ?? "",
-    segment: p.segment,
-    stage: p.stage,
-    category: p.category,
-    location: p.location,
-    material: p.material,
-    team: p.team,
-    imgActual: p.imgActual,
-    img3D: p.img3D ?? "",
-    focalPoint: p.focalPoint ?? { x: 50, y: 50 },
-    desc: p.desc,
-    year: p.year ?? String(new Date().getFullYear()),
+    slug: p.slug,
+    summary: p.summary ?? "",
+    partnerMode: p.organization ? "existing" : "none",
+    organizationId: p.organization?.id ?? "",
+    newPartnerName: "",
+    serviceIds: p.services.map((s) => s.id),
+    year: p.year ? String(p.year) : String(new Date().getFullYear()),
+    publishStatus: p.publishStatus,
+    isFeatured: p.isFeatured,
+    featuredOrder: p.featuredOrder,
+    coverUrl: cover.includes("placeholder") ? "" : cover,
+    renderUrl: getProjectRenderUrl(p) ?? "",
   };
 }
 
-const STEP_LABELS = [
-  "1. Ảnh & Tên dự án",
-  "2. Đối tác & Hạng mục",
-  "3. Thông số & Lưu",
-];
+const STEP_LABELS = ["1. Hình ảnh & Tên dự án", "2. Đối tác, Dịch vụ & Xuất bản"];
 
 export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
   isOpen,
   onClose,
   editingProject,
-  keyAccounts,
-  categories,
+  organizations,
+  services,
   onSubmitProject,
 }) => {
-  const defaultCat = categories[0] ?? "Bảng hiệu & Mặt dựng";
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<WizardDraft>(() =>
-    createEmptyDraft(defaultCat)
+    createEmptyDraft(services[0]?.id)
   );
-  const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const [batchCount, setBatchCount] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
     setStep(0);
     setError(null);
-    setBatchCount(0);
     setDraft(
       editingProject
         ? projectToDraft(editingProject)
-        : createEmptyDraft(defaultCat)
+        : createEmptyDraft(services[0]?.id)
     );
-  }, [isOpen, editingProject, defaultCat]);
+  }, [isOpen, editingProject, services]);
 
-  if (!isOpen) return null;
-
-  const validateCurrentStep = (): boolean => {
-    setError(null);
-    if (step === 0) {
-      if (!draft.title.trim()) {
-        setError("Vui lòng nhập tên dự án.");
-        return false;
-      }
-      if (!draft.imgActual.trim()) {
-        setError("Vui lòng tải lên hoặc dán link ảnh thực tế dự án.");
-        return false;
-      }
-    }
-    if (step === 1) {
-      if (!draft.client.trim() && !draft.keyAccount) {
-        setError("Vui lòng nhập tên khách hàng hoặc chọn đối tác chuỗi.");
-        return false;
-      }
-    }
-    return true;
+  const toggleService = (serviceId: string) => {
+    setDraft((prev) => {
+      const exists = prev.serviceIds.includes(serviceId);
+      return {
+        ...prev,
+        serviceIds: exists
+          ? prev.serviceIds.filter((id) => id !== serviceId)
+          : [...prev.serviceIds, serviceId],
+      };
+    });
   };
 
   const handleNext = () => {
-    if (validateCurrentStep()) {
-      setStep((prev) => Math.min(2, prev + 1));
+    setError(null);
+    if (!draft.title.trim()) {
+      setError("Vui lòng nhập tên dự án.");
+      return;
     }
+    setStep(1);
   };
 
-  const handleSave = async (keepOpenForNext: boolean) => {
-    if (!validateCurrentStep()) return;
-
-    const selectedAccount = keyAccounts.find((k) => k.id === draft.keyAccount);
-    const resolvedClient =
-      draft.client.trim() || selectedAccount?.name || "Khách hàng Khang Việt";
+  const handleSave = async () => {
+    setError(null);
+    if (!draft.title.trim()) {
+      setError("Vui lòng nhập tên dự án.");
+      return;
+    }
+    if (draft.partnerMode === "new" && !draft.newPartnerName.trim()) {
+      setError("Vui lòng nhập tên đối tác mới.");
+      return;
+    }
 
     setSaving(true);
-    setError(null);
+    let resolvedOrgId: string | null = null;
+    let createdOrganization: Organization | undefined;
 
-    const payload: CreateGalleryProjectInput = {
-      code: draft.code.trim() || `KV-${String(Date.now()).slice(-4)}`,
-      title: draft.title.trim(),
-      client: resolvedClient,
-      keyAccount: draft.keyAccount || null,
-      segment: draft.segment,
-      stage: draft.stage,
-      category: draft.category,
-      location: draft.location.trim() || "TP. Hồ Chí Minh",
-      material: draft.material.trim() || "Vật liệu tiêu chuẩn Khang Việt",
-      team: draft.team.trim() || "Đội ngũ Khang Việt",
-      imgActual: draft.imgActual.trim(),
-      img3D: draft.img3D.trim() || null,
-      focalPoint: draft.focalPoint,
-      desc: draft.desc.trim() || draft.title.trim(),
-      year: draft.year.trim() || String(new Date().getFullYear()),
-      featured: false,
-    };
+    if (draft.partnerMode === "existing") {
+      resolvedOrgId = draft.organizationId || null;
+    } else if (draft.partnerMode === "new") {
+      const orgRes = await createAdminOrganization({
+        name: draft.newPartnerName.trim(),
+        isFeatured: false,
+        featuredOrder: 0,
+      });
+      if (!orgRes.success) {
+        setSaving(false);
+        setError(orgRes.error);
+        return;
+      }
+      resolvedOrgId = orgRes.data.id;
+      createdOrganization = orgRes.data;
+    }
 
-    const res = await onSubmitProject(payload, editingProject?.id);
+    const computedSlug =
+      draft.slug.trim() || toGallerySlug(draft.title) || `du-an-${Date.now()}`;
+
+    const res = await onSubmitProject(
+      {
+        title: draft.title.trim(),
+        slug: computedSlug,
+        summary: draft.summary.trim() || null,
+        organizationId: resolvedOrgId,
+        serviceIds: draft.serviceIds,
+        year: Number(draft.year) || new Date().getFullYear(),
+        publishStatus: draft.publishStatus,
+        isFeatured: draft.isFeatured,
+        featuredOrder: Number(draft.featuredOrder) || 0,
+        coverUrl: draft.coverUrl.trim() || undefined,
+        renderUrl: draft.renderUrl.trim() || undefined,
+        createdOrganization,
+      },
+      editingProject?.id
+    );
     setSaving(false);
 
     if (!res.success) {
       setError(res.error);
       return;
     }
-
-    if (keepOpenForNext && !editingProject) {
-      setBatchCount((c) => c + 1);
-      setStep(0);
-      setDraft({
-        ...createEmptyDraft(draft.category),
-        keyAccount: draft.keyAccount,
-        client: draft.client,
-        segment: draft.segment,
-      });
-    } else {
-      onClose();
-    }
+    onClose();
   };
 
   return (
@@ -202,45 +206,16 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       maxWidth="max-w-4xl"
-      ariaLabel={editingProject ? "Chỉnh sửa dự án" : "Thêm dự án mới"}
+      ariaLabel={editingProject ? "Chỉnh sửa dự án" : "Thêm mới dự án"}
     >
       <div className="flex max-h-[90vh] flex-col bg-white text-[#1a1918]">
-        {/* Wizard Header */}
-        <div className="flex items-center justify-between border-b border-black/8 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-black/10 px-6 py-4">
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold">
-                {editingProject ? "Chỉnh sửa dự án" : "Thêm dự án mới"}
-              </h2>
-              {batchCount > 0 && (
-                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
-                  Đã lưu {batchCount} dự án
-                </span>
-              )}
-            </div>
-            {/* Step Progress */}
-            <div className="mt-2 flex items-center gap-2">
-              {STEP_LABELS.map((label, idx) => (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => {
-                    if (idx < step || validateCurrentStep()) setStep(idx);
-                  }}
-                  className={`cursor-pointer rounded-full px-2.5 py-0.5 text-[11px] font-medium transition-colors ${
-                    idx === step
-                      ? "bg-[#181715] text-white"
-                      : idx < step
-                      ? "bg-emerald-50 text-emerald-700"
-                      : "bg-[#f4f1ea] text-[#625f5a]"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+            <h2 className="text-base font-semibold">
+              {editingProject ? "Chỉnh sửa dự án" : "Thêm mới dự án"}
+            </h2>
+            <p className="text-xs text-[#625f5a]">{STEP_LABELS[step]}</p>
           </div>
-
           <button
             type="button"
             onClick={onClose}
@@ -251,349 +226,280 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
           </button>
         </div>
 
-        {/* Wizard Body */}
-        <div className="flex-1 space-y-5 overflow-y-auto p-6">
-          {step === 0 && (
+        <div className="flex-1 space-y-4 overflow-y-auto p-6">
+          {step === 0 ? (
             <>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Tên dự án *
-                  </label>
-                  <input
-                    type="text"
-                    value={draft.title}
-                    onChange={(e) =>
-                      setDraft((d) => ({ ...d, title: e.target.value }))
-                    }
-                    placeholder="VD: Bảng hiệu mặt tiền BIDV CN Sài Gòn"
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Mã dự án
-                  </label>
-                  <input
-                    type="text"
-                    value={draft.code}
-                    onChange={(e) =>
-                      setDraft((d) => ({ ...d, code: e.target.value }))
-                    }
-                    placeholder="KV-015"
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 font-mono text-sm outline-hidden focus:border-(--accent-bronze)"
-                  />
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-black/10 bg-[#faf9f6] p-4">
-                <UniversalMediaUpload
-                  label="Ảnh thực tế công trình *"
-                  folder="projects"
-                  value={draft.imgActual}
-                  allowManualInput
-                  onChange={(url) =>
-                    setDraft((d) => ({ ...d, imgActual: url }))
-                  }
-                />
-              </div>
-
-              {draft.imgActual && (
-                <FocalPointPicker
-                  imageUrl={draft.imgActual}
-                  value={draft.focalPoint}
-                  onChange={(focalPoint) =>
-                    setDraft((d) => ({ ...d, focalPoint }))
-                  }
-                />
-              )}
-            </>
-          )}
-
-          {step === 1 && (
-            <>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Phân khúc khách hàng
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(["B2B", "C2B"] as const).map((seg) => (
-                      <button
-                        key={seg}
-                        type="button"
-                        onClick={() =>
-                          setDraft((d) => ({ ...d, segment: seg }))
-                        }
-                        className={`cursor-pointer rounded-xl border px-3 py-2.5 text-xs font-semibold transition-colors ${
-                          draft.segment === seg
-                            ? "border-[#181715] bg-[#181715] text-white"
-                            : "border-black/12 bg-[#faf9f6] text-[#1a1918]"
-                        }`}
-                      >
-                        {seg === "B2B" ? "Chuỗi đối tác B2B" : "Khách lẻ C2B"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Trạng thái hồ sơ
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(
-                      [
-                        { id: "COMPLETED", label: "Nghiệm thu thực tế" },
-                        { id: "TENDER_3D", label: "Phối cảnh 2D/3D" },
-                      ] as const
-                    ).map((st) => (
-                      <button
-                        key={st.id}
-                        type="button"
-                        onClick={() =>
-                          setDraft((d) => ({ ...d, stage: st.id }))
-                        }
-                        className={`cursor-pointer rounded-xl border px-3 py-2.5 text-xs font-semibold transition-colors ${
-                          draft.stage === st.id
-                            ? "border-(--accent-bronze) bg-(--accent-bronze) text-white"
-                            : "border-black/12 bg-[#faf9f6] text-[#1a1918]"
-                        }`}
-                      >
-                        {st.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Thuộc đối tác chiến lược (nếu có)
-                  </label>
-                  <select
-                    value={draft.keyAccount}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      const found = keyAccounts.find((k) => k.id === val);
-                      setDraft((d) => ({
-                        ...d,
-                        keyAccount: val,
-                        client: found ? found.name : d.client,
-                      }));
-                    }}
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
-                  >
-                    <option value="">-- Khách hàng độc lập --</option>
-                    {keyAccounts.map((acc) => (
-                      <option key={acc.id} value={acc.id}>
-                        {acc.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Hạng mục giải pháp
-                  </label>
-                  <select
-                    value={draft.category}
-                    onChange={(e) =>
-                      setDraft((d) => ({ ...d, category: e.target.value }))
-                    }
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
-                  >
-                    {categories.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
               <div>
-                <label className="mb-1.5 block text-xs font-semibold">
-                  Tên khách hàng / Chủ đầu tư *
+                <label className="mb-1 block text-xs font-semibold">
+                  Tên dự án *
                 </label>
                 <input
                   type="text"
-                  value={draft.client}
+                  value={draft.title}
                   onChange={(e) =>
-                    setDraft((d) => ({ ...d, client: e.target.value }))
+                    setDraft((d) => ({
+                      ...d,
+                      title: e.target.value,
+                      slug: editingProject
+                        ? d.slug
+                        : toGallerySlug(e.target.value),
+                    }))
                   }
-                  placeholder="VD: Ngân hàng TMCP ĐT&PT Việt Nam (BIDV)"
-                  className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                  placeholder="Ví dụ: Showroom Khang Việt Quận 1"
+                  className="w-full rounded-xl border border-black/15 px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
                 />
               </div>
-            </>
-          )}
 
-          {step === 2 && (
-            <>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <div className="sm:col-span-2">
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Địa điểm thi công
+              <div>
+                <label className="mb-1 block text-xs font-semibold">
+                  Đường dẫn (Slug)
+                </label>
+                <input
+                  type="text"
+                  value={draft.slug}
+                  onChange={(e) =>
+                    setDraft((d) => ({ ...d, slug: e.target.value }))
+                  }
+                  placeholder="showroom-khang-viet-quan-1"
+                  className="w-full rounded-xl border border-black/15 px-3.5 py-2 font-mono text-xs outline-hidden focus:border-(--accent-bronze)"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold">
+                    Ảnh thực tế / Ảnh bìa
                   </label>
-                  <input
-                    type="text"
-                    value={draft.location}
-                    onChange={(e) =>
-                      setDraft((d) => ({ ...d, location: e.target.value }))
+                  <UniversalMediaUpload
+                    label="Ảnh thực tế / Ảnh bìa"
+                    value={draft.coverUrl}
+                    onChange={(url) =>
+                      setDraft((d) => ({ ...d, coverUrl: url }))
                     }
-                    placeholder="Quận 1, TP. Hồ Chí Minh"
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
+                  <label className="mb-1 block text-xs font-semibold">
+                    Ảnh phối cảnh 2D/3D (tùy chọn)
+                  </label>
+                  <UniversalMediaUpload
+                    label="Ảnh phối cảnh 2D/3D"
+                    value={draft.renderUrl}
+                    onChange={(url) =>
+                      setDraft((d) => ({ ...d, renderUrl: url }))
+                    }
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="space-y-3 rounded-2xl border border-black/10 bg-[#faf9f6] p-4">
+                <label className="block text-xs font-semibold">
+                  Thông tin Đối tác / Khách hàng
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {(
+                    [
+                      { id: "none", label: "Khách lẻ / Không gắn đối tác" },
+                      { id: "existing", label: "Chọn đối tác có sẵn" },
+                      { id: "new", label: "Tạo đối tác mới nhanh" },
+                    ] as const
+                  ).map((mode) => (
+                    <button
+                      key={mode.id}
+                      type="button"
+                      onClick={() =>
+                        setDraft((d) => ({ ...d, partnerMode: mode.id }))
+                      }
+                      className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                        draft.partnerMode === mode.id
+                          ? "border-[#181715] bg-[#181715] text-white"
+                          : "border-black/12 bg-white text-[#625f5a] hover:text-[#1a1918]"
+                      }`}
+                    >
+                      {mode.label}
+                    </button>
+                  ))}
+                </div>
+
+                {draft.partnerMode === "existing" && (
+                  <select
+                    value={draft.organizationId}
+                    onChange={(e) =>
+                      setDraft((d) => ({
+                        ...d,
+                        organizationId: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                  >
+                    <option value="">-- Chọn đối tác --</option>
+                    {organizations.map((org) => (
+                      <option key={org.id} value={org.id}>
+                        {org.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+                {draft.partnerMode === "new" && (
+                  <input
+                    type="text"
+                    value={draft.newPartnerName}
+                    onChange={(e) =>
+                      setDraft((d) => ({
+                        ...d,
+                        newPartnerName: e.target.value,
+                      }))
+                    }
+                    placeholder="Nhập tên đối tác mới..."
+                    className="w-full rounded-xl border border-black/15 bg-white px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                  />
+                )}
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold">
                     Năm hoàn thành
                   </label>
                   <input
-                    type="text"
+                    type="number"
+                    min={1990}
+                    max={2100}
                     value={draft.year}
                     onChange={(e) =>
                       setDraft((d) => ({ ...d, year: e.target.value }))
                     }
-                    placeholder="2026"
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                    className="w-full rounded-xl border border-black/15 px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Vật liệu chính (cách nhau dấu phẩy)
+                  <label className="mb-1 block text-xs font-semibold">
+                    Trạng thái xuất bản
                   </label>
-                  <input
-                    type="text"
-                    value={draft.material}
+                  <select
+                    value={draft.publishStatus}
                     onChange={(e) =>
-                      setDraft((d) => ({ ...d, material: e.target.value }))
+                      setDraft((d) => ({
+                        ...d,
+                        publishStatus: e.target.value as PublishStatus,
+                      }))
                     }
-                    placeholder="Alu ngoài trời, Chữ nổi Inox, LED Samsung"
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-xs font-semibold">
-                    Tổ đội & Tiến độ
-                  </label>
-                  <input
-                    type="text"
-                    value={draft.team}
-                    onChange={(e) =>
-                      setDraft((d) => ({ ...d, team: e.target.value }))
-                    }
-                    placeholder="Tổ Quảng cáo • Hoàn thành 10 ngày"
-                    className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
-                  />
+                    className="w-full rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                  >
+                    <option value="PUBLISHED">Công khai (Published)</option>
+                    <option value="DRAFT">Bản nháp (Draft)</option>
+                    <option value="ARCHIVED">Lưu trữ (Archived)</option>
+                  </select>
                 </div>
               </div>
 
               <div>
                 <label className="mb-1.5 block text-xs font-semibold">
-                  Link ảnh Phối cảnh 3D (tùy chọn)
+                  Hạng mục dịch vụ
                 </label>
-                <input
-                  type="text"
-                  value={draft.img3D}
-                  onChange={(e) =>
-                    setDraft((d) => ({ ...d, img3D: e.target.value }))
-                  }
-                  placeholder="https://... hoặc /image/projects/..."
-                  className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
-                />
+                <div className="flex flex-wrap gap-2">
+                  {services.map((svc) => {
+                    const active = draft.serviceIds.includes(svc.id);
+                    return (
+                      <button
+                        key={svc.id}
+                        type="button"
+                        onClick={() => toggleService(svc.id)}
+                        className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                          active
+                            ? "border-[#181715] bg-[#181715] text-white"
+                            : "border-black/15 bg-[#faf9f6] text-[#625f5a] hover:border-black/30"
+                        }`}
+                      >
+                        {svc.name}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               <div>
-                <label className="mb-1.5 block text-xs font-semibold">
-                  Mô tả ngắn
+                <label className="mb-1 block text-xs font-semibold">
+                  Mô tả tóm tắt
                 </label>
                 <textarea
                   rows={3}
-                  value={draft.desc}
+                  value={draft.summary}
                   onChange={(e) =>
-                    setDraft((d) => ({ ...d, desc: e.target.value }))
+                    setDraft((d) => ({ ...d, summary: e.target.value }))
                   }
-                  placeholder="Tóm tắt phạm vi thi công, điểm nhấn kỹ thuật..."
-                  className="w-full rounded-xl border border-black/15 bg-[#faf9f6] px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
+                  placeholder="Mô tả ngắn gọn về hạng mục thi công, vật liệu chính..."
+                  className="w-full rounded-xl border border-black/15 px-3.5 py-2.5 text-sm outline-hidden focus:border-(--accent-bronze)"
                 />
               </div>
+
+              <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-black/12 px-3.5 py-2.5 text-sm">
+                <input
+                  type="checkbox"
+                  checked={draft.isFeatured}
+                  onChange={(e) =>
+                    setDraft((d) => ({ ...d, isFeatured: e.target.checked }))
+                  }
+                  className="h-4 w-4 accent-[#181715]"
+                />
+                <span>Hiển thị nổi bật trên Trang chủ</span>
+              </label>
             </>
           )}
 
           {error && (
-            <div className="rounded-xl border border-red-500/25 bg-red-50 px-4 py-2.5 text-xs font-medium text-red-700">
+            <div className="rounded-xl border border-red-500/25 bg-red-50 px-3.5 py-2 text-xs font-medium text-red-700">
               {error}
             </div>
           )}
         </div>
 
-        {/* Wizard Footer */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-black/8 bg-[#faf9f6] px-6 py-4">
-          {step > 0 ? (
+        <div className="flex items-center justify-between border-t border-black/10 px-6 py-4">
+          {step === 0 ? (
             <button
               type="button"
-              onClick={() => setStep((s) => s - 1)}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-black/15 bg-white px-4 py-2 text-xs font-semibold text-[#1a1918] hover:border-[#1a1918]"
+              onClick={onClose}
+              className="cursor-pointer rounded-full border border-black/15 px-4 py-2 text-xs font-semibold text-[#625f5a] hover:text-[#1a1918]"
+            >
+              Hủy
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setStep(0)}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-black/15 px-4 py-2 text-xs font-semibold text-[#1a1918]"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Quay lại
             </button>
-          ) : (
-            <span className="text-xs text-[#625f5a]">
-              Bước {step + 1} / 3
-            </span>
           )}
 
-          <div className="flex flex-wrap items-center gap-2">
-            {step < 2 ? (
-              <button
-                type="button"
-                onClick={handleNext}
-                className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[#181715] px-5 py-2.5 text-xs font-semibold text-white hover:bg-(--accent-bronze)"
-              >
-                Tiếp tục
-                <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            ) : (
-              <>
-                {!editingProject && (
-                  <button
-                    type="button"
-                    disabled={saving}
-                    onClick={() => handleSave(true)}
-                    className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-[#181715] bg-white px-4 py-2.5 text-xs font-semibold text-[#181715] hover:bg-[#181715] hover:text-white disabled:opacity-50"
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                    {saving ? "Đang lưu..." : "Lưu & Thêm dự án tiếp"}
-                  </button>
-                )}
-                <button
-                  type="button"
-                  disabled={saving}
-                  onClick={() => handleSave(false)}
-                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[#181715] px-5 py-2.5 text-xs font-semibold text-white hover:bg-(--accent-bronze) disabled:opacity-50"
-                >
-                  <Check className="h-3.5 w-3.5" />
-                  {saving
-                    ? "Đang lưu..."
-                    : editingProject
-                    ? "Cập nhật dự án"
-                    : "Lưu & Đóng"}
-                </button>
-              </>
-            )}
-          </div>
+          {step === 0 ? (
+            <button
+              type="button"
+              onClick={handleNext}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-[#181715] px-5 py-2 text-xs font-semibold text-white hover:bg-(--accent-bronze)"
+            >
+              Tiếp tục
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={saving}
+              onClick={handleSave}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-[#181715] px-5 py-2 text-xs font-semibold text-white hover:bg-(--accent-bronze) disabled:opacity-60"
+            >
+              <Check className="h-3.5 w-3.5" />
+              {saving ? "Đang lưu..." : "Lưu dự án"}
+            </button>
+          )}
         </div>
       </div>
     </BaseModal>
   );
 };
-
-export default ProjectWizardModal;

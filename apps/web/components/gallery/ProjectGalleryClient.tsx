@@ -21,7 +21,10 @@ export const ProjectGalleryClient: React.FC<ProjectGalleryClientProps> = ({
 
   return (
     <div className="min-h-screen bg-[#faf9f6] text-[#1a1918]">
-      <GalleryHeroStats stats={data.stats} />
+      <GalleryHeroStats
+        projectCount={data.projects.length}
+        organizationCount={data.organizations.length}
+      />
 
       <ChapterScrollRail
         partnerClusters={partnerClusters}

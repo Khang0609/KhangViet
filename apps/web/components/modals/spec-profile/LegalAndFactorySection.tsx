@@ -65,7 +65,7 @@ export const LegalAndFactorySection: React.FC = () => {
         <div className="grid grid-cols-2 gap-3 pt-2">
           {divisions.map((div) => (
             <div
-              key={div.code}
+              key={div.id}
               className="border border-white/6 bg-(--bg-surface) p-3"
             >
               <div className="font-syne text-xl font-bold text-(--accent-bronze)">

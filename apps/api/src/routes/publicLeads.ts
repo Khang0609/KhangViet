@@ -1,5 +1,5 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { CreateLeadDtoSchema, ContactLeadSchema } from "@khangviet/types";
+import { CreateLeadDtoSchema, LeadSchema } from "@khangviet/types";
 import { ErrorResponseSchema } from "../schemas/apiResponse";
 import { defaultValidationHook } from "../middlewares/validationHook";
 import { createRateLimiter } from "../middlewares/rateLimiter";
@@ -39,7 +39,7 @@ const createLeadRoute = createRoute({
         "application/json": {
           schema: z.object({
             success: z.literal(true),
-            data: ContactLeadSchema,
+            data: LeadSchema,
             message: z.string(),
           }),
         },
@@ -59,22 +59,8 @@ const createLeadRoute = createRoute({
 
 publicLeadsRouter.openapi(createLeadRoute, async (c) => {
   const body = c.req.valid("json");
-  if (!body || !body.fullName || !body.phone) {
-    return c.json(
-      { success: false as const, error: "Họ tên và số điện thoại là bắt buộc" },
-      400
-    );
-  }
-
   const repos = getContextRepos(c);
-  const newLead = await repos.lead.createLead({
-    fullName: body.fullName.trim(),
-    phone: body.phone.trim(),
-    email: body.email?.trim() || undefined,
-    serviceCategory: body.serviceCategory?.trim() || undefined,
-    projectScale: body.projectScale?.trim() || undefined,
-    message: body.message?.trim() || undefined,
-  });
+  const newLead = await repos.lead.createLead(body);
 
   await notifyNewLead(newLead, c.env);
 

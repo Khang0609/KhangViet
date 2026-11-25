@@ -1,13 +1,19 @@
 import React from "react";
-import type { GalleryStats } from "@khangviet/types";
 
 interface GalleryHeroStatsProps {
-  stats?: GalleryStats;
+  projectCount?: number;
+  organizationCount?: number;
 }
 
-export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => {
-  const totalLabel = stats?.totalProjectsLabel ?? "1,000+";
-  const brandsLabel = stats?.b2bBrandsLabel ?? "45+";
+export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({
+  projectCount,
+  organizationCount,
+}) => {
+  const totalLabel = projectCount && projectCount > 0 ? String(projectCount) : "1,000+";
+  const brandsLabel =
+    organizationCount && organizationCount > 0
+      ? String(organizationCount)
+      : "45+";
 
   return (
     <section className="border-b border-black/8 bg-[#f4f1ea] pt-28 pb-8 sm:pt-32 sm:pb-10">
@@ -15,15 +21,15 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <p className="text-xs font-medium tracking-[0.14em] text-(--accent-bronze) uppercase">
-              Kho dự án & Hồ sơ năng lực
+              Kho dự án &amp; Hồ sơ năng lực
             </p>
             <h1 className="mt-2.5 text-3xl leading-tight font-semibold tracking-tight text-[#1a1918] sm:text-4xl">
               Công Trình Thực Tế &amp; Hồ Sơ Trúng Thầu.
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-[#625f5a]">
-              Hành trình kiến tạo không gian thương hiệu của Khang Việt — mở đầu
-              từ hệ thống đối tác chuỗi hàng đầu toàn quốc đến các giải pháp kỹ
-              thuật thi công trực tiếp tại xưởng Bình Tân.
+              Hành trình kiến tạo không gian thương hiệu của Khang Việt — từ hệ
+              thống đối tác chuỗi toàn quốc đến các giải pháp kỹ thuật thi công
+              trực tiếp tại xưởng Bình Tân.
             </p>
           </div>
 
@@ -34,7 +40,7 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
                 <span className="text-(--accent-bronze)">+</span>
               </div>
               <div className="mt-1 text-xs text-[#625f5a]">
-                Công trình toàn quốc
+                Công trình tiêu biểu
               </div>
             </div>
             <div>
@@ -43,7 +49,7 @@ export const GalleryHeroStats: React.FC<GalleryHeroStatsProps> = ({ stats }) => 
                 <span className="text-(--accent-bronze)">+</span>
               </div>
               <div className="mt-1 text-xs text-[#625f5a]">
-                Thương hiệu chuỗi B2B
+                Thương hiệu đối tác
               </div>
             </div>
             <div>

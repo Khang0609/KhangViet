@@ -1,9 +1,9 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { ProjectGalleryItem } from "@khangviet/types";
+import type { ProjectMedia } from "@khangviet/types";
 
 export interface ProjectGalleryViewerProps {
-  gallery: ProjectGalleryItem[];
+  gallery: ProjectMedia[];
   activeIndex: number;
   onSelectIndex: (index: number) => void;
   onNext: () => void;
@@ -24,8 +24,8 @@ export const ProjectGalleryViewer: React.FC<ProjectGalleryViewerProps> = ({
     <div className="relative flex flex-col justify-between border-b border-white/8 bg-[#0C0D0F] lg:w-7/12 lg:border-r lg:border-b-0">
       <div className="relative flex min-h-70 flex-1 items-center justify-center overflow-hidden p-4 sm:min-h-105 sm:p-8">
         <img
-          src={currentItem.src}
-          alt={currentItem.caption}
+          src={currentItem.storageKey}
+          alt={currentItem.caption || currentItem.altText || "Ảnh dự án"}
           className="max-h-[56vh] w-auto border border-white/10 object-contain shadow-2xl"
         />
 
@@ -54,11 +54,13 @@ export const ProjectGalleryViewer: React.FC<ProjectGalleryViewerProps> = ({
       <div className="space-y-4 border-t border-white/8 bg-(--bg-obsidian) p-5">
         <div>
           <div className="font-mono-tech text-[11px] tracking-wider text-(--accent-bronze) uppercase">
-            {currentItem.location} — {currentItem.spec}
+            {currentItem.kind}
           </div>
-          <p className="mt-1 text-sm font-medium text-(--text-primary)">
-            {currentItem.caption}
-          </p>
+          {currentItem.caption && (
+            <p className="mt-1 text-sm font-medium text-(--text-primary)">
+              {currentItem.caption}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
@@ -75,8 +77,8 @@ export const ProjectGalleryViewer: React.FC<ProjectGalleryViewerProps> = ({
               aria-label={`Xem ảnh ${idx + 1}`}
             >
               <img
-                src={item.src}
-                alt=""
+                src={item.storageKey}
+                alt={item.altText || ""}
                 className="h-full w-full object-cover"
               />
             </button>

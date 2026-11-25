@@ -3,9 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Layers, MapPin, Sparkles } from "lucide-react";
-import type { BentoLayoutPreset, ClusterSurfaceTone, GalleryProject } from "@khangviet/types";
+import type { GalleryProject } from "@khangviet/types";
 import {
-  getProjectObjectPosition,
+  getProjectCoverUrl,
+  getProjectRenderUrl,
+  type BentoLayoutPreset,
+  type ClusterSurfaceTone,
   type ResolvedGalleryCluster,
 } from "@/lib/galleryClusters";
 
@@ -68,30 +71,33 @@ function buildBentoTiles(
   const tiles: BentoTile[] = [];
 
   for (const project of projects) {
+    const coverUrl = getProjectCoverUrl(project);
+    const serviceLabel =
+      project.services.map((s) => s.name).join(" • ") || "Thiết kế & Thi công";
     tiles.push({
       key: `${project.id}-actual`,
       project,
-      imageUrl: project.imgActual,
-      badge:
-        project.stage === "TENDER_3D" ? "Hồ sơ 2D/3D" : "Nghiệm thu thực tế",
+      imageUrl: coverUrl,
+      badge: project.organization?.name || "Công trình thực tế",
       title: project.title,
-      meta: `${project.category} • ${project.location}`,
+      meta: project.year ? `${serviceLabel} • ${project.year}` : serviceLabel,
       href: `${baseHref}?project=${encodeURIComponent(project.id)}`,
     });
   }
 
-  // Nếu cụm có ít hơn 3 dự án, tận dụng phối cảnh 3D phụ trợ để bố cục Bento luôn cân đối
   if (tiles.length < 3) {
     for (const project of projects) {
       if (tiles.length >= 3) break;
-      if (project.img3D && project.img3D !== project.imgActual) {
+      const renderUrl = getProjectRenderUrl(project);
+      const coverUrl = getProjectCoverUrl(project);
+      if (renderUrl && renderUrl !== coverUrl) {
         tiles.push({
           key: `${project.id}-3d`,
           project,
-          imageUrl: project.img3D,
+          imageUrl: renderUrl,
           badge: "Phối cảnh kỹ thuật 3D",
           title: `Phương án 3D — ${project.title}`,
-          meta: `${project.material}`,
+          meta: project.services.map((s) => s.name).join(" • ") || "Thiết kế 3D",
           href: `${baseHref}?project=${encodeURIComponent(project.id)}&view=3d`,
         });
       }
@@ -116,12 +122,11 @@ const BentoPhotoTile: React.FC<{
         src={tile.imageUrl}
         alt={tile.title}
         loading="lazy"
-        style={{ objectPosition: getProjectObjectPosition(tile.project) }}
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
       />
       <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-black/10 transition-opacity duration-300 group-hover:from-black/90" />
 
-      {/* Top row: Code + Stage Badge */}
+      {/* Top row: Badge */}
       <div className="relative z-10 flex items-start justify-between gap-2 p-4 sm:p-5">
         <div className="flex flex-wrap items-center gap-2">
           <span
@@ -130,11 +135,6 @@ const BentoPhotoTile: React.FC<{
           >
             {tile.badge}
           </span>
-          {tile.project.code && (
-            <span className="rounded-full border border-white/20 bg-black/45 px-2.5 py-1 font-mono text-[11px] font-medium text-white/90 backdrop-blur-md">
-              {tile.project.code}
-            </span>
-          )}
         </div>
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/40 text-white backdrop-blur-md transition-all group-hover:border-white group-hover:bg-white group-hover:text-[#181715]">
           <ArrowUpRight className="h-4 w-4" />
@@ -191,8 +191,8 @@ const SpecAnchorTile: React.FC<{
 
         {leadProject && (
           <div className={`mt-4 border-t pt-3 text-xs ${surface.cardBorder} ${surface.mutedText}`}>
-            <span className="font-semibold">Vật liệu tiêu biểu: </span>
-            {leadProject.material}
+            <span className="font-semibold">Hạng mục tiêu biểu: </span>
+            {leadProject.services.map((s) => s.name).join(" • ") || leadProject.title}
           </div>
         )}
       </div>
@@ -375,13 +375,13 @@ export const BentoClusterSection: React.FC<BentoClusterSectionProps> = ({
   cluster,
   chapterNumber,
 }) => {
-  const { config, projects, href } = cluster;
-  const surface = getSurfaceClasses(config.surfaceTone);
+  const { config, projects, href, surfaceTone, layoutPreset } = cluster;
+  const surface = getSurfaceClasses(surfaceTone);
   const accentColor = config.accentColor ?? "#F58633";
   const tiles = buildBentoTiles(projects, href);
   const chapterCode = String(chapterNumber).padStart(2, "0");
 
-  const isCharcoal = config.surfaceTone === "charcoal";
+  const isCharcoal = surfaceTone === "charcoal";
 
   return (
     <section
@@ -449,7 +449,7 @@ export const BentoClusterSection: React.FC<BentoClusterSectionProps> = ({
 
         {/* Bento Grid theo Preset */}
         {renderPresetGrid(
-          config.layoutPreset,
+          layoutPreset,
           tiles,
           cluster,
           surface,
