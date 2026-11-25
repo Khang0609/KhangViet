@@ -47,3 +47,39 @@ jobs:
             echo "Commit policy failed. Required format: <Close|Closes|Closed|Fix|Fixes|Fixed|Resolve|Resolves> #<issue-number> <description>"
             exit 1
           fi
+
+  auto-close-issues:
+    name: Auto-close linked issues on main/develop
+    needs: commit-issue-tag
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Close issues referenced in pushed commits
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || [ -z "${{ github.event.before }}" ]; then
+            RANGE="-n 1 HEAD"
+          else
+            RANGE="${{ github.event.before }}..${{ github.sha }}"
+          fi
+
+          ISSUES=$(git log --no-merges --format=%B $RANGE | grep -Eio '(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)[[:space:]]+#[0-9]+' | grep -Eo '[0-9]+' | sort -u)
+
+          for num in $ISSUES; do
+            echo "Closing issue #$num from push to ${{ github.ref_name }}..."
+            curl -fsSL -X PATCH \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$REPO/issues/$num" \
+              -d '{"state":"closed","state_reason":"completed"}' >/dev/null || echo "⚠️ Could not close #$num"
+          done
