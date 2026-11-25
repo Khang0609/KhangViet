@@ -97,7 +97,7 @@ export const InHouseEngineering: React.FC<InHouseEngineeringProps> = ({
               <div className="divide-y divide-black/8">
                 {activeDivisions.map((division, index) => (
                   <ProductionDivisionCard
-                    key={division.id}
+                    key={`${division.id || division.name || "division"}-${index}`}
                     division={division}
                     index={index}
                   />
