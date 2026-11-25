@@ -3,6 +3,7 @@ name: Commit Policy Check
 on:
   push:
     branches: [main]
+    paths: ["apps/**", "packages/**"]
 
 jobs:
   commit-issue-tag:

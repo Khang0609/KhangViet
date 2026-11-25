@@ -1,0 +1,10 @@
+---
+name: architect
+description: "Sketch types, signatures, and module structure before code, then stay in the loop while implementation fills in. Use for /architect, 'architect this', 'design this', or non-trivial work where jumping to code would lock in the wrong shape."
+---
+
+# Architect
+
+Before writing code, trace every system the change touches (`packages/types`, `packages/repositories`, `apps/api`, `apps/web`), then sketch two different shapes for it (Zod contracts, TypeScript types, signatures, module boundaries) and pick the one where each piece of state has one owner, each task has one way to do it, and callers need to know least. Redesign instead of patching if workarounds repeat.
+
+See **principle-type-system-discipline** when locking in types and boundaries.
