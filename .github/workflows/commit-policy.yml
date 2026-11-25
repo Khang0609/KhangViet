@@ -1,0 +1,49 @@
+name: Commit Policy Check
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  commit-issue-tag:
+    name: Require Closing Keyword & Issue Number
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commit messages
+        shell: bash
+        run: |
+          PATTERN='(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)[[:space:]]+#[0-9]+'
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RANGE="origin/${{ github.base_ref }}..HEAD"
+          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ] || [ -z "${{ github.event.before }}" ]; then
+            RANGE="-n 1 HEAD"
+          else
+            RANGE="${{ github.event.before }}..${{ github.sha }}"
+          fi
+
+          FAILED=0
+          while IFS= read -r sha; do
+            [ -z "$sha" ] && continue
+            msg=$(git log -1 --format=%B "$sha")
+            if ! echo "$msg" | grep -Eiq "$PATTERN"; then
+              echo "❌ Commit $sha is missing a GitHub closing keyword + issue number (e.g. 'Closes #3 ...' or 'Fixed #4 ...')."
+              echo "   Message: $(echo "$msg" | head -n 1)"
+              FAILED=1
+            else
+              echo "✅ Commit $sha: $(echo "$msg" | head -n 1)"
+            fi
+          done < <(git rev-list --no-merges $RANGE)
+
+          if [ "$FAILED" -ne 0 ]; then
+            echo ""
+            echo "Commit policy failed. Required format: <Close|Closes|Closed|Fix|Fixes|Fixed|Resolve|Resolves> #<issue-number> <description>"
+            exit 1
+          fi
