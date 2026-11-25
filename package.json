@@ -6,7 +6,8 @@
     "dev": "pnpm --filter api dev",
     "dev:web": "pnpm --filter web dev",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "verify": "node scripts/verify-app.mjs"
   },
   "devDependencies": {
     "turbo": "^2.10.10"
