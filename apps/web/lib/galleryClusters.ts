@@ -106,6 +106,17 @@ export function resolveGalleryClusters(data: ProjectGalleryResponse): {
     });
   });
 
+  partnerClusters.sort((a, b) => {
+    const countDiff = b.projects.length - a.projects.length;
+    if (countDiff !== 0) return countDiff;
+    return a.config.title.localeCompare(b.config.title, "vi");
+  });
+  partnerClusters.forEach((cluster, idx) => {
+    cluster.config.sortOrder = idx;
+    cluster.layoutPreset = PRESET_ROTATION[idx % PRESET_ROTATION.length];
+    cluster.surfaceTone = SURFACE_ROTATION[idx % SURFACE_ROTATION.length];
+  });
+
   const sortedClusters = [...data.clusters].sort(
     (a, b) => a.sortOrder - b.sortOrder
   );
@@ -132,6 +143,16 @@ export function resolveGalleryClusters(data: ProjectGalleryResponse): {
       layoutPreset: PRESET_ROTATION[idx % PRESET_ROTATION.length],
       surfaceTone: SURFACE_ROTATION[idx % SURFACE_ROTATION.length],
     });
+  });
+
+  solutionClusters.sort((a, b) => {
+    const countDiff = b.projects.length - a.projects.length;
+    if (countDiff !== 0) return countDiff;
+    return a.config.sortOrder - b.config.sortOrder;
+  });
+  solutionClusters.forEach((cluster, idx) => {
+    cluster.layoutPreset = PRESET_ROTATION[idx % PRESET_ROTATION.length];
+    cluster.surfaceTone = SURFACE_ROTATION[idx % SURFACE_ROTATION.length];
   });
 
   return { partnerClusters, solutionClusters };
