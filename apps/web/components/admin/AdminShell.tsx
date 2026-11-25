@@ -126,9 +126,6 @@ export const AdminShell: React.FC<AdminShellProps> = ({
             <Link href="/admin/projects" className="shrink-0">
               <KhangVietLogo compact className="h-8" />
             </Link>
-            <span className="hidden rounded-full bg-[#181715] px-2.5 py-0.5 text-[11px] font-semibold text-white sm:inline-flex">
-              Studio
-            </span>
 
             <nav className="ml-2 flex items-center gap-1">
               {navItems.map((item) => {
