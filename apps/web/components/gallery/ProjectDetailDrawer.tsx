@@ -21,10 +21,18 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
   const [activeTab, setActiveTab] = useState<DrawerStageTab>("actual");
   const [sliderValue, setSliderValue] = useState(50);
 
+  const projectId = project?.id ?? null;
+  const [prevProjectId, setPrevProjectId] = useState<string | null>(projectId);
+  if (prevProjectId !== projectId) {
+    setPrevProjectId(projectId);
+    if (projectId) {
+      setActiveTab("actual");
+      setSliderValue(50);
+    }
+  }
+
   useEffect(() => {
     if (!project) return;
-    setActiveTab("actual");
-    setSliderValue(50);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();

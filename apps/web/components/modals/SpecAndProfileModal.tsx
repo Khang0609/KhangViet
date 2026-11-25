@@ -17,10 +17,12 @@ export const SpecAndProfileModal: React.FC<SpecAndProfileModalProps> = ({
   onClose,
 }) => {
   const [activeTab, setActiveTab] = useState<'profile' | 'wireframe'>(initialTab);
+  const [prevInitialTab, setPrevInitialTab] = useState<'profile' | 'wireframe'>(initialTab);
 
-  React.useEffect(() => {
+  if (prevInitialTab !== initialTab) {
+    setPrevInitialTab(initialTab);
     setActiveTab(initialTab);
-  }, [initialTab]);
+  }
 
   return (
     <BaseModal

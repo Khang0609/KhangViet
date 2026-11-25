@@ -54,7 +54,7 @@ export const CorporateProfileTab: React.FC = () => {
       <div className="p-6 bg-linear-to-r from-(--bg-surface) via-[#221E1A] to-(--bg-surface) border border-(--accent-bronze)/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="text-xs uppercase tracking-widest text-(--accent-bronze) font-mono-tech">CAM KẾT TỪ BAN GIÁM ĐỐC KHANG VIỆT</div>
-          <div className="text-base font-semibold text-(--text-primary) mt-1">"{legalInfo.commitment}"</div>
+          <div className="text-base font-semibold text-(--text-primary) mt-1">&ldquo;{legalInfo.commitment}&rdquo;</div>
         </div>
         <PhoneCallButton variant="filled" label={`Gọi Giám Đốc: ${legalInfo.hotlineFormatted}`} phoneNumber={legalInfo.hotline} />
       </div>

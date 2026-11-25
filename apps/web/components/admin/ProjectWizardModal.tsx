@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import type {
   CreateProjectDto,
@@ -108,16 +108,22 @@ export const ProjectWizardModal: React.FC<ProjectWizardModalProps> = ({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    setStep(0);
-    setError(null);
-    setDraft(
-      editingProject
-        ? projectToDraft(editingProject)
-        : createEmptyDraft(services[0]?.id)
-    );
-  }, [isOpen, editingProject, services]);
+  const syncKey = isOpen
+    ? `${editingProject?.id ?? "new"}:${services.length > 0 ? "ready" : "loading"}`
+    : null;
+  const [prevSyncKey, setPrevSyncKey] = useState<string | null>(null);
+  if (syncKey !== prevSyncKey) {
+    setPrevSyncKey(syncKey);
+    if (syncKey !== null) {
+      setStep(0);
+      setError(null);
+      setDraft(
+        editingProject
+          ? projectToDraft(editingProject)
+          : createEmptyDraft(services[0]?.id)
+      );
+    }
+  }
 
   const toggleService = (serviceId: string) => {
     setDraft((prev) => {

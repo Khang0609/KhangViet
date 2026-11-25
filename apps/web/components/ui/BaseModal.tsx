@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
+
+const emptySubscribe = () => () => {};
 
 export interface BaseModalProps {
   isOpen: boolean;
@@ -16,11 +18,11 @@ export const BaseModal: React.FC<BaseModalProps> = ({
   children,
   ariaLabel,
 }) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
     if (!isOpen) return;

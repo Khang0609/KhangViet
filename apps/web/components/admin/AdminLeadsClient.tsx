@@ -55,7 +55,19 @@ export const AdminLeadsClient: React.FC = () => {
   };
 
   useEffect(() => {
-    void loadLeads();
+    let active = true;
+    void (async () => {
+      const res = await getAdminLeads({
+        status: statusFilter === "ALL" ? undefined : statusFilter,
+        search: search.trim() || undefined,
+      });
+      if (!active) return;
+      if (res.success) setLeads(res.data);
+      setLoading(false);
+    })();
+    return () => {
+      active = false;
+    };
   }, [statusFilter]);
 
   const openDetail = async (lead: Lead) => {

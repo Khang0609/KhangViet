@@ -2,6 +2,9 @@
   "name": "@khangviet/types",
   "version": "0.1.0",
   "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {

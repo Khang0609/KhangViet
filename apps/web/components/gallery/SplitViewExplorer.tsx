@@ -55,24 +55,33 @@ export const SplitViewExplorer: React.FC<SplitViewExplorerProps> = ({
   );
   const [quoteProject, setQuoteProject] = useState<GalleryProject | null>(null);
 
+  const [prevSlug, setPrevSlug] = useState(slug);
+  if (prevSlug !== slug) {
+    setPrevSlug(slug);
+    if (!projects.some((p) => p.id === selectedId) && projects[0]) {
+      setSelectedId(projects[0].id);
+    }
+    setPreviewMode("actual");
+  }
+
   // Đồng bộ lựa chọn ban đầu từ URL query (?project=...&view=3d) khi điều hướng từ Tầng 1 hoặc Cross-link
   useEffect(() => {
     if (projects.length === 0) return;
+    let active = true;
     const params = new URLSearchParams(window.location.search);
     const paramProjectId = params.get("project");
     const paramView = params.get("view");
 
-    if (paramProjectId && projects.some((p) => p.id === paramProjectId)) {
-      setSelectedId(paramProjectId);
-    } else if (!projects.some((p) => p.id === selectedId)) {
-      setSelectedId(projects[0].id);
-    }
-
-    if (paramView === "3d") {
-      setPreviewMode("3d");
-    } else {
-      setPreviewMode("actual");
-    }
+    queueMicrotask(() => {
+      if (!active) return;
+      if (paramProjectId && projects.some((p) => p.id === paramProjectId)) {
+        setSelectedId(paramProjectId);
+      }
+      setPreviewMode(paramView === "3d" ? "3d" : "actual");
+    });
+    return () => {
+      active = false;
+    };
   }, [slug, projects]);
 
   const activeProject =

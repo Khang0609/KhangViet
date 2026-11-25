@@ -15,6 +15,9 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "test": {
+      "dependsOn": ["^build"]
+    },
     "start": {
       "dependsOn": ["build"],
       "persistent": true,

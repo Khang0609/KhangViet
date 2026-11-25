@@ -2,9 +2,11 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter web build && pnpm --filter api build",
+    "check-types": "turbo run check-types",
     "dev": "pnpm --filter api dev",
     "dev:web": "pnpm --filter web dev",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "turbo": "^2.10.10"

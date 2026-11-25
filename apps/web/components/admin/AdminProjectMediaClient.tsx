@@ -122,22 +122,28 @@ export const AdminProjectMediaClient: React.FC<AdminProjectMediaClientProps> = (
     return [...items].sort((a, b) => a.sortOrder - b.sortOrder);
   }, [project]);
 
-  useEffect(() => {
-    if (!project) return;
-    const existing = project.comparisons?.[0];
-    if (existing) {
-      setRenderMediaId(existing.renderMediaId);
-      setActualMediaId(existing.actualMediaId);
-      return;
+  const syncKey = project
+    ? `${project.id}:${project.comparisons?.[0]?.id ?? ""}`
+    : null;
+  const [prevMediaSyncKey, setPrevMediaSyncKey] = useState<string | null>(null);
+  if (syncKey !== prevMediaSyncKey) {
+    setPrevMediaSyncKey(syncKey);
+    if (project) {
+      const existing = project.comparisons?.[0];
+      if (existing) {
+        setRenderMediaId(existing.renderMediaId);
+        setActualMediaId(existing.actualMediaId);
+      } else {
+        const defaultRender = mediaList.find((m) => m.kind === "RENDER")?.id ?? "";
+        const defaultActual =
+          mediaList.find((m) => m.kind === "ACTUAL")?.id ??
+          mediaList.find((m) => m.isCover)?.id ??
+          "";
+        setRenderMediaId(defaultRender);
+        setActualMediaId(defaultActual);
+      }
     }
-    const defaultRender = mediaList.find((m) => m.kind === "RENDER")?.id ?? "";
-    const defaultActual =
-      mediaList.find((m) => m.kind === "ACTUAL")?.id ??
-      mediaList.find((m) => m.isCover)?.id ??
-      "";
-    setRenderMediaId(defaultRender);
-    setActualMediaId(defaultActual);
-  }, [project, mediaList]);
+  }
 
   const selectedRenderMedia = mediaList.find((m) => m.id === renderMediaId);
   const selectedActualMedia = mediaList.find((m) => m.id === actualMediaId);
