@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { X } from "lucide-react";
-import type { Project } from "@khangviet/types";
+import type { Project } from "@/types/landing";
 import { useCarousel } from "@/hooks/useCarousel";
 import BaseModal from "../ui/BaseModal";
 import { ProjectGalleryViewer } from "./project-lightbox/ProjectGalleryViewer";

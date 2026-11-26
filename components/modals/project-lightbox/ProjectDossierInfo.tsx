@@ -1,6 +1,6 @@
 import React from "react";
 import { Building2, Calendar, Layers } from "lucide-react";
-import type { Project } from "@khangviet/types";
+import type { Project } from "@/types/landing";
 import TechBadge from "../../ui/TechBadge";
 import PhoneCallButton from "../../ui/PhoneCallButton";
 

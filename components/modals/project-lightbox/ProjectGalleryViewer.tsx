@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { ProjectMedia } from "@khangviet/types";
+import type { ProjectMedia } from "@/types/landing";
 
 export interface ProjectGalleryViewerProps {
   gallery: ProjectMedia[];

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { Project } from "@khangviet/types";
+import type { Project } from "@/types/landing";
 import MetaRow from "../../ui/MetaRow";
 import { useModalContext } from "../../modals/modalContext";
 

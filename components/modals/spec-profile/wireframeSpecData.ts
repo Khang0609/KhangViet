@@ -1,6 +1,7 @@
-import { getFallbackLandingContent } from "@/lib/fallbackV2";
+import { getLandingContent } from "@/lib/landingData";
+import { formatPhone } from "@/lib/phone";
 
-const HOTLINE = getFallbackLandingContent().companyLegalInfo.hotline;
+const HOTLINE = formatPhone(getLandingContent().companyLegalInfo.hotline);
 
 export const WIREFRAME_SPEC_TEXT = `================================================================================
 KHANG VIET DESIGN (SINCE 2009) — PIXEL-LEVEL WIREFRAME & INTERACTION BLUEPRINT

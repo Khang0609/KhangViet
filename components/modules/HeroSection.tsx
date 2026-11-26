@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import type { HeroSlide } from "@khangviet/types";
+import type { HeroSlide } from "@/types/landing";
 import { HeroCarouselVisual } from "./HeroCarouselVisual";
 
 export interface HeroSectionProps {

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-import type { Project } from "@khangviet/types";
+import type { Project } from "@/types/landing";
 import { useModalContext } from "../../modals/modalContext";
 
 export interface ProjectShowcaseGalleryProps {

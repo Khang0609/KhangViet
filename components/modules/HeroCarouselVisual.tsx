@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { HeroSlide } from "@khangviet/types";
+import type { HeroSlide } from "@/types/landing";
 import { useHeroSlides } from "@/components/contexts/LandingContext";
 import { useCarousel } from "@/hooks/useCarousel";
 

@@ -9,8 +9,8 @@ import type {
   CoreDiscipline,
   Project,
   ProductionDivision,
-} from "@khangviet/types";
-import { getFallbackLandingContent } from "@/lib/fallbackV2";
+} from "@/types/landing";
+import { getLandingContent } from "@/lib/landingData";
 
 export interface LandingContextValue {
   landing: LandingContent;
@@ -28,7 +28,7 @@ export const LandingProvider: React.FC<{
   content: LandingContent;
   children: ReactNode;
 }> = ({ content, children }) => {
-  const fallback = getFallbackLandingContent();
+  const fallback = getLandingContent();
 
   const value: LandingContextValue = {
     landing: content,
@@ -63,7 +63,7 @@ export const LandingProvider: React.FC<{
 export function useLandingContext(): LandingContextValue {
   const context = useContext(LandingContext);
   if (!context) {
-    const fallback = getFallbackLandingContent();
+    const fallback = getLandingContent();
     return {
       landing: fallback,
       heroSlides: fallback.heroSlides,

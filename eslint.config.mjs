@@ -21,12 +21,6 @@ const eslintConfig = defineConfig([
         "error",
         {
           selector:
-            "MemberExpression[object.property.name='data'][property.name='data']",
-          message:
-            "apiClient already unwraps json.data; read res.data directly instead of res.data.data.",
-        },
-        {
-          selector:
             "Literal[value=/\\b(bg-gradient-|flex-shrink-|flex-grow-|ring-offset-)/]",
           message:
             "Use Tailwind CSS v4 syntax (bg-linear-*, shrink-*, grow-*, outline-*/inset-ring-*).",

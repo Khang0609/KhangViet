@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-import type { CoreDiscipline } from "@khangviet/types";
+import type { CoreDiscipline } from "@/types/landing";
 import { useCoreDisciplines } from "@/components/contexts/LandingContext";
 import { SectionHeading } from "../ui/SectionHeading";
 

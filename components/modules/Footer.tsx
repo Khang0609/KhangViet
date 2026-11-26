@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { Layers3 } from 'lucide-react';
-import type { CompanyLegalInfo } from '@khangviet/types';
+import type { CompanyLegalInfo } from '@/types/landing';
 import { useLegalInfo } from '@/components/contexts/LandingContext';
 import KhangVietLogo from '@/ui/KhangVietLogo';
+import { formatPhone, normalizePhone } from '@/lib/phone';
 import { useModalContext } from '../modals/modalContext';
 
 export interface FooterProps {
@@ -57,10 +58,10 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
             <div className="mt-4 space-y-2 text-white/85">
               <a
-                href={`tel:${activeLegal.hotline.replace(/\s+/g, '')}`}
+                href={`tel:${normalizePhone(activeLegal.hotline)}`}
                 className="block text-sm transition-colors hover:text-(--accent-bronze)"
               >
-                Hotline: {activeLegal.hotline}
+                Hotline: {formatPhone(activeLegal.hotline)}
               </a>
               <a
                 href={`mailto:${activeLegal.email}`}

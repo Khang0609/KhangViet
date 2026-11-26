@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { Project } from "@khangviet/types";
+import type { Project } from "@/types/landing";
 import { useFeaturedProjects } from "@/components/contexts/LandingContext";
 import { SectionHeading } from "../../ui/SectionHeading";
 import { ProjectShowcaseGallery } from "./ProjectShowcaseGallery";

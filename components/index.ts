@@ -3,7 +3,6 @@ export * from "./ui/TechBadge";
 export * from "./ui/PhoneCallButton";
 export * from "./ui/SectionHeading";
 export * from "./ui/MetaRow";
-export * from "./ui/media-upload";
 
 export * from "./modules/header/Header";
 export * from "./modules/HeroSection";

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { Organization } from "@khangviet/types";
+import type { Organization } from "@/types/landing";
 import { useFeaturedOrganizations } from "@/components/contexts/LandingContext";
 
 export interface TrustMarqueeProps {

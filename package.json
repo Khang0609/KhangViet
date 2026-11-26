@@ -15,8 +15,6 @@
     }
   },
   "dependencies": {
-    "@khangviet/data": "workspace:*",
-    "@khangviet/types": "workspace:*",
     "clsx": "^2.1.1",
     "lucide-react": "^1.57.0",
     "next": "16.4.6",

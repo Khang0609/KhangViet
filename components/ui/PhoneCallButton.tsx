@@ -3,6 +3,7 @@
 import React from "react";
 import { Phone, PhoneCall } from "lucide-react";
 import { useLegalInfo } from "@/components/contexts/LandingContext";
+import { formatPhone, normalizePhone } from "@/lib/phone";
 
 export interface PhoneCallButtonProps {
   variant?: "compact" | "filled" | "outline" | "icon-only";
@@ -19,8 +20,8 @@ export const PhoneCallButton: React.FC<PhoneCallButtonProps> = ({
 }) => {
   const legal = useLegalInfo();
   const activePhone = phoneNumber || legal.hotline;
-  const activeLabel = label || legal.hotlineFormatted || activePhone;
-  const telHref = `tel:${activePhone.replace(/\s+/g, "")}`;
+  const activeLabel = label || formatPhone(activePhone);
+  const telHref = `tel:${normalizePhone(activePhone)}`;
 
   if (variant === "icon-only") {
     return (

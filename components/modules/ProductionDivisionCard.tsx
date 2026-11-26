@@ -1,5 +1,5 @@
 import React from "react";
-import type { ProductionDivision } from "@khangviet/types";
+import type { ProductionDivision } from "@/types/landing";
 
 export interface ProductionDivisionCardProps {
   division: ProductionDivision;

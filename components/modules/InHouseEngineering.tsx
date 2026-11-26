@@ -2,7 +2,7 @@
 
 import React from "react";
 import { MapPin, ShieldCheck } from "lucide-react";
-import type { CompanyLegalInfo, ProductionDivision } from "@khangviet/types";
+import type { CompanyLegalInfo, ProductionDivision } from "@/types/landing";
 import {
   useLegalInfo,
   useProductionDivisions,

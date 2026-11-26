@@ -9,10 +9,10 @@ import Footer from "@/components/modules/Footer";
 import { ModalProvider } from "@/components/modals/modalContext";
 import { LandingProvider } from "@/components/contexts/LandingContext";
 import LazyModalContainer from "@/components/modals/LazyModalContainer";
-import { getLandingContent } from "@/services/contentService";
+import { getLandingContent } from "@/lib/landingData";
 
-export default async function Home() {
-  const landing = await getLandingContent();
+export default function Home() {
+  const landing = getLandingContent();
 
   return (
     <LandingProvider content={landing}>

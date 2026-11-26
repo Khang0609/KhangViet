@@ -10,9 +10,9 @@ import { useOptionalModalContext } from "../modals/modalContext";
 import { HeaderMobileNav } from "../modules/header/HeaderMobileNav";
 
 export const SITE_NAV_ITEMS = [
-  { number: "01.", label: "Trang chủ", href: "/" },
-  { number: "02.", label: "Kho dự án", href: "/projects" },
-  { number: "03.", label: "Cửa hàng", href: "/shop" },
+  { number: "01.", label: "Trang chủ", href: "/#top" },
+  { number: "02.", label: "Công trình", href: "/#du-an" },
+  { number: "03.", label: "Liên hệ", href: "/#contact-gate" },
 ] as const;
 
 export interface SiteHeaderProps {

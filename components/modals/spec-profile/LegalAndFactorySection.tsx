@@ -6,6 +6,7 @@ import {
   useLegalInfo,
   useProductionDivisions,
 } from "@/components/contexts/LandingContext";
+import { formatPhone } from "@/lib/phone";
 
 export const LegalAndFactorySection: React.FC = () => {
   const legal = useLegalInfo();
@@ -45,7 +46,7 @@ export const LegalAndFactorySection: React.FC = () => {
           <div className="flex justify-between py-2">
             <dt className="text-(--text-secondary)">Hotline điều hành:</dt>
             <dd className="font-mono-tech text-(--accent-bronze)">
-              {legal.hotline}
+              {formatPhone(legal.hotline)}
             </dd>
           </div>
         </dl>
