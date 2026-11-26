@@ -9,11 +9,6 @@
     "start": "next start",
     "lint": "eslint && node scripts/check-css-sources.mjs"
   },
-  "pnpm": {
-    "overrides": {
-      "source-map-js": "^1.2.2"
-    }
-  },
   "dependencies": {
     "clsx": "^2.1.1",
     "lucide-react": "^1.57.0",

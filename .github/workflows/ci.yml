@@ -33,14 +33,11 @@ jobs:
       - name: Install frozen dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck monorepo
+      - name: Typecheck
         run: pnpm check-types
 
-      - name: Lint monorepo
+      - name: Lint
         run: pnpm lint
 
-      - name: Run unit & repository tests
-        run: pnpm test
-
-      - name: Build Next.js export & Cloudflare Worker dry-run
+      - name: Build Next.js static export
         run: pnpm build

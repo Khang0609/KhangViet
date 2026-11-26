@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FileText, Menu, X } from "lucide-react";
+import { FileText } from "lucide-react";
 import KhangVietLogo from "@/ui/KhangVietLogo";
+import { useActiveSection } from "@/hooks/useActiveSection";
 import PhoneCallButton from "../ui/PhoneCallButton";
 import { useOptionalModalContext } from "../modals/modalContext";
-import { HeaderMobileNav } from "../modules/header/HeaderMobileNav";
 
 export const SITE_NAV_ITEMS = [
   { number: "01.", label: "Trang chủ", href: "/#top" },
@@ -24,8 +23,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
   onOpenProfile,
   showHomeActions,
 }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const { activeHref, handleNavClick } = useActiveSection();
   const modalContext = useOptionalModalContext();
 
   const showActions = showHomeActions ?? true;
@@ -41,7 +39,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-black/8 bg-[#f4f1ea]/90 backdrop-blur-md">
-      <div className="relative mx-auto flex h-20 max-w-360 items-center justify-between gap-6 px-5 md:px-8 xl:px-12">
+      <div className="relative mx-auto flex h-20 max-w-360 items-center justify-between gap-4 px-5 md:px-8 xl:px-12">
         <Link
           href="/"
           aria-label="Khang Việt Design — Trang chủ"
@@ -55,15 +53,16 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
           aria-label="Điều hướng chính"
         >
           {SITE_NAV_ITEMS.map((item) => {
-            const isActive = item.href === "/#top" && pathname === "/";
+            const isActive = activeHref === item.href;
 
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className={`relative py-1 text-sm font-medium transition-colors ${
                   isActive
-                    ? "text-[#1a1918]"
+                    ? "text-(--accent-bronze)"
                     : "text-[#625f5a] hover:text-[#1a1918]"
                 }`}
               >
@@ -76,8 +75,8 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
           })}
         </nav>
 
-        {showActions ? (
-          <div className="hidden items-center gap-3 sm:flex">
+        {showActions && (
+          <div className="flex items-center gap-3">
             {canOpenProfile && (
               <button
                 type="button"
@@ -90,33 +89,8 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
             )}
             <PhoneCallButton variant="compact" />
           </div>
-        ) : (
-          <div className="hidden w-10 sm:block lg:hidden" aria-hidden="true" />
         )}
-
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen((open) => !open)}
-          className="cursor-pointer rounded-lg border border-black/10 bg-white/60 p-2.5 text-[#1a1918] lg:hidden"
-          aria-label={mobileMenuOpen ? "Đóng menu" : "Mở menu"}
-          aria-expanded={mobileMenuOpen}
-        >
-          {mobileMenuOpen ? (
-            <X className="h-5 w-5" />
-          ) : (
-            <Menu className="h-5 w-5" />
-          )}
-        </button>
       </div>
-
-      {mobileMenuOpen && (
-        <HeaderMobileNav
-          pathname={pathname}
-          showProfileAction={canOpenProfile}
-          onClose={() => setMobileMenuOpen(false)}
-          onOpenProfile={handleOpenProfile}
-        />
-      )}
     </header>
   );
 };

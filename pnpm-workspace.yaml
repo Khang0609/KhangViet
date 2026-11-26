@@ -1,2 +1,5 @@
 allowBuilds:
-  unrs-resolver: set this to true or false
+  unrs-resolver: false
+
+overrides:
+  source-map-js: ^1.2.2
