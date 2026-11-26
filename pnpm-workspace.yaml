@@ -1,7 +1,0 @@
-packages:
-  - 'apps/*'
-  - 'packages/*'
-allowBuilds:
-  esbuild: false
-  unrs-resolver: false
-  workerd: false
