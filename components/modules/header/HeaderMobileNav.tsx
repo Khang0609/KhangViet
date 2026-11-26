@@ -23,10 +23,7 @@ export const HeaderMobileNav: React.FC<HeaderMobileNavProps> = ({
         aria-label="Điều hướng di động"
       >
         {SITE_NAV_ITEMS.map((item) => {
-          const isActive =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname?.startsWith(item.href);
+          const isActive = item.href === "/#top" && pathname === "/";
 
           return (
             <Link

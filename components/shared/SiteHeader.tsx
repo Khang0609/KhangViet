@@ -55,10 +55,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
           aria-label="Điều hướng chính"
         >
           {SITE_NAV_ITEMS.map((item) => {
-            const isActive =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname?.startsWith(item.href);
+            const isActive = item.href === "/#top" && pathname === "/";
 
             return (
               <Link

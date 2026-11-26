@@ -1,6 +1,7 @@
 import React from 'react';
 import { Printer } from 'lucide-react';
 import { useLandingContext } from '@/components/contexts/LandingContext';
+import { formatPhone } from '@/lib/phone';
 import TechBadge from '../../ui/TechBadge';
 import PhoneCallButton from '../../ui/PhoneCallButton';
 import { LegalAndFactorySection } from './LegalAndFactorySection';
@@ -56,7 +57,7 @@ export const CorporateProfileTab: React.FC = () => {
           <div className="text-xs uppercase tracking-widest text-(--accent-bronze) font-mono-tech">CAM KẾT TỪ BAN GIÁM ĐỐC KHANG VIỆT</div>
           <div className="text-base font-semibold text-(--text-primary) mt-1">&ldquo;{legalInfo.commitment}&rdquo;</div>
         </div>
-        <PhoneCallButton variant="filled" label={`Gọi Giám Đốc: ${legalInfo.hotlineFormatted}`} phoneNumber={legalInfo.hotline} />
+        <PhoneCallButton variant="filled" label={`Gọi Giám Đốc: ${formatPhone(legalInfo.hotline)}`} phoneNumber={legalInfo.hotline} />
       </div>
     </div>
   );
