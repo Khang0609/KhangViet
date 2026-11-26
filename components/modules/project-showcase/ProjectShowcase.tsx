@@ -1,0 +1,56 @@
+"use client";
+
+import React from "react";
+import type { Project } from "@/types/landing";
+import { useFeaturedProjects } from "@/components/contexts/LandingContext";
+import { SectionHeading } from "../../ui/SectionHeading";
+import { ProjectShowcaseGallery } from "./ProjectShowcaseGallery";
+import { ProjectShowcaseDetails } from "./ProjectShowcaseDetails";
+
+export interface ProjectShowcaseProps {
+  projects?: Project[];
+  onSelectProject?: (project: Project, imageIndex?: number) => void;
+}
+
+export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
+  projects,
+}) => {
+  const contextProjects = useFeaturedProjects();
+  const activeProjects =
+    projects && projects.length > 0 ? projects : contextProjects;
+
+  return (
+    <section
+      id="du-an"
+      className="scroll-mt-20 border-y border-black/8 bg-white py-20 md:py-28"
+    >
+      <div className="mx-auto max-w-360 px-5 md:px-8 xl:px-12">
+        <SectionHeading
+          eyebrow="Công trình tiêu biểu"
+          title="Công trình là tuyên ngôn rõ nhất."
+          description="Hồ sơ thực tế về những hệ thống nhận diện được chế tác để bền bỉ, chính xác và nổi bật trong mọi điều kiện không gian."
+        />
+
+        <div className="mt-14 space-y-20 md:space-y-24">
+          {activeProjects.map((project, projectIndex) => (
+            <article
+              key={project.id}
+              className="grid gap-8 lg:grid-cols-12 lg:gap-10"
+            >
+              <ProjectShowcaseGallery
+                project={project}
+                projectIndex={projectIndex}
+              />
+              <ProjectShowcaseDetails
+                project={project}
+                projectIndex={projectIndex}
+              />
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ProjectShowcase;

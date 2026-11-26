@@ -1,16 +1,33 @@
 {
+  "name": "web",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter web build && pnpm --filter api build",
-    "check-types": "turbo run check-types",
-    "dev": "pnpm --filter api dev",
-    "dev:web": "pnpm --filter web dev",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "verify": "node scripts/verify-app.mjs"
+    "dev": "next dev -H 127.0.0.1",
+    "build": "next build --webpack",
+    "check-types": "tsc --noEmit",
+    "start": "next start",
+    "lint": "eslint && node scripts/check-css-sources.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.57.0",
+    "next": "16.4.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "turbo": "^2.10.10"
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^10.13.0",
+    "eslint-config-next": "16.4.6",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5"
   },
-  "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621"
+  "packageManager": "pnpm@11.22.0"
 }

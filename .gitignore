@@ -10,6 +10,10 @@
 .agents/**/*.private.md
 
 .turbo/
+.next/
+out/
+tsconfig.tsbuildinfo
+next-env.d.ts
 node_modules
 
 .wrangler

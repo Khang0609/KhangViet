@@ -1,7 +1,5 @@
-packages:
-  - 'apps/*'
-  - 'packages/*'
 allowBuilds:
-  esbuild: false
   unrs-resolver: false
-  workerd: false
+
+overrides:
+  source-map-js: ^1.2.2
