@@ -7,7 +7,7 @@
     "build": "next build --webpack",
     "check-types": "tsc --noEmit",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint && node scripts/check-css-sources.mjs"
   },
   "pnpm": {
     "overrides": {

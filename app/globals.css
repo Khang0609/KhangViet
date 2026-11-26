@@ -55,6 +55,7 @@
 }
 
 @import "tailwindcss";
+@source not "../.agents";
 
 :root {
   /* Editorial Warm Stone Design System */
