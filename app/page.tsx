@@ -1,6 +1,5 @@
-import Header from "@/components/modules/header/Header";
 import HeroSection from "@/components/modules/HeroSection";
-import TrustMarquee from "@/components/modules/TrustMarquee";
+import IntroSection from "@/components/modules/IntroSection";
 import DisciplinesSection from "@/components/modules/DisciplinesSection";
 import ProjectShowcase from "@/components/modules/project-showcase/ProjectShowcase";
 import InHouseEngineering from "@/components/modules/InHouseEngineering";
@@ -18,11 +17,9 @@ export default function Home() {
     <LandingProvider content={landing}>
       <ModalProvider>
         <div className="min-h-screen bg-(--bg-obsidian) text-(--text-primary)">
-          <Header />
-
-          <main id="top">
+          <main>
             <HeroSection />
-            <TrustMarquee />
+            <IntroSection />
             <ProjectShowcase />
             <DisciplinesSection />
             <InHouseEngineering />

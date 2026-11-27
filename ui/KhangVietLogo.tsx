@@ -1,29 +1,23 @@
 import React from "react";
+import { cn } from "@/lib/ultis";
 
-interface KhangVietLogoProps {
+export interface KhangVietLogoProps {
   className?: string;
   compact?: boolean;
 }
 
 /**
- * High-precision SVG vector reproduction + original asset fallback of Khang Viet Design's logo.
- * Against #111215 Obsidian Dark, the warm orange (#F27D26) glows like an architectural beacon at night.
+ * Renders Khang Việt Design's official vector logo from /logo.svg.
  */
 export default function KhangVietLogo({
-  className = "h-11",
+  className = "",
   compact = false,
 }: KhangVietLogoProps) {
   return (
-    <div className={`group inline-flex items-center select-none ${className}`}>
-      <div className="relative flex items-center overflow-hidden rounded-xs bg-transparent px-2 py-1 transition-colors duration-300 group-hover:border-(--accent-bronze)/40">
-        <img
-          src="/image/Logo-large.png"
-          alt="Khang Việt Design — Since 2009"
-          className={`${
-            compact ? "h-7 sm:h-8" : "h-8 sm:h-10"
-          } w-auto object-contain brightness-105 contrast-110 transition-transform duration-500 group-hover:scale-[1.02]`}
-        />
-      </div>
+    <div
+      className={cn("group inline-flex items-center select-none", className)}
+    >
+      <img src="./Logo-large.svg" alt="Logo Khang Viet design" />
     </div>
   );
 }
