@@ -183,7 +183,15 @@ function ServiceBentoCard({ service }: { service: ServiceCardData }) {
   );
 }
 
-function BentoPhotoTile({ src, alt }: { src: string; alt: string }) {
+function BentoPhotoTile({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
   const { ref, inView } = useInView(0.2);
 
   return (
@@ -192,6 +200,7 @@ function BentoPhotoTile({ src, alt }: { src: string; alt: string }) {
       className={cn(
         "group relative min-h-76 overflow-hidden rounded-3xl bg-[#181816] transition-all duration-700 ease-out sm:min-h-88",
         inView ? "scale-100 opacity-100" : "scale-[0.97] opacity-0",
+        className,
       )}
     >
       <img
@@ -225,6 +234,7 @@ export const DisciplinesSection: React.FC = () => {
         <BentoPhotoTile
           src="/image/projects/bidv/bidv2.jpg"
           alt="Thi công nhận diện mặt tiền và quầy giao dịch ngân hàng BIDV"
+          className="hidden md:block"
         />
         <ServiceBentoCard service={SERVICES[2]} />
 

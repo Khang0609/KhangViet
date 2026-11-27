@@ -12,7 +12,7 @@ export const PartnerSection: React.FC = () => {
     <div
       ref={ref}
       className={cn(
-        "relative z-10 mx-auto mt-16 max-w-6xl rounded-(--radius-frame) bg-[#222220] p-8 transition-all duration-700 ease-out sm:mt-24 sm:p-12 lg:p-16",
+        "relative z-10 mx-auto mt-14 max-w-6xl rounded-(--radius-frame) bg-[#222220] p-6 transition-all duration-700 ease-out sm:mt-24 sm:p-12 lg:p-16",
         inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
       )}
     >

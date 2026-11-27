@@ -55,10 +55,10 @@ const ROW_3_RIGHT: BrandItem[] = [
 
 function BrandPill({ brand }: { brand: BrandItem }) {
   return (
-    <div className="flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl bg-white px-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] sm:h-24 sm:w-52">
+    <div className="flex h-14 w-28 shrink-0 items-center justify-center rounded-xl bg-white px-3 shadow-[0_1px_2px_rgba(0,0,0,0.03)] sm:h-24 sm:w-52 sm:rounded-2xl sm:px-5">
       <span
         className={cn(
-          "text-center text-sm text-[#2A2A27] select-none sm:text-base",
+          "text-center text-[11px] text-[#2A2A27] select-none sm:text-base",
           brand.weight ?? "font-bold",
           brand.tracking ?? "tracking-normal",
         )}
@@ -112,7 +112,7 @@ export const TrustedClientsSection: React.FC = () => {
   return (
     <div
       ref={ref}
-      className="relative z-10 -mx-6 mt-24 pt-12 pb-6 sm:-mx-12 sm:mt-36 sm:pt-16 sm:pb-10"
+      className="relative z-10 -mx-3 mt-20 pt-8 pb-6 sm:-mx-12 sm:mt-36 sm:pt-16 sm:pb-10"
     >
       {/* Mobile Headline */}
       <div className="mb-8 px-6 text-center md:hidden">
@@ -158,14 +158,14 @@ export const TrustedClientsSection: React.FC = () => {
         })}
       </div>
 
-      {/* Mobile Scroll-Linked Rows */}
-      <div className="space-y-3.5 overflow-hidden md:hidden">
-        {SCROLL_ROWS.slice(0, 2).map((row) => {
-          const translateX = delta * 0.55 * row.direction;
+      {/* Mobile Scroll-Linked Rows (3 compact rows, ~3 pills visible per row) */}
+      <div className="space-y-3 overflow-hidden md:hidden">
+        {SCROLL_ROWS.map((row) => {
+          const translateX = delta * 0.45 * row.direction;
           return (
             <div key={`m-${row.label}`} className="flex justify-center">
               <div
-                className="flex items-center gap-3 will-change-transform"
+                className="flex items-center gap-2.5 will-change-transform"
                 style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
               >
                 {[...row.left, ...row.right].map((brand, idx) => (

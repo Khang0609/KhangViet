@@ -43,7 +43,7 @@ export const IntroSection: React.FC = () => {
     <section id="gioi-thieu" className="bg-white px-3 pb-3 sm:px-4 sm:pb-4">
       <div
         ref={ref}
-        className="relative overflow-hidden rounded-(--radius-frame) bg-[#F7F4E6] px-6 pt-24 pb-8 sm:px-12 sm:pt-32 sm:pb-12 md:pt-36 md:pb-16"
+        className="relative overflow-hidden rounded-(--radius-frame) bg-[#F7F4E6] px-3 pt-20 pb-8 sm:px-12 sm:pt-32 sm:pb-12 md:pt-36 md:pb-16"
       >
         {/* Drifting Grayscale Logo-Mark Watermark */}
         <div

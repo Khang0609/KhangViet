@@ -60,7 +60,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
     <section id="top" className="bg-white p-3 sm:p-4">
       <div className="relative">
         {/* Top-Left White Notched Cutout Tab (Sibling outside overflow-hidden) */}
-        <div className="absolute top-0 left-0 z-30 rounded-br-(--radius-frame) bg-white pt-2.5 pr-5 pb-3 pl-3 sm:pt-3 sm:pr-6 sm:pb-3.5 sm:pl-4">
+        <div className="absolute top-0 left-0 z-30 rounded-br-(--radius-frame) bg-white pt-2 pr-3 pb-2.5 pl-2.5 sm:pt-3 sm:pr-6 sm:pb-3.5 sm:pl-4">
           <a
             href="#top"
             onClick={(e) => {
@@ -70,45 +70,50 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
             aria-label="Khang Việt Design — Trang chủ"
             className="block"
           >
-            <KhangVietLogo compact className="w-60" />
+            <img
+              src="/logo-without-name.svg"
+              alt="Khang Việt Design"
+              className="h-10 w-10 object-contain sm:hidden"
+            />
+            <KhangVietLogo compact className="hidden w-48 sm:block md:w-60" />
           </a>
-          <CornerFillet className="absolute top-0 -right-(--radius-frame)" />
-          <CornerFillet className="absolute -bottom-(--radius-frame) left-0" />
+          <CornerFillet className="absolute top-0 -right-(--radius-frame) -translate-x-px" />
+          <CornerFillet className="absolute -bottom-(--radius-frame) left-0 -translate-y-px" />
         </div>
 
         {/* Top-Right White Notched Cutout Tab (Sibling outside overflow-hidden) */}
-        <div className="absolute top-0 right-0 z-30 rounded-bl-(--radius-frame) bg-white pt-3 pr-4 pb-3.5 pl-5 sm:pt-3.5 sm:pr-5 sm:pb-4 sm:pl-6">
+        <div className="absolute top-0 right-0 z-30 rounded-bl-(--radius-frame) bg-white pt-2 pr-2.5 pb-2.5 pl-3.5 sm:pt-3.5 sm:pr-5 sm:pb-4 sm:pl-6">
           <button
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label={menuOpen ? "Đóng menu" : "Mở menu"}
             aria-expanded={menuOpen}
-            className="transition-color flex h-12 w-12 cursor-pointer flex-col items-center justify-center gap-2"
+            className="transition-color flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-1.5 sm:h-12 sm:w-12 sm:gap-2"
           >
             <div
               className={cn(
-                "h-0.5 w-8 rounded-full bg-[#1e1e1e] transition-all duration-300",
-                menuOpen && "translate-y-2.5 rotate-45",
+                "h-0.5 w-6 rounded-full bg-[#1e1e1e] transition-all duration-300 sm:w-8",
+                menuOpen && "translate-y-2 rotate-45 sm:translate-y-2.5",
               )}
             />
             <div
               className={cn(
-                "h-0.5 w-8 rounded-full bg-[#1e1e1e] transition-all duration-200",
+                "h-0.5 w-6 rounded-full bg-[#1e1e1e] transition-all duration-200 sm:w-8",
                 menuOpen && "opacity-0",
               )}
             />
             <div
               className={cn(
-                "h-0.5 w-8 rounded-full bg-[#1e1e1e] transition-all duration-300",
-                menuOpen && "-translate-y-2.5 -rotate-45",
+                "h-0.5 w-6 rounded-full bg-[#1e1e1e] transition-all duration-300 sm:w-8",
+                menuOpen && "-translate-y-2 -rotate-45 sm:-translate-y-2.5",
               )}
             />
           </button>
-          <CornerFillet className="absolute top-0 -left-(--radius-frame) rotate-90" />
-          <CornerFillet className="absolute right-0 -bottom-(--radius-frame) rotate-90" />
+          <CornerFillet className="absolute top-0 -left-(--radius-frame) translate-x-px rotate-90" />
+          <CornerFillet className="absolute right-0 -bottom-(--radius-frame) -translate-y-px rotate-90" />
         </div>
 
-        <div className="relative flex min-h-[calc(100svh-1.5rem)] items-center justify-center overflow-hidden rounded-(--radius-frame) bg-white sm:min-h-[calc(100svh-2rem)]">
+        <div className="relative flex min-h-[82svh] items-center justify-center overflow-hidden rounded-(--radius-frame) bg-white sm:min-h-[calc(100svh-2rem)]">
           {/* Background Project Carousel */}
           <div className="absolute inset-0 z-0 bg-[#1e1e1e]">
             {activeSlides.map((slide, idx) => {
@@ -185,18 +190,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
           </div>
 
           {/* Center Hero Headline with Frosted Background Blur */}
-          <div className="relative z-10 mx-auto max-w-4xl px-5 text-center">
-            <div className="rounded-[28px] border border-white/45 bg-[#f7f4e6]/20 px-6 py-9 shadow-[0_24px_80px_-20px_rgba(0,0,0,0.35)] backdrop-blur-xs sm:px-12 sm:py-12">
-              <h1 className="text-[clamp(2.2rem,5.4vw,4.75rem)] leading-[1.04] font-bold tracking-[-0.035em] text-[#1e1e1e]">
+          <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-5">
+            <div className="rounded-3xl border border-white/45 bg-[#f7f4e6]/20 px-5 py-7 shadow-[0_24px_80px_-20px_rgba(0,0,0,0.35)] backdrop-blur-xs sm:rounded-[28px] sm:px-12 sm:py-12">
+              <h1 className="text-[clamp(1.75rem,5.2vw,4.75rem)] leading-[1.06] font-bold tracking-[-0.035em] text-[#1e1e1e]">
                 Kiến tạo diện mạo thương hiệu đỉnh cao.
               </h1>
 
-              <div className="mt-7 flex justify-center sm:mt-9">
+              <div className="mt-5 flex justify-center sm:mt-9">
                 <a
                   href="#du-an"
                   onClick={(e) => handleNavClick(e, "/#du-an")}
                   aria-label="Khám phá công trình tiêu biểu"
-                  className="group flex h-14 w-14 items-center justify-center rounded-full bg-[#C93818] text-white shadow-lg transition-all duration-300 hover:scale-108 hover:bg-[#AE2E12]"
+                  className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#C93818] text-white shadow-lg transition-all duration-300 hover:scale-108 hover:bg-[#AE2E12] sm:h-14 sm:w-14"
                 >
                   <ArrowDown className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-0.5" />
                 </a>
