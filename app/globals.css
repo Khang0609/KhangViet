@@ -152,13 +152,37 @@ body {
 }
 
 .animate-watermark-left {
-  width: max-content;
   animation: watermark-drift-left 28s linear infinite alternate;
 }
 
 .animate-watermark-right {
-  width: max-content;
   animation: watermark-drift-right 28s linear infinite alternate;
+}
+
+.watermark-tile-even {
+  background-image: url("/image/watermark-mark.svg");
+  background-repeat: repeat;
+  background-size: 72px 144px;
+  background-position: 0 0;
+}
+
+.watermark-tile-odd {
+  background-image: url("/image/watermark-mark.svg");
+  background-repeat: repeat;
+  background-size: 72px 144px;
+  background-position: 36px 72px;
+}
+
+@media (min-width: 640px) {
+  .watermark-tile-even {
+    background-size: 144px 288px;
+    background-position: 0 0;
+  }
+
+  .watermark-tile-odd {
+    background-size: 144px 288px;
+    background-position: 72px 144px;
+  }
 }
 
 @keyframes marquee-loop-left {

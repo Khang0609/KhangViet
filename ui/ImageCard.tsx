@@ -21,7 +21,6 @@ export const ImageCard: React.FC<ImageCardProps> = ({
   size = "md",
   orientation = "vertical",
   children = "",
-  ...props
 }) => {
   const isHorizonal = orientation === "horizontal";
 

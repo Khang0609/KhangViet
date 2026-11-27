@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { ArrowDown, ArrowUpRight, PhoneCall } from "lucide-react";
 import type { HeroSlide } from "@/types/landing";
 import {
@@ -70,9 +71,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
             aria-label="Khang Việt Design — Trang chủ"
             className="block"
           >
-            <img
+            <Image
               src="/logo-without-name.svg"
               alt="Khang Việt Design"
+              width={40}
+              height={40}
               className="h-10 w-10 object-contain sm:hidden"
             />
             <KhangVietLogo compact className="hidden w-48 sm:block md:w-60" />
@@ -125,10 +128,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
                     isActive ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  <img
+                  <Image
                     src={slide.image}
                     alt={slide.title}
-                    className={`h-full w-full object-cover transition-transform duration-4500 ease-out ${
+                    fill
+                    sizes="100vw"
+                    className={`object-cover transition-transform duration-4500 ease-out ${
                       isActive ? "scale-100" : "scale-105"
                     }`}
                   />
@@ -160,7 +165,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
                     setMenuOpen(false);
                     handleNavClick(e, item.href);
                   }}
-                  className="text-[clamp(2.25rem,5vw,4rem)] leading-[1.12] font-bold tracking-[-0.03em] text-white transition-colors hover:text-[#F58633]"
+                  className="text-[clamp(2.25rem,5vw,4rem)] leading-[1.12] font-bold tracking-[-0.03em] text-white transition-colors hover:text-brand"
                 >
                   {item.label}
                 </a>
@@ -171,7 +176,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
               <div className="flex flex-wrap items-center gap-4">
                 <a
                   href={`tel:${normalizedPhone}`}
-                  className="inline-flex items-center gap-2.5 rounded-full bg-[#F58633] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#DC7020]"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90"
                 >
                   <PhoneCall className="h-4 w-4" />
                   {formattedPhone}
@@ -201,7 +206,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
                   href="#du-an"
                   onClick={(e) => handleNavClick(e, "/#du-an")}
                   aria-label="Khám phá công trình tiêu biểu"
-                  className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#F58633] text-white shadow-lg transition-all duration-300 hover:scale-108 hover:bg-[#DC7020] sm:h-14 sm:w-14"
+                  className="group flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-lg transition-all duration-300 hover:scale-108 hover:bg-brand/90 sm:h-14 sm:w-14"
                 >
                   <ArrowDown className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-0.5" />
                 </a>
@@ -224,7 +229,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
                     aria-label={`Xem ảnh ${idx + 1}: ${slide.title}`}
                     className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
                       idx === currentIndex
-                        ? "w-6 bg-[#F58633]"
+                        ? "w-6 bg-brand"
                         : "w-2 bg-white/55 hover:bg-white"
                     }`}
                   />

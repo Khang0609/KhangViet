@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { HeroSlide } from "@/types/landing";
 import { useHeroSlides } from "@/components/contexts/LandingContext";
@@ -28,11 +29,13 @@ export const HeroCarouselVisual: React.FC<HeroCarouselVisualProps> = ({
     <div className="lg:col-span-7">
       <div className="group relative aspect-4/3 overflow-hidden rounded-2xl bg-[#eae5dc] shadow-sm md:aspect-video">
         {activeSlides.map((slide, index) => (
-          <img
+          <Image
             key={slide.id}
             src={slide.image}
             alt={slide.title}
-            className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
+            fill
+            sizes="(max-width: 1024px) 100vw, 58vw"
+            className={`object-cover transition-all duration-700 ${
               index === heroSlide ? "scale-100 opacity-100" : "scale-105 opacity-0"
             }`}
           />

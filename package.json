@@ -7,7 +7,7 @@
     "build": "next build --webpack",
     "check-types": "tsc --noEmit",
     "start": "next start",
-    "lint": "eslint && node scripts/check-css-sources.mjs"
+    "lint": "eslint --max-warnings=0 && node scripts/check-css-sources.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

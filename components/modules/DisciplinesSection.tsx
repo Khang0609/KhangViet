@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
 import { cn } from "@/lib/ultis";
@@ -173,7 +174,7 @@ function ServiceBentoCard({ service }: { service: ServiceCardData }) {
       >
         <Link
           href={service.href}
-          className="inline-flex items-center gap-2 border-b border-white/70 pb-1 text-sm font-semibold text-white transition-colors duration-200 hover:border-[#F58633] hover:text-[#F58633]"
+          className="inline-flex items-center gap-2 border-b border-white/70 pb-1 text-sm font-semibold text-white transition-colors duration-200 hover:border-brand hover:text-brand"
         >
           {service.ctaLabel}
           <span aria-hidden="true">→</span>
@@ -203,10 +204,12 @@ function BentoPhotoTile({
         className,
       )}
     >
-      <img
+      <Image
         src={src}
         alt={alt}
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
 import { cn } from "@/lib/ultis";
@@ -41,7 +42,7 @@ export const PartnerSection: React.FC = () => {
           <div className="mt-8">
             <Link
               href="/services"
-              className="inline-flex items-center justify-center rounded-lg bg-[#F58633] px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#DC7020]"
+              className="inline-flex items-center justify-center rounded-lg bg-brand px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand/90"
             >
               Dịch vụ của chúng tôi
             </Link>
@@ -50,9 +51,11 @@ export const PartnerSection: React.FC = () => {
 
         {/* Right Illustration Column */}
         <div className="lg:col-span-5">
-          <img
+          <Image
             src="/image/partner-illustration.png"
             alt="Đội ngũ thiết kế, kỹ sư và thi công Khang Việt"
+            width={448}
+            height={448}
             className="mx-auto h-auto w-full max-w-sm object-contain lg:max-w-md"
           />
         </div>
