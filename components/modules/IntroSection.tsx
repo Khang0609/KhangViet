@@ -124,7 +124,7 @@ export const IntroSection: React.FC = () => {
           >
             <Link
               href="/about"
-              className="inline-flex items-center justify-center rounded-lg bg-[#C93818] px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#AE2E12]"
+              className="inline-flex items-center justify-center rounded-lg bg-[#F58633] px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#DC7020]"
             >
               Khang Việt là ai?
             </Link>

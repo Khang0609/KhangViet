@@ -41,7 +41,7 @@ export const PartnerSection: React.FC = () => {
           <div className="mt-8">
             <Link
               href="/services"
-              className="inline-flex items-center justify-center rounded-lg bg-[#C93818] px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#AE2E12]"
+              className="inline-flex items-center justify-center rounded-lg bg-[#F58633] px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#DC7020]"
             >
               Dịch vụ của chúng tôi
             </Link>

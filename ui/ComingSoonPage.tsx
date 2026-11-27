@@ -19,7 +19,7 @@ export function ComingSoonPage({
           <KhangVietLogo className="h-12 w-auto" />
         </Link>
 
-        <span className="inline-flex items-center rounded-full border border-[#1e1e1e]/15 bg-white/70 px-4 py-1.5 text-xs font-semibold tracking-widest text-[#C93818] uppercase">
+        <span className="inline-flex items-center rounded-full border border-[#1e1e1e]/15 bg-white/70 px-4 py-1.5 text-xs font-semibold tracking-widest text-[#F58633] uppercase">
           {eyebrow}
         </span>
 
@@ -33,7 +33,7 @@ export function ComingSoonPage({
 
         <Link
           href="/"
-          className="mt-9 inline-flex items-center justify-center rounded-lg bg-[#C93818] px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#AE2E12]"
+          className="mt-9 inline-flex items-center justify-center rounded-lg bg-[#F58633] px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#DC7020]"
         >
           Quay về trang chủ
         </Link>

@@ -26,7 +26,7 @@ const NAV_LINKS = [
 function CornerFillet({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 20 20"
+      viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
@@ -35,7 +35,7 @@ function CornerFillet({ className = "" }: { className?: string }) {
       )}
       aria-hidden="true"
     >
-      <path d="M0 0H20C8.954 0 0 8.954 0 20V0Z" fill="#FFFFFF" />
+      <path d="M0 0H24C10.745 0 0 10.745 0 24V0Z" fill="#FFFFFF" />
     </svg>
   );
 }
@@ -60,7 +60,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
     <section id="top" className="bg-white p-3 sm:p-4">
       <div className="relative">
         {/* Top-Left White Notched Cutout Tab (Sibling outside overflow-hidden) */}
-        <div className="absolute top-0 left-0 z-30 rounded-br-(--radius-frame) bg-white pt-2 pr-3 pb-2.5 pl-2.5 sm:pt-3 sm:pr-6 sm:pb-3.5 sm:pl-4">
+        <div className="absolute top-0 left-0 z-30 rounded-br-(--radius-frame) bg-white pt-2.5 pr-4 pb-3.5 pl-3 sm:pt-3 sm:pr-6 sm:pb-3.5 sm:pl-4">
           <a
             href="#top"
             onClick={(e) => {
@@ -77,8 +77,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
             />
             <KhangVietLogo compact className="hidden w-48 sm:block md:w-60" />
           </a>
-          <CornerFillet className="absolute top-0 -right-(--radius-frame) -translate-x-px" />
-          <CornerFillet className="absolute -bottom-(--radius-frame) left-0 -translate-y-px" />
+          <CornerFillet className="absolute top-0 -right-(--radius-frame)" />
+          <CornerFillet className="absolute -bottom-(--radius-frame) left-0" />
         </div>
 
         {/* Top-Right White Notched Cutout Tab (Sibling outside overflow-hidden) */}
@@ -109,8 +109,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
               )}
             />
           </button>
-          <CornerFillet className="absolute top-0 -left-(--radius-frame) translate-x-px rotate-90" />
-          <CornerFillet className="absolute right-0 -bottom-(--radius-frame) -translate-y-px rotate-90" />
+          <CornerFillet className="absolute top-0 -left-(--radius-frame) rotate-90" />
+          <CornerFillet className="absolute right-0 -bottom-(--radius-frame) rotate-90" />
         </div>
 
         <div className="relative flex min-h-[82svh] items-center justify-center overflow-hidden rounded-(--radius-frame) bg-white sm:min-h-[calc(100svh-2rem)]">
@@ -160,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
                     setMenuOpen(false);
                     handleNavClick(e, item.href);
                   }}
-                  className="text-[clamp(2.25rem,5vw,4rem)] leading-[1.12] font-bold tracking-[-0.03em] text-white transition-colors hover:text-[#C93818]"
+                  className="text-[clamp(2.25rem,5vw,4rem)] leading-[1.12] font-bold tracking-[-0.03em] text-white transition-colors hover:text-[#F58633]"
                 >
                   {item.label}
                 </a>
@@ -171,7 +171,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
               <div className="flex flex-wrap items-center gap-4">
                 <a
                   href={`tel:${normalizedPhone}`}
-                  className="inline-flex items-center gap-2.5 rounded-full bg-[#C93818] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#AE2E12]"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-[#F58633] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#DC7020]"
                 >
                   <PhoneCall className="h-4 w-4" />
                   {formattedPhone}
@@ -201,7 +201,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
                   href="#du-an"
                   onClick={(e) => handleNavClick(e, "/#du-an")}
                   aria-label="Khám phá công trình tiêu biểu"
-                  className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#C93818] text-white shadow-lg transition-all duration-300 hover:scale-108 hover:bg-[#AE2E12] sm:h-14 sm:w-14"
+                  className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#F58633] text-white shadow-lg transition-all duration-300 hover:scale-108 hover:bg-[#DC7020] sm:h-14 sm:w-14"
                 >
                   <ArrowDown className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-0.5" />
                 </a>
@@ -224,7 +224,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
                     aria-label={`Xem ảnh ${idx + 1}: ${slide.title}`}
                     className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
                       idx === currentIndex
-                        ? "w-6 bg-[#C93818]"
+                        ? "w-6 bg-[#F58633]"
                         : "w-2 bg-white/55 hover:bg-white"
                     }`}
                   />

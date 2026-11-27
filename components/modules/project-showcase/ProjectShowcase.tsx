@@ -58,7 +58,7 @@ function getProjectTheme(project?: Project): ProjectTheme {
     sectionBgLg: "lg:bg-[#222220]",
     textPrimaryLg: "lg:text-[#F7F4E6]",
     textMutedLg: "lg:text-[#D6D3C9]",
-    accentBg: "bg-[#C93818]",
+    accentBg: "bg-[#F58633]",
     accentText: "text-[#F58633]",
     accentBorder: "border-white/20",
     cardBg: "bg-white/8",
@@ -106,7 +106,7 @@ function ProjectCarouselCard({
       </div>
 
       <div className="relative z-10 flex justify-end">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/55 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors duration-200 group-hover:border-[#C93818] group-hover:bg-[#C93818]">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/55 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors duration-200 group-hover:border-[#F58633] group-hover:bg-[#F58633]">
           Xem chi tiết
           <span aria-hidden="true">→</span>
         </span>
