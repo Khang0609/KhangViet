@@ -176,10 +176,13 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
     setActiveIndex((prev) => (prev + 1) % activeProjects.length);
   };
 
-  const coverMedia =
-    currentProject?.media.find((m) => m.isCover) ?? currentProject?.media[0];
+  const rawCoverIndex =
+    currentProject?.media.findIndex((m) => m.isCover) ?? -1;
+  const coverIndex = rawCoverIndex >= 0 ? rawCoverIndex : 0;
+  const coverMedia = currentProject?.media[coverIndex];
   const galleryThumbs = (currentProject?.media ?? [])
-    .filter((m) => m.id !== coverMedia?.id)
+    .map((media, mediaIndex) => ({ media, mediaIndex }))
+    .filter(({ mediaIndex }) => mediaIndex !== coverIndex)
     .slice(0, 3);
 
   return (
@@ -367,7 +370,7 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
             {/* Largest Tile: Cover Photo */}
             <button
               type="button"
-              onClick={() => handleSelect(currentProject, 0)}
+              onClick={() => handleSelect(currentProject, coverIndex)}
               className="group relative col-span-7 min-h-116 cursor-pointer overflow-hidden rounded-3xl bg-black/10 text-left shadow-sm"
             >
               <Image
@@ -454,11 +457,11 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
 
               {/* 3 Supporting Gallery Tiles */}
               <div className="grid h-40 grid-cols-3 gap-3.5">
-                {galleryThumbs.map((media, idx) => (
+                {galleryThumbs.map(({ media, mediaIndex }) => (
                   <button
                     key={media.id}
                     type="button"
-                    onClick={() => handleSelect(currentProject, idx + 1)}
+                    onClick={() => handleSelect(currentProject, mediaIndex)}
                     className="group relative cursor-pointer overflow-hidden rounded-2xl bg-black/10"
                   >
                     <Image
