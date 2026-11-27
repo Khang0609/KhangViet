@@ -72,6 +72,7 @@
   --accent-orange-logo: #f58633;
   --border-hairline: rgba(26, 25, 24, 0.1);
   --border-bronze-subtle: rgba(245, 134, 51, 0.35);
+  --radius-frame: 32px;
 }
 
 @theme inline {
@@ -89,12 +90,6 @@
 
 html {
   font-size: 16px;
-}
-
-@media (min-width: 1024px) {
-  html {
-    font-size: 14px;
-  }
 }
 
 body {
@@ -136,6 +131,62 @@ body {
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+@keyframes watermark-drift-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-180px);
+  }
+}
+
+@keyframes watermark-drift-right {
+  0% {
+    transform: translateX(-180px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-watermark-left {
+  width: max-content;
+  animation: watermark-drift-left 28s linear infinite alternate;
+}
+
+.animate-watermark-right {
+  width: max-content;
+  animation: watermark-drift-right 28s linear infinite alternate;
+}
+
+@keyframes marquee-loop-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-loop-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-loop-left {
+  width: max-content;
+  animation: marquee-loop-left 38s linear infinite;
+}
+
+.animate-marquee-loop-right {
+  width: max-content;
+  animation: marquee-loop-right 38s linear infinite;
 }
 
 .bg-blueprint-grid {

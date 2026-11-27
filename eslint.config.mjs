@@ -31,6 +31,12 @@ const eslintConfig = defineConfig([
           message:
             "Use Tailwind CSS v4 CSS-variable syntax: bg-(--var), text-(--var), border-(--var).",
         },
+        {
+          selector:
+            "Literal[value=/\\brounded(-[trbl]{1,2})?-\\[(8|12|16|24)px\\]/]",
+          message:
+            "Use standard Tailwind v4 radius tokens (rounded-lg, rounded-xl, rounded-2xl, rounded-3xl) instead of arbitrary px values.",
+        },
       ],
     },
   },
