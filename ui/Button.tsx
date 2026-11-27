@@ -13,11 +13,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-[#F58633] text-white hover:bg-[#ff9547] active:bg-[#e07525] border-transparent rounded-lg transition-all duration-200",
+    "bg-brand text-white hover:bg-brand/90 active:bg-brand/80 border-transparent rounded-lg transition-all duration-200",
   secondary:
     "bg-white/10 text-white hover:bg-white/15 active:bg-white/20 border-transparent rounded-lg transition-all duration-200",
   primaryP:
-    "bg-[#F58633] text-white hover:bg-[#ff9547] active:bg-[#e07525] border-transparent rounded-full transition-all duration-200",
+    "bg-brand text-white hover:bg-brand/90 active:bg-brand/80 border-transparent rounded-full transition-all duration-200",
   secondaryP:
     "bg-white/10 text-white hover:bg-white/15 active:bg-white/20 border-transparent rounded-full transition-all duration-200",
 };
@@ -38,7 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "inline-flex items-center justify-center font-sans font-medium border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#F58633] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
+    "inline-flex items-center justify-center font-sans font-medium border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
 
   const combinedStyles =
     `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`.trim();

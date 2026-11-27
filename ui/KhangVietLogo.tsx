@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/ultis";
 
 export interface KhangVietLogoProps {
@@ -7,17 +8,22 @@ export interface KhangVietLogoProps {
 }
 
 /**
- * Renders Khang Việt Design's official vector logo from /logo.svg.
+ * Renders Khang Việt Design's official vector logo from /Logo-large.svg.
  */
 export default function KhangVietLogo({
   className = "",
-  compact = false,
 }: KhangVietLogoProps) {
   return (
     <div
       className={cn("group inline-flex items-center select-none", className)}
     >
-      <img src="./Logo-large.svg" alt="Logo Khang Viet design" />
+      <Image
+        src="/Logo-large.svg"
+        alt="Logo Khang Viet design"
+        width={240}
+        height={64}
+        className="h-auto w-full"
+      />
     </div>
   );
 }

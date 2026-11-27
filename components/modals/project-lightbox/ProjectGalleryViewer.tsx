@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ProjectMedia } from "@/types/landing";
 
@@ -23,9 +24,11 @@ export const ProjectGalleryViewer: React.FC<ProjectGalleryViewerProps> = ({
   return (
     <div className="relative flex flex-col justify-between border-b border-white/8 bg-[#0C0D0F] lg:w-7/12 lg:border-r lg:border-b-0">
       <div className="relative flex min-h-70 flex-1 items-center justify-center overflow-hidden p-4 sm:min-h-105 sm:p-8">
-        <img
+        <Image
           src={currentItem.storageKey}
           alt={currentItem.caption || currentItem.altText || "Ảnh dự án"}
+          width={1200}
+          height={800}
           className="max-h-[56vh] w-auto border border-white/10 object-contain shadow-2xl"
         />
 
@@ -76,10 +79,12 @@ export const ProjectGalleryViewer: React.FC<ProjectGalleryViewerProps> = ({
               }`}
               aria-label={`Xem ảnh ${idx + 1}`}
             >
-              <img
+              <Image
                 src={item.storageKey}
                 alt={item.altText || ""}
-                className="h-full w-full object-cover"
+                fill
+                sizes="80px"
+                className="object-cover"
               />
             </button>
           ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/types/landing";
 import { useModalContext } from "../../modals/modalContext";
@@ -28,10 +29,12 @@ export const ProjectShowcaseGallery: React.FC<ProjectShowcaseGalleryProps> = ({
         onClick={() => openProjectModal(project, 0)}
         className="group relative block aspect-16/10 w-full cursor-pointer overflow-hidden rounded-2xl bg-[#eae5dc] text-left"
       >
-        <img
+        <Image
           src={cover}
           alt={project.title}
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]"
+          fill
+          sizes="(max-width: 1024px) 100vw, 58vw"
+          className="object-cover transition duration-700 group-hover:scale-[1.025]"
         />
         <span className="absolute right-4 bottom-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f4f1ea]/95 text-[#1a1918] opacity-0 shadow-md transition-all duration-300 group-hover:opacity-100">
           <ArrowUpRight className="h-5 w-5" />
@@ -46,10 +49,12 @@ export const ProjectShowcaseGallery: React.FC<ProjectShowcaseGalleryProps> = ({
             onClick={() => openProjectModal(project, imageIndex)}
             className="group relative aspect-4/3 cursor-pointer overflow-hidden rounded-xl bg-[#eae5dc]"
           >
-            <img
+            <Image
               src={image.storageKey}
               alt={image.caption || image.altText || project.title}
-              className="h-full w-full object-cover opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
+              fill
+              sizes="(max-width: 1024px) 33vw, 20vw"
+              className="object-cover opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
             />
           </button>
         ))}

@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useState, type RefObject } from "react";
+import { useEffect, type RefObject } from "react";
 
 /**
- * Returns a normalized scroll progress in [0, 1] as `ref` moves from
- * entering the bottom of the viewport (0) to leaving the top (1).
- * At 0.5 the element is centered in the viewport.
+ * Updates `--scroll-delta` (in px) directly on `ref.current` via rAF on scroll
+ * without triggering React re-renders, keeping scroll-linked motion at 60fps.
  */
-export function useScrollProgress(ref: RefObject<HTMLElement | null>): number {
-  const [progress, setProgress] = useState(0.5);
-
+export function useScrollProgress(
+  ref: RefObject<HTMLElement | null>,
+  travelPx = 280,
+): void {
   useEffect(() => {
     let rafId = 0;
 
@@ -24,7 +24,8 @@ export function useScrollProgress(ref: RefObject<HTMLElement | null>): number {
 
       const raw = (window.innerHeight - rect.top) / total;
       const clamped = Math.max(0, Math.min(1, raw));
-      setProgress(clamped);
+      const delta = (clamped - 0.5) * travelPx;
+      el.style.setProperty("--scroll-delta", `${delta.toFixed(2)}px`);
     };
 
     const onScroll = () => {
@@ -42,7 +43,5 @@ export function useScrollProgress(ref: RefObject<HTMLElement | null>): number {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [ref]);
-
-  return progress;
+  }, [ref, travelPx]);
 }

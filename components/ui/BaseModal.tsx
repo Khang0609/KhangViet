@@ -1,5 +1,6 @@
-import React, { useEffect, useSyncExternalStore } from 'react';
+import React, { useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
+import { useModalBodyLock } from '@/hooks/useModalEffects';
 
 const emptySubscribe = () => () => {};
 
@@ -24,21 +25,7 @@ export const BaseModal: React.FC<BaseModalProps> = ({
     () => false
   );
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+  useModalBodyLock(isOpen, onClose);
 
   if (!mounted || !isOpen) return null;
 

@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { X } from "lucide-react";
 import type { Project } from "@/types/landing";
 import { useCarousel } from "@/hooks/useCarousel";
+import { useSyncIndex } from "@/hooks/useModalEffects";
 import BaseModal from "../ui/BaseModal";
 import { ProjectGalleryViewer } from "./project-lightbox/ProjectGalleryViewer";
 import { ProjectDossierInfo } from "./project-lightbox/ProjectDossierInfo";
@@ -24,9 +25,7 @@ export const ProjectLightboxModal: React.FC<ProjectLightboxModalProps> = ({
     initialImageIndex
   );
 
-  useEffect(() => {
-    setCurrentIndex(initialImageIndex);
-  }, [initialImageIndex, project, setCurrentIndex]);
+  useSyncIndex(project, initialImageIndex, setCurrentIndex);
 
   if (!project) return null;
 

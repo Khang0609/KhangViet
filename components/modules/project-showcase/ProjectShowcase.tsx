@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/types/landing";
 import { useFeaturedProjects } from "@/components/contexts/LandingContext";
@@ -58,11 +59,11 @@ function getProjectTheme(project?: Project): ProjectTheme {
     sectionBgLg: "lg:bg-[#222220]",
     textPrimaryLg: "lg:text-[#F7F4E6]",
     textMutedLg: "lg:text-[#D6D3C9]",
-    accentBg: "bg-[#C93818]",
-    accentText: "text-[#F58633]",
+    accentBg: "bg-brand",
+    accentText: "text-brand",
     accentBorder: "border-white/20",
     cardBg: "bg-white/8",
-    controlBorder: "border-white/20 hover:border-[#F58633]",
+    controlBorder: "border-white/20 hover:border-brand",
   };
 }
 
@@ -87,11 +88,13 @@ function ProjectCarouselCard({
       onClick={() => onSelect(project)}
       className="group relative flex aspect-3/4 w-78 shrink-0 snap-center cursor-pointer flex-col justify-between overflow-hidden rounded-3xl bg-[#181816] p-7 text-left select-none sm:w-88"
     >
-      <img
+      <Image
         src={coverSrc}
         alt={project.title}
+        fill
+        sizes="(max-width: 640px) 312px, 352px"
         draggable={false}
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        className="pointer-events-none object-cover transition-transform duration-500 ease-out group-hover:scale-105"
       />
 
       <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/85 via-black/35 to-black/30 transition-opacity duration-300 group-hover:opacity-90" />
@@ -106,7 +109,7 @@ function ProjectCarouselCard({
       </div>
 
       <div className="relative z-10 flex justify-end">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/55 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors duration-200 group-hover:border-[#C93818] group-hover:bg-[#C93818]">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/55 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors duration-200 group-hover:border-brand group-hover:bg-brand">
           Xem chi tiết
           <span aria-hidden="true">→</span>
         </span>
@@ -173,10 +176,13 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
     setActiveIndex((prev) => (prev + 1) % activeProjects.length);
   };
 
-  const coverMedia =
-    currentProject?.media.find((m) => m.isCover) ?? currentProject?.media[0];
+  const rawCoverIndex =
+    currentProject?.media.findIndex((m) => m.isCover) ?? -1;
+  const coverIndex = rawCoverIndex >= 0 ? rawCoverIndex : 0;
+  const coverMedia = currentProject?.media[coverIndex];
   const galleryThumbs = (currentProject?.media ?? [])
-    .filter((m) => m.id !== coverMedia?.id)
+    .map((media, mediaIndex) => ({ media, mediaIndex }))
+    .filter(({ mediaIndex }) => mediaIndex !== coverIndex)
     .slice(0, 3);
 
   return (
@@ -364,15 +370,17 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
             {/* Largest Tile: Cover Photo */}
             <button
               type="button"
-              onClick={() => handleSelect(currentProject, 0)}
+              onClick={() => handleSelect(currentProject, coverIndex)}
               className="group relative col-span-7 min-h-116 cursor-pointer overflow-hidden rounded-3xl bg-black/10 text-left shadow-sm"
             >
-              <img
+              <Image
                 src={
                   coverMedia?.storageKey ?? "/image/image-placeholder.png"
                 }
                 alt={currentProject.title}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
 
@@ -449,17 +457,19 @@ export const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({
 
               {/* 3 Supporting Gallery Tiles */}
               <div className="grid h-40 grid-cols-3 gap-3.5">
-                {galleryThumbs.map((media, idx) => (
+                {galleryThumbs.map(({ media, mediaIndex }) => (
                   <button
                     key={media.id}
                     type="button"
-                    onClick={() => handleSelect(currentProject, idx + 1)}
+                    onClick={() => handleSelect(currentProject, mediaIndex)}
                     className="group relative cursor-pointer overflow-hidden rounded-2xl bg-black/10"
                   >
-                    <img
+                    <Image
                       src={media.storageKey}
                       alt={media.caption ?? currentProject.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      fill
+                      sizes="160px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/0 transition-colors duration-200 group-hover:bg-black/20" />
                   </button>

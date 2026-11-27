@@ -37,6 +37,12 @@ const eslintConfig = defineConfig([
           message:
             "Use standard Tailwind v4 radius tokens (rounded-lg, rounded-xl, rounded-2xl, rounded-3xl) instead of arbitrary px values.",
         },
+        {
+          selector:
+            "Literal[value=/(bg|text|border|ring|outline|fill|stroke)-\\[#[fF]58633\\]/]",
+          message:
+            "Use the Tailwind v4 @theme token (bg-brand, text-brand, border-brand) instead of arbitrary-[#f58633].",
+        },
       ],
     },
   },

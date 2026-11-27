@@ -43,7 +43,7 @@ export const Footer: React.FC = () => {
         <div className="mt-1.5">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 border-b-2 border-[#F58633] pb-0.5 text-xl font-bold tracking-[-0.02em] text-[#F58633]"
+            className="inline-flex items-center gap-2 border-b-2 border-brand pb-0.5 text-xl font-bold tracking-[-0.02em] text-brand"
           >
             Trao đổi ngay
             <span aria-hidden="true">→</span>
@@ -72,7 +72,7 @@ export const Footer: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="transition-colors duration-200 hover:text-[#F58633]"
+                  className="transition-colors duration-200 hover:text-brand"
                 >
                   {item.label}
                 </Link>
@@ -83,7 +83,7 @@ export const Footer: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="transition-colors duration-200 hover:text-[#F58633]"
+                  className="transition-colors duration-200 hover:text-brand"
                 >
                   {item.label}
                 </Link>
@@ -113,7 +113,7 @@ export const Footer: React.FC = () => {
           <div className="mt-5">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center rounded-md border border-[#F58633] px-5 py-2.5 text-xs font-bold tracking-wider text-[#F58633] uppercase transition-colors duration-200 hover:bg-[#F58633] hover:text-white"
+              className="inline-flex items-center justify-center rounded-md border border-brand px-5 py-2.5 text-xs font-bold tracking-wider text-brand uppercase transition-colors duration-200 hover:bg-brand hover:text-white"
             >
               Liên hệ ngay
             </Link>
@@ -142,7 +142,7 @@ export const Footer: React.FC = () => {
             <div className="mt-3">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 border-b-2 border-[#F58633] pb-0.5 text-[clamp(1.75rem,3vw,2.75rem)] font-bold tracking-[-0.02em] text-[#F58633] transition-opacity duration-200 hover:opacity-80"
+                className="inline-flex items-center gap-2 border-b-2 border-brand pb-0.5 text-[clamp(1.75rem,3vw,2.75rem)] font-bold tracking-[-0.02em] text-brand transition-opacity duration-200 hover:opacity-80"
               >
                 Trao đổi ngay
                 <span aria-hidden="true">→</span>
@@ -176,7 +176,7 @@ export const Footer: React.FC = () => {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="transition-colors duration-200 hover:text-[#F58633]"
+                      className="transition-colors duration-200 hover:text-brand"
                     >
                       {item.label}
                     </Link>
@@ -187,7 +187,7 @@ export const Footer: React.FC = () => {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="transition-colors duration-200 hover:text-[#F58633]"
+                      className="transition-colors duration-200 hover:text-brand"
                     >
                       {item.label}
                     </Link>
@@ -203,13 +203,13 @@ export const Footer: React.FC = () => {
               <div className="mt-5 flex flex-col gap-3 text-base text-[#3F443E]">
                 <a
                   href="mailto:khangvietdesign@gmail.com"
-                  className="transition-colors duration-200 hover:text-[#F58633]"
+                  className="transition-colors duration-200 hover:text-brand"
                 >
                   khangvietdesign@gmail.com
                 </a>
                 <a
                   href="tel:0903680449"
-                  className="transition-colors duration-200 hover:text-[#F58633]"
+                  className="transition-colors duration-200 hover:text-brand"
                 >
                   0903 680 449
                 </a>
@@ -217,7 +217,7 @@ export const Footer: React.FC = () => {
                   href="https://zalo.me/0903680449"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors duration-200 hover:text-[#F58633]"
+                  className="transition-colors duration-200 hover:text-brand"
                 >
                   Zalo: 0903 680 449
                 </a>
@@ -226,7 +226,7 @@ export const Footer: React.FC = () => {
               <div className="mt-8">
                 <Link
                   href="/contact"
-                  className="inline-flex items-center justify-center rounded-md border border-[#F58633] px-6 py-3 text-sm font-bold tracking-wider text-[#F58633] uppercase transition-colors duration-200 hover:bg-[#F58633] hover:text-white"
+                  className="inline-flex items-center justify-center rounded-md border border-brand px-6 py-3 text-sm font-bold tracking-wider text-brand uppercase transition-colors duration-200 hover:bg-brand hover:text-white"
                 >
                   Liên hệ ngay
                 </Link>

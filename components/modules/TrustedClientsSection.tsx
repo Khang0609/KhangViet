@@ -103,11 +103,7 @@ const SCROLL_ROWS: ScrollRowConfig[] = [
 
 export const TrustedClientsSection: React.FC = () => {
   const { ref, inView } = useInView(0.4);
-  const scrollProgress = useScrollProgress(ref);
-
-  // Range: at progress=0.5 (center of viewport), offset is 0px so all 3 words align centrally.
-  const travelPx = 280;
-  const delta = (scrollProgress - 0.5) * travelPx;
+  useScrollProgress(ref, 280);
 
   return (
     <div
@@ -123,14 +119,14 @@ export const TrustedClientsSection: React.FC = () => {
 
       {/* Desktop 3-Row Scroll-Linked Rows (inline word + brand pills move together on scroll) */}
       <div className="hidden space-y-4 overflow-hidden md:block">
-        {SCROLL_ROWS.map((row) => {
-          const translateX = delta * row.direction;
-          return (
-            <div key={row.label} className="flex justify-center">
-              <div
-                className="flex items-center gap-4 will-change-transform"
-                style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
-              >
+        {SCROLL_ROWS.map((row) => (
+          <div key={row.label} className="flex justify-center">
+            <div
+              className="flex items-center gap-4 transition-transform duration-150 ease-out will-change-transform"
+              style={{
+                transform: `translate3d(calc(var(--scroll-delta, 0px) * ${row.direction}), 0, 0)`,
+              }}
+            >
                 {row.left.map((brand, idx) => (
                   <BrandPill key={`l-${row.label}-${idx}`} brand={brand} />
                 ))}
@@ -154,27 +150,25 @@ export const TrustedClientsSection: React.FC = () => {
                 ))}
               </div>
             </div>
-          );
-        })}
+        ))}
       </div>
 
       {/* Mobile Scroll-Linked Rows (3 compact rows, ~3 pills visible per row) */}
       <div className="space-y-3 overflow-hidden md:hidden">
-        {SCROLL_ROWS.map((row) => {
-          const translateX = delta * 0.45 * row.direction;
-          return (
-            <div key={`m-${row.label}`} className="flex justify-center">
-              <div
-                className="flex items-center gap-2.5 will-change-transform"
-                style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
-              >
-                {[...row.left, ...row.right].map((brand, idx) => (
-                  <BrandPill key={`m-${row.label}-${idx}`} brand={brand} />
-                ))}
-              </div>
+        {SCROLL_ROWS.map((row) => (
+          <div key={`m-${row.label}`} className="flex justify-center">
+            <div
+              className="flex items-center gap-2.5 transition-transform duration-150 ease-out will-change-transform"
+              style={{
+                transform: `translate3d(calc(var(--scroll-delta, 0px) * ${0.45 * row.direction}), 0, 0)`,
+              }}
+            >
+              {[...row.left, ...row.right].map((brand, idx) => (
+                <BrandPill key={`m-${row.label}-${idx}`} brand={brand} />
+              ))}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
       {/* Bottom Supporting Copy */}
