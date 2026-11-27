@@ -2,8 +2,6 @@ import HeroSection from "@/components/modules/HeroSection";
 import IntroSection from "@/components/modules/IntroSection";
 import DisciplinesSection from "@/components/modules/DisciplinesSection";
 import ProjectShowcase from "@/components/modules/project-showcase/ProjectShowcase";
-import InHouseEngineering from "@/components/modules/InHouseEngineering";
-import { ContactDualGates } from "@/components/modules/contact-gate";
 import Footer from "@/components/modules/Footer";
 import { ModalProvider } from "@/components/modals/modalContext";
 import { LandingProvider } from "@/components/contexts/LandingContext";
@@ -22,8 +20,6 @@ export default function Home() {
             <IntroSection />
             <ProjectShowcase />
             <DisciplinesSection />
-            <InHouseEngineering />
-            <ContactDualGates />
           </main>
 
           <Footer />

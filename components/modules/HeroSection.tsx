@@ -17,7 +17,7 @@ const NAV_LINKS = [
   { label: "Trang chủ", href: "/#top" },
   { label: "Công trình", href: "/#du-an" },
   { label: "Dịch vụ", href: "/#dich-vu" },
-  { label: "Liên hệ", href: "/#contact-gate" },
+  { label: "Liên hệ", href: "/#lien-he" },
 ] as const;
 
 /**
